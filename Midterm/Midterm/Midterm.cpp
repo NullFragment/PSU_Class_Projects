@@ -13,8 +13,8 @@ int main()
 	// -------------------------------------------------
 
 	int hw1_i;
-	const int hw1_total_columns = 4;
-	const int hw1_total_rows = 16;
+	const int hw1_total_columns = 2;
+	const int hw1_total_rows = 4;
 	struct mydata
 	{
 		int gate[hw1_total_columns];
@@ -22,49 +22,37 @@ int main()
 
 	circuit[hw1_total_rows] =
 	{ 
-		{ 1, 1, 1, 1 },
-		{ 1, 1, 1, 0 },
-		{ 1, 1, 0, 1 },
-		{ 1, 1, 0, 0 },
-		{ 1, 0, 1, 1 },
-		{ 1, 0, 1, 0 },
-		{ 1, 0, 0, 1 },
-		{ 1, 0, 0, 0 },
-		{ 0, 1, 1, 1 },
-		{ 0, 1, 1, 0 },
-		{ 0, 1, 0, 1 },
-		{ 0, 1, 0, 0 },
-		{ 0, 0, 1, 1 },
-		{ 0, 0, 1, 0 },
-		{ 0, 0, 0, 1 },
-		{ 0, 0, 0, 0 },
+		{ 1, 1 },
+		{ 1, 0 },
+		{ 0, 1 },
+		{ 0, 0 },
 
 	};
 
-	cout << "--------Homework 1: Truth Table--------" << endl;
+	cout << "--------Midterm: Truth Table--------" << endl;
 
 	for (hw1_i = 0; hw1_i < hw1_total_rows; hw1_i++)
 	{
-		// boating Sunday if not raining
-		if (!circuit[hw1_i].gate[0] || 
-			(!circuit[hw1_i].gate[1] && circuit[hw1_i].gate[3]) ||
-			(!circuit[hw1_i].gate[4] && circuit[hw1_i].gate[3]))
+		if (
+			((circuit[hw1_i].gate[0] && circuit[hw1_i].gate[1]) ||
+			(circuit[hw1_i].gate[0] && !circuit[hw1_i].gate[1])) ||
+			((circuit[hw1_i].gate[0] && circuit[hw1_i].gate[1]) ||
+			(!circuit[hw1_i].gate[0] && circuit[hw1_i].gate[1]))
+			)
 		{
 			cout << "True  - ON:  " << circuit[hw1_i].gate[0]
 				<< " " << circuit[hw1_i].gate[1]
-				<< " " << circuit[hw1_i].gate[2]
 				<< " | 1" << endl;
 		}
 		else
 		{
 			cout << "False - OFF: " << circuit[hw1_i].gate[0]
 				<< " " << circuit[hw1_i].gate[1]
-				<< " " << circuit[hw1_i].gate[2]
 				<< " | 0" << endl;
 		}
 	}
 	// -------------------------------------------------
-	// END HOMEWORK 1
+	// END Midterm
 	// -------------------------------------------------
 
 
