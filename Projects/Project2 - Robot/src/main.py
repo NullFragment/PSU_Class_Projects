@@ -132,7 +132,7 @@ class Bomb:
 		self.cell = self.board.cells[row][column]
 		self.cell.AddBomb()
 	
-	def Move(self, rowMove, columnMove)
+	def Move(self, rowMove, columnMove):
 		# Moves the bomb by X,Y vector as long as the vector is within the board's boundaries.
 		# If the movement is allowed, the robot removes itself from the current cell using RemoveBomb(), updates
 		# it's cell to the new location and uses AddBomb() to update the game board.
