@@ -110,15 +110,17 @@ class Robot:
 		# Moves the robot by X,Y vector as long as the vector is within the board's boundaries.
 		# If the movement is allowed, the robot removes itself from the current cell using RemoveRobot(), updates
 		# it's cell to the new location and uses AddRobot() to update the game board.
-		
-		if self.cell.location[0] + columnMove < self.board.columns and self.cell.location[
-			1] + rowMove < self.board.rows and self.cell.location[0] + columnMove > -1 and self.cell.location[
-			1] + rowMove > -1:
-			self.cell.RemoveRobot()
-			self.cell = self.board.cells[self.cell.location[1] + rowMove][self.cell.location[0] + columnMove]
-			self.cell.AddRobot()
-		else:
-			print("ERROR: Board Boundaries Reached")
+		newColumn = self.cell.location[0] + columnMove
+		newRow = self.cell.location[1] + rowMove
+		if newColumn < self.board.columns and newRow < self.board.rows and newColumn > -1 and newRow > -1:
+			if self.board.cells[newRow][newColumn].contents[2] != 1:
+				self.cell.RemoveRobot()
+				self.cell = self.board.cells[self.cell.location[1] + rowMove][self.cell.location[0] + columnMove]
+				self.cell.AddRobot()
+		elif newColumn >= self.board.columns or newRow >= self.board.rows or newColumn <= -1 or newRow <= -1:
+			print("ERROR (Robot): Cannot move. Location out of bounds")
+		elif self.board.cells[newColumn, newRow].contents[2] == 1:
+			print("ERROR (Robot): Cannot move. Bomb in new location.")
 
 
 class Bomb:
@@ -137,14 +139,17 @@ class Bomb:
 		# If the movement is allowed, the robot removes itself from the current cell using RemoveBomb(), updates
 		# it's cell to the new location and uses AddBomb() to update the game board.
 		
-		if self.cell.location[0] + columnMove < self.board.columns and self.cell.location[
-			1] + rowMove < self.board.rows and self.cell.location[0] + columnMove > -1 and self.cell.location[
-			1] + rowMove > -1:
-			self.cell.RemoveBomb()
-			self.cell = self.board.cells[self.cell.location[1] + rowMove][self.cell.location[0] + columnMove]
-			self.cell.AddBomb()
-		else:
-			print("ERROR: Board Boundaries Reached")
+		newColumn = self.cell.location[0] + columnMove
+		newRow = self.cell.location[1] + rowMove
+		if newColumn < self.board.columns and newRow < self.board.rows and newColumn > -1 and newRow > -1:
+			if self.board.cells[newRow][newColumn].contents[0] != 1:
+				self.cell.RemoveBomb()
+				self.cell = self.board.cells[self.cell.location[1] + rowMove][self.cell.location[0] + columnMove]
+				self.cell.AddBomb()
+		elif newColumn >= self.board.columns or newRow >= self.board.rows or newColumn <= -1 or newRow <= -1:
+			print("ERROR (Bomb): Cannot move. Location out of bounds")
+		elif self.board.cells[newColumn, newRow].contents[0] == 1:
+			print("ERROR (Bomb): Cannot move. Gold in new location.")
 
 
 class Simulation:
@@ -175,10 +180,10 @@ class Simulation:
 		self.simBoard.AddGold()
 		self.simBoard.PrintBoard()
 	
-	def GetNewDirection(self, currentAxisLocation):
+	def GetNewDirection(self, currentAxisLocation, maxAxis):
 		# Gets a random direction for moving.
 		# !!! CURRENTLY ONLY HANDLES 4x4 GRIDS! !!!
-		if currentAxisLocation > 0 and currentAxisLocation < 3:
+		if currentAxisLocation > 0 and currentAxisLocation < maxAxis:
 			return random.randint(-1, 1)
 		elif currentAxisLocation == 3:
 			# If character is at the far edge of the grid, it can only move nowhere or inward
@@ -187,17 +192,17 @@ class Simulation:
 			# If character is at the close edge of the grid, it can only move nowhere or outward
 			return random.randint(0, 1)
 	
-	def MoveCharacterRandom(self, character):
+	def MoveCharacterRandom(self, character, maxRow, maxColumn):
 		# Randomly moves a given character and prints what character is moving, from which cell it is moving and to
 		# which cell it is moving.
 		
 		startMove = character.cell.location
-		moveX = self.GetNewDirection(character.cell.location[1])
-		moveY = self.GetNewDirection(character.cell.location[0])
+		moveX = self.GetNewDirection(character.cell.location[1], maxColumn)
+		moveY = self.GetNewDirection(character.cell.location[0], maxRow)
 		while moveX == 0 or moveY == 0:
 			# Ensures character does not stay still
-			moveX = self.GetNewDirection(character.cell.location[1])
-			moveY = self.GetNewDirection(character.cell.location[0])
+			moveX = self.GetNewDirection(character.cell.location[1], maxColumn)
+			moveY = self.GetNewDirection(character.cell.location[0], maxRow)
 		character.Move(moveX, moveY)
 		endMove = character.cell.location
 		print(type(character).__name__, ": ", startMove, " -> ", endMove)
@@ -219,6 +224,7 @@ class Simulation:
 			exit(4)
 	
 	def MoveRobotToStart(self):
+		robotTurn = 1
 		# Runs the simulation with the goal of moving the robot to [0,0]
 		while self.simRobot.cell.location != [0, 0]:
 			if self.simRobot.cell.location[1] > 0:
@@ -230,11 +236,15 @@ class Simulation:
 			else:
 				robotMoveY = 0
 			self.MoveCharacter(self.simRobot, robotMoveX, robotMoveY)
-			self.MoveCharacterRandom(self.simBomb)
-			self.simBoard.PrintBoard()
+			if robotTurn >= 2:
+				self.MoveCharacterRandom(self.simBomb, self.rows, self.columns)
+				robotTurn = 1
+				self.simBoard.PrintBoard()
 			self.CheckForBomb()
-	
+			robotTurn += 1
+			
 	def RunSimulation(self):
+		robotTurn = 1;
 		self.MoveRobotToStart()
 		moveLeft = False
 		while self.simBoard.goldCount > 0:
@@ -258,12 +268,15 @@ class Simulation:
 				moveLeft = not moveLeft
 			self.MoveCharacter(self.simRobot, robotMoveY, robotMoveX)
 				# Moves the robot
-			self.MoveCharacterRandom(self.simBomb)
+			if robotTurn >= 2:
+				self.MoveCharacterRandom(self.simBomb, self.rows, self.columns)
+				robotTurn = 1
 				# Moves the bomb
 			self.simBoard.PrintBoard()
 				# Prints the game board
 			self.CheckForBomb()
-				# Checks if the bomb moved onto the robot
+			robotTurn += 1
+			# Checks if the bomb moved onto the robot
 		# If the robot successfully collects all of the gold before the robot blows it up, the game ends successfully.
 		print("The robot collected all of the gold!")
 		exit(3)
