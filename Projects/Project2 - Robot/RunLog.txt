@@ -1,0 +1,166 @@
+########################################################################################################################
+### CASE 1: Robot collects all gold
+########################################################################################################################
+
+| G | R | E | E |
+| E | B | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [1, 0]  ->  [0, 0]
+| GR | E | E | E |
+| E | B | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Gold Reserves at:  1
+Robot :  [0, 0]  ->  [1, 0]
+Bomb :  [1, 1]  ->  [0, 0]
+| B | R | E | E |
+| E | E | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [1, 0]  ->  [2, 0]
+| B | E | R | E |
+| E | E | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [2, 0]  ->  [3, 0]
+Bomb :  [0, 0]  ->  [1, 1]
+| E | E | E | R |
+| E | B | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [3, 0]  ->  [3, 1]
+| E | E | E | E |
+| E | B | E | R |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [3, 1]  ->  [2, 1]
+Bomb :  [1, 1]  ->  [0, 0]
+| B | E | E | E |
+| E | E | R | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [2, 1]  ->  [1, 1]
+| B | E | E | E |
+| E | R | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [1, 1]  ->  [0, 1]
+Bomb :  [0, 0]  ->  [1, 1]
+| E | E | E | E |
+| R | B | E | E |
+| E | E | G | E |
+| G | E | G | E |
+Robot :  [0, 1]  ->  [0, 2]
+| E | E | E | E |
+| E | B | E | E |
+| R | E | G | E |
+| G | E | G | E |
+Robot :  [0, 2]  ->  [1, 2]
+Bomb :  [1, 1]  ->  [1, 1]
+| E | E | E | E |
+| E | B | E | E |
+| E | R | G | E |
+| G | E | G | E |
+Robot :  [1, 2]  ->  [2, 2]
+| E | E | E | E |
+| E | B | E | E |
+| E | E | GR | E |
+| G | E | G | E |
+Gold Reserves at:  2
+Robot :  [2, 2]  ->  [3, 2]
+Bomb :  [1, 1]  ->  [0, 0]
+| B | E | E | E |
+| E | E | E | E |
+| E | E | E | R |
+| G | E | G | E |
+Robot :  [3, 2]  ->  [3, 3]
+| B | E | E | E |
+| E | E | E | E |
+| E | E | E | E |
+| G | E | G | R |
+Robot :  [3, 3]  ->  [2, 3]
+Bomb :  [0, 0]  ->  [1, 1]
+| E | E | E | E |
+| E | B | E | E |
+| E | E | E | E |
+| G | E | GR | E |
+Gold Reserves at:  3
+Robot :  [2, 3]  ->  [1, 3]
+| E | E | E | E |
+| E | B | E | E |
+| E | E | E | E |
+| G | R | E | E |
+Robot :  [1, 3]  ->  [0, 3]
+Bomb :  [1, 1]  ->  [2, 0]
+| E | E | B | E |
+| E | E | E | E |
+| E | E | E | E |
+| GR | E | E | E |
+Gold Reserves at:  4
+ERROR (Robot): Cannot move. Location out of bounds
+Robot :  [0, 3]  ->  [0, 3]
+| E | E | B | E |
+| E | E | E | E |
+| E | E | E | E |
+| R | E | E | E |
+The robot collected all of the gold!
+
+Process finished with exit code 3
+
+########################################################################################################################
+### CASE 2: Bomb destroys robot
+########################################################################################################################
+
+| E | E | E | E |
+| R | G | E | E |
+| E | E | E | G |
+| B | E | G | G |
+Robot :  [0, 1]  ->  [0, 0]
+| R | E | E | E |
+| E | G | E | E |
+| E | E | E | G |
+| B | E | G | G |
+Robot :  [0, 0]  ->  [1, 0]
+Bomb :  [0, 3]  ->  [1, 2]
+| E | R | E | E |
+| E | G | E | E |
+| E | B | E | G |
+| E | E | G | G |
+Robot :  [1, 0]  ->  [2, 0]
+| E | E | R | E |
+| E | G | E | E |
+| E | B | E | G |
+| E | E | G | G |
+Robot :  [2, 0]  ->  [3, 0]
+Bomb :  [1, 2]  ->  [1, 2]
+| E | E | E | R |
+| E | G | E | E |
+| E | B | E | G |
+| E | E | G | G |
+Robot :  [3, 0]  ->  [3, 1]
+| E | E | E | E |
+| E | G | E | R |
+| E | B | E | G |
+| E | E | G | G |
+Robot :  [3, 1]  ->  [2, 1]
+Bomb :  [1, 2]  ->  [1, 2]
+| E | E | E | E |
+| E | G | R | E |
+| E | B | E | G |
+| E | E | G | G |
+Robot :  [2, 1]  ->  [1, 1]
+| E | E | E | E |
+| E | GR | E | E |
+| E | B | E | G |
+| E | E | G | G |
+Gold Reserves at:  1
+Robot :  [1, 1]  ->  [0, 1]
+Bomb :  [1, 2]  ->  [0, 1]
+| E | E | E | E |
+| RB | E | E | E |
+| E | E | E | G |
+| E | E | G | G |
+The robot was blown up!
+
+Process finished with exit code 4

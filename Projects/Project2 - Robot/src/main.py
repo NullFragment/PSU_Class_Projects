@@ -170,6 +170,7 @@ class Simulation:
 		self.simBoard = Board(rows, columns, gold)
 		self.rows = rows - 1
 		self.columns = columns - 1
+		self.robotTurn = 1
 		robotStart = [random.randint(0, 3), random.randint(0, 3)]
 		bombStart = [random.randint(0, 3), random.randint(0, 3)]
 		while robotStart[0] == bombStart[0] and robotStart[1] == bombStart[1]:
@@ -224,7 +225,6 @@ class Simulation:
 			exit(4)
 	
 	def MoveRobotToStart(self):
-		robotTurn = 1
 		# Runs the simulation with the goal of moving the robot to [0,0]
 		while self.simRobot.cell.location != [0, 0]:
 			if self.simRobot.cell.location[1] > 0:
@@ -236,15 +236,14 @@ class Simulation:
 			else:
 				robotMoveY = 0
 			self.MoveCharacter(self.simRobot, robotMoveX, robotMoveY)
-			if robotTurn >= 2:
+			if self.robotTurn >= 2:
 				self.MoveCharacterRandom(self.simBomb, self.rows, self.columns)
-				robotTurn = 1
-				self.simBoard.PrintBoard()
+				self.robotTurn = 0
+			self.robotTurn += 1
+			self.simBoard.PrintBoard()
 			self.CheckForBomb()
-			robotTurn += 1
 			
 	def RunSimulation(self):
-		robotTurn = 1;
 		self.MoveRobotToStart()
 		moveLeft = False
 		while self.simBoard.goldCount > 0:
@@ -268,14 +267,14 @@ class Simulation:
 				moveLeft = not moveLeft
 			self.MoveCharacter(self.simRobot, robotMoveY, robotMoveX)
 				# Moves the robot
-			if robotTurn >= 2:
+			if self.robotTurn >= 2:
 				self.MoveCharacterRandom(self.simBomb, self.rows, self.columns)
-				robotTurn = 1
+				self.robotTurn = 0
 				# Moves the bomb
 			self.simBoard.PrintBoard()
 				# Prints the game board
 			self.CheckForBomb()
-			robotTurn += 1
+			self.robotTurn += 1
 			# Checks if the bomb moved onto the robot
 		# If the robot successfully collects all of the gold before the robot blows it up, the game ends successfully.
 		print("The robot collected all of the gold!")
