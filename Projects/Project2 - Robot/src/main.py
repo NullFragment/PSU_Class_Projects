@@ -138,7 +138,6 @@ class Bomb:
 		# Moves the bomb by X,Y vector as long as the vector is within the board's boundaries.
 		# If the movement is allowed, the robot removes itself from the current cell using RemoveBomb(), updates
 		# it's cell to the new location and uses AddBomb() to update the game board.
-		
 		newColumn = self.cell.location[0] + columnMove
 		newRow = self.cell.location[1] + rowMove
 		if newColumn < self.board.columns and newRow < self.board.rows and newColumn > -1 and newRow > -1:
@@ -171,11 +170,11 @@ class Simulation:
 		self.rows = rows - 1
 		self.columns = columns - 1
 		self.robotTurn = 1
-		robotStart = [random.randint(0, 3), random.randint(0, 3)]
-		bombStart = [random.randint(0, 3), random.randint(0, 3)]
+		robotStart = [random.randint(0, self.rows), random.randint(0, self.columns)]
+		bombStart = [random.randint(0, self.rows), random.randint(0, self.columns)]
 		while robotStart[0] == bombStart[0] and robotStart[1] == bombStart[1]:
 			# Ensures bomb and robot do not start in the same cell.
-			bombStart = [random.randint(0, 3), random.randint(0, 3)]
+			bombStart = [random.randint(0, self.rows), random.randint(0, self.columns)]
 		self.simRobot = Robot(self.simBoard, robotStart[0], robotStart[1])
 		self.simBomb = Bomb(self.simBoard, bombStart[0], bombStart[1])
 		self.simBoard.AddGold()
@@ -186,7 +185,7 @@ class Simulation:
 		# !!! CURRENTLY ONLY HANDLES 4x4 GRIDS! !!!
 		if currentAxisLocation > 0 and currentAxisLocation < maxAxis:
 			return random.randint(-1, 1)
-		elif currentAxisLocation == 3:
+		elif currentAxisLocation == maxAxis:
 			# If character is at the far edge of the grid, it can only move nowhere or inward
 			return random.randint(-1, 0)
 		elif currentAxisLocation == 0:
@@ -196,14 +195,13 @@ class Simulation:
 	def MoveCharacterRandom(self, character, maxRow, maxColumn):
 		# Randomly moves a given character and prints what character is moving, from which cell it is moving and to
 		# which cell it is moving.
-		
 		startMove = character.cell.location
-		moveX = self.GetNewDirection(character.cell.location[1], maxColumn)
-		moveY = self.GetNewDirection(character.cell.location[0], maxRow)
+		moveX = self.GetNewDirection(character.cell.location[0], maxColumn)
+		moveY = self.GetNewDirection(character.cell.location[1], maxRow)
 		while moveX == 0 or moveY == 0:
 			# Ensures character does not stay still
-			moveX = self.GetNewDirection(character.cell.location[1], maxColumn)
-			moveY = self.GetNewDirection(character.cell.location[0], maxRow)
+			moveX = self.GetNewDirection(character.cell.location[0], maxColumn)
+			moveY = self.GetNewDirection(character.cell.location[1], maxRow)
 		character.Move(moveX, moveY)
 		endMove = character.cell.location
 		print(type(character).__name__, ": ", startMove, " -> ", endMove)
