@@ -14,20 +14,24 @@ class Board:
 		self.rows = rows
 		self.columns = columns
 		self.cells = [[Cell(i, j) for i in range(self.columns)] for j in range(self.rows)]
-			# self.cells loops through a 2D array of [i = rows][j = columns]
+		# self.cells loops through a 2D array of [i = rows][j = columns]
 		self.goldCount = 0
 		self.maxGold = gold
 	
 	def AddGold(self):
 		# Adds a gold piece to the board by pseudo-randomly picking a cell and deciding whether or not the cell should
 		# get a piece of gold (variable k). If the cell is empty and k is true, it adds a piece of gold to that cell.
-		while self.goldCount < self.maxGold:
-			i = random.randint(0, self.rows - 1)
-			j = random.randint(0, self.columns - 1)
-			k = random.randint(0, 1)
-			if self.cells[i][j].contents == [0, 0, 0] and k == 1:
-				self.cells[i][j].AddGold()
-				self.goldCount += 1
+		if self.maxGold < (self.rows * self.columns - 1):
+			while self.goldCount < self.maxGold:
+				i = random.randint(0, self.rows - 1)
+				j = random.randint(0, self.columns - 1)
+				k = random.randint(0, 1)
+				if self.cells[i][j].contents == [0, 0, 0] and k == 1:
+					self.cells[i][j].AddGold()
+					self.goldCount += 1
+		else:
+			print("Too many gold pieces.")
+			exit(5)
 	
 	def PrintBoard(self):
 		# This function prints the game board cell by cell.
@@ -196,12 +200,12 @@ class Simulation:
 		# Randomly moves a given character and prints what character is moving, from which cell it is moving and to
 		# which cell it is moving.
 		startMove = character.cell.location
-		moveX = self.GetNewDirection(character.cell.location[0], maxColumn)
-		moveY = self.GetNewDirection(character.cell.location[1], maxRow)
+		moveX = self.GetNewDirection(character.cell.location[1], maxColumn)
+		moveY = self.GetNewDirection(character.cell.location[0], maxRow)
 		while moveX == 0 or moveY == 0:
 			# Ensures character does not stay still
-			moveX = self.GetNewDirection(character.cell.location[0], maxColumn)
-			moveY = self.GetNewDirection(character.cell.location[1], maxRow)
+			moveX = self.GetNewDirection(character.cell.location[1], maxColumn)
+			moveY = self.GetNewDirection(character.cell.location[0], maxRow)
 		character.Move(moveX, moveY)
 		endMove = character.cell.location
 		print(type(character).__name__, ": ", startMove, " -> ", endMove)
@@ -225,22 +229,22 @@ class Simulation:
 	def MoveRobotToStart(self):
 		# Runs the simulation with the goal of moving the robot to [0,0]
 		while self.simRobot.cell.location != [0, 0]:
-			if self.simRobot.cell.location[1] > 0:
+			if self.simRobot.cell.location[0] > 0:
 				robotMoveX = -1
 			else:
 				robotMoveX = 0
-			if self.simRobot.cell.location[0] > 0:
+			if self.simRobot.cell.location[1] > 0:
 				robotMoveY = -1
 			else:
 				robotMoveY = 0
-			self.MoveCharacter(self.simRobot, robotMoveX, robotMoveY)
+			self.MoveCharacter(self.simRobot, robotMoveY, robotMoveX)
 			if self.robotTurn >= 2:
 				self.MoveCharacterRandom(self.simBomb, self.rows, self.columns)
 				self.robotTurn = 0
 			self.robotTurn += 1
 			self.simBoard.PrintBoard()
 			self.CheckForBomb()
-			
+	
 	def RunSimulation(self):
 		self.MoveRobotToStart()
 		moveLeft = False
@@ -264,16 +268,16 @@ class Simulation:
 				robotMoveX = 0
 				moveLeft = not moveLeft
 			self.MoveCharacter(self.simRobot, robotMoveY, robotMoveX)
-				# Moves the robot
+			# Moves the robot
 			if self.robotTurn >= 2:
 				self.MoveCharacterRandom(self.simBomb, self.rows, self.columns)
 				self.robotTurn = 0
-				# Moves the bomb
+			# Moves the bomb
 			self.simBoard.PrintBoard()
-				# Prints the game board
+			# Prints the game board
 			self.CheckForBomb()
 			self.robotTurn += 1
-			# Checks if the bomb moved onto the robot
+		# Checks if the bomb moved onto the robot
 		# If the robot successfully collects all of the gold before the robot blows it up, the game ends successfully.
 		print("The robot collected all of the gold!")
 		exit(3)
