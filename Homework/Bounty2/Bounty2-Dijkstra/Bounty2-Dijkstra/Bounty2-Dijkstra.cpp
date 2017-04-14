@@ -8,6 +8,7 @@
 #include <queue>
 #include <vector>
 #include <functional>
+#include <boost/heap/binomial_heap.hpp>
 #include "dijkstraNode.h"
 #include "graph.h"
 
