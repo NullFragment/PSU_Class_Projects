@@ -6,12 +6,41 @@
 #include <algorithm>
 #include <vector>
 
+
+void PrintPath(std::vector<int> path, int length, bool shortest)
+{
+	int loop = 0;
+	if (shortest == true)
+	{
+		std::cout << "New Shortest Distance: " << length << " Path: ";
+	}
+	else if (shortest == false)
+	{
+		std::cout << "New Longest Distance: " << length << " Path: ";
+	}
+
+	for each (int i in path)
+	{
+		if (loop != 0)
+		{
+			std::cout << " -> ";
+		}
+		std::cout << i;
+		i++;
+	}
+	std::cout << '\n';
+}
+
+
+
+
 int main()
 {
 	const int elements = 4;
 	int a, b = 0;
 	std::vector<int> list;
-	std::vector<int> distances = {};
+	std::vector<int> shortestDistance = {};
+	std::vector<int> longestDistance = {};
 
 	int weights[elements][elements] = 
 	{
@@ -39,33 +68,27 @@ int main()
 			newDistance = newDistance + weights[a][b];
 		}
 
-		if (distances.empty())
+		if (shortestDistance.empty())
 		{
-			distances.push_back(newDistance);
-			std::cout << "New Shortest Distance: " << newDistance << " Path: ";
-			for (int i = 0; i < elements; i++)
-			{
-				if (i != 0)
-				{
-					std::cout << " -> ";
-				}
-				std::cout << list[i];
-			}
-			std::cout << '\n';
+			shortestDistance.push_back(newDistance);
+			PrintPath(list, newDistance, true);
 		}
-		else if (newDistance < distances.back())
+		else if (newDistance < shortestDistance.back())
 		{
-			distances.push_back(newDistance);
-			std::cout << "New Shortest Distance: " << newDistance << " Path: ";
-			for (int i = 0; i < elements; i++)
-			{
-				if (i != 0)
-				{
-					std::cout << " -> ";
-				}
-				std::cout << list[i];
-			}
-			std::cout << '\n';
+			shortestDistance.push_back(newDistance);
+			PrintPath(list, newDistance, true);
+		}
+
+		if (longestDistance.empty())
+		{
+			longestDistance.push_back(newDistance);
+			PrintPath(list, newDistance, false);
+
+		}
+		else if (newDistance > longestDistance.back())
+		{
+			longestDistance.push_back(newDistance);
+			PrintPath(list, newDistance, false);
 		}
 	} while (std::next_permutation(list.begin(), list.end()));
 	
