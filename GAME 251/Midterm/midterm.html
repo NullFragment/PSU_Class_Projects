@@ -1,0 +1,131 @@
+<html>
+
+	<head>
+		<title>Matching Game</title>
+	</head>
+
+	<body>
+		<h1>Match the Pictures to win!</h1>
+		<script type="text/javascript">
+			var firstChoice = "";
+			var secondChoice = "";
+			var score = 0;
+			var images = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
+
+			function ShowImages() {
+				images = Shuffle(images);
+				var buttonLocation;
+				var buttonPrefix = "button";
+				var imagePrefix = "image";
+				for (var i = 0; i < 16; i++) {
+					imageSuffix = images[i]
+					buttonLocation = buttonPrefix + (i + 1);
+					image = imagePrefix + imageSuffix + ".png";
+					document.getElementById(buttonLocation).innerHTML = '<img style="width:135;height:135px" src="' + image + '"/>';
+					score = 0;
+					document.getElementById("scoreBlock").innerHTML = score;
+				}
+				setTimeout(HideImages, 1000);
+			}
+
+			function HideImages() {
+				var buttonLocation;
+				var buttonPrefix = "button";
+				for (var i = 1; i < 17; i++) {
+					buttonLocation = buttonPrefix + i;
+					document.getElementById(buttonLocation).innerHTML = "";
+				}
+			}
+
+			function RemoveButton(buttonCell) {
+				var buttonCellPrefix = "buttonLoc";
+				document.getElementById(buttonCellPrefix + buttonCell).style.visibility = "hidden";
+				HideImages();
+			}
+
+			function Shuffle(array) {
+				var counter = array.length;
+
+				// While there are elements in the array
+				while (counter > 0) {
+					var index;
+					var temp;
+					index = Math.floor(Math.random() * counter);
+					counter--;
+					temp = array[counter];
+					array[counter] = array[index];
+					array[index] = temp;
+				}
+				return array;
+			}
+
+			function ClickButton(buttonNumber) {
+				var buttonLocation;
+				var buttonPrefix = "button";
+				var imagePrefix = "image";
+				buttonLocation = buttonPrefix + buttonNumber;
+				image = imagePrefix + images[buttonNumber - 1] + ".png";
+				document.getElementById(buttonLocation).innerHTML = '<img style="width:135;height:135px" src="' + image + '"/>';
+				if (firstChoice == "") {
+					firstChoice = buttonNumber;
+				} else if (firstChoice != "" && firstChoice != buttonNumber) {
+					secondChoice = buttonNumber;
+					CheckForMatch();
+				}
+			}
+
+			function CheckForMatch() {
+				var firstImage = document.getElementById("button" + firstChoice).innerHTML;
+				var secondImage = document.getElementById("button" + secondChoice).innerHTML;
+				if (firstImage == secondImage) {
+					score++;
+					document.getElementById("scoreBlock").innerHTML = score;
+					RemoveButton(firstChoice);
+					RemoveButton(secondChoice);
+				} else {
+					setTimeout(HideImages, 1000);
+				}
+				firstChoice = "";
+				secondChoice = "";
+				if (score >= 8) {
+					document.getElementById("gameGrid").innerHTML = "<h1> YOU WIN! </h1>";
+				}
+			}
+		</script>
+		<p id="gameGrid">
+			<table>
+				<tr>
+					<td id="buttonLoc1"><button style="width:150px;height:150px" id="button1" onclick="ClickButton(1)"></button></td>
+					<td id="buttonLoc2"><button style="width:150px;height:150px" id="button2" onclick="ClickButton(2)"></button></td>
+					<td id="buttonLoc3"><button style="width:150px;height:150px" id="button3" onclick="ClickButton(3)"></button></td>
+					<td id="buttonLoc4"><button style="width:150px;height:150px" id="button4" onclick="ClickButton(4)"></button></td>
+				</tr>
+				<tr>
+					<td id="buttonLoc5"><button style="width:150px;height:150px" id="button5" onclick="ClickButton(5)"></button></td>
+					<td id="buttonLoc6"><button style="width:150px;height:150px" id="button6" onclick="ClickButton(6)"></button></td>
+					<td id="buttonLoc7"><button style="width:150px;height:150px" id="button7" onclick="ClickButton(7)"></button></td>
+					<td id="buttonLoc8"><button style="width:150px;height:150px" id="button8" onclick="ClickButton(8)"></button></td>
+				</tr>
+				<tr>
+					<td id="buttonLoc9"><button style="width:150px;height:150px" id="button9" onclick="ClickButton(9)"></button></td>
+					<td id="buttonLoc10"><button style="width:150px;height:150px" id="button10" onclick="ClickButton(10)"></button></td>
+					<td id="buttonLoc11"><button style="width:150px;height:150px" id="button11" onclick="ClickButton(11)"></button></td>
+					<td id="buttonLoc12"><button style="width:150px;height:150px" id="button12" onclick="ClickButton(12)"></button></td>
+				</tr>
+				<tr>
+					<td id="buttonLoc13"><button style="width:150px;height:150px" id="button13" onclick="ClickButton(13)"></button></td>
+					<td id="buttonLoc14"><button style="width:150px;height:150px" id="button14" onclick="ClickButton(14)"></button></td>
+					<td id="buttonLoc15"><button style="width:150px;height:150px" id="button15" onclick="ClickButton(15)"></button></td>
+					<td id="buttonLoc16"><button style="width:150px;height:150px" id="button16" onclick="ClickButton(16)"></button></td>
+				</tr>
+				<tr>
+					<td colspan="4" style="text-align:center;"><button id="startButton" onclick="ShowImages()">Start Game</button></td>
+				</tr>
+			</table>
+		</p>
+		<p>
+			<h1>Score:</h1>
+			<h1 id="scoreBlock">0</h1></p>
+	</body>
+
+</html>
