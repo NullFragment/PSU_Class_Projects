@@ -1,0 +1,1436 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Driver</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="Driver.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+<h2>Called Functions</h2><ul><li><a href="#EulerMethod">EulerMethod </a></li><li><a href="#HeunMethod">HeunMethod </a></li><li><a href="#RK4Method">RK4Method </a></li><li><a href="#Simpsons13">Simpsons13 </a></li><li><a href="#Simpsons38">Simpsons38 </a></li><li><a href="#TrapezoidalRule">TrapezoidalRule </a></li><li><a href="#TwoPointRule">TwoPointRule </a></li><li><a href="#func1">func1 </a></li><li><a href="#ode">ode </a></li></ul>
+
+fprintf(<span class="string">'---------------PROBLEM 1---------------\n\n'</span>)
+I = 3.50017;
+fprintf(<span class="string">'----------Trapezoidal Rule----------\n'</span>)
+TR_n1 = TrapezoidalRule(@func1, 0, 4, 1)
+TR_n1_error = abs((I-TR_n1)/I)
+TR_n2 = TrapezoidalRule(@func1, 0, 4, 2)
+TR_n2_error = abs((I-TR_n2)/I)
+TR_n4 = TrapezoidalRule(@func1, 0, 4, 4)
+TR_n4_error = abs((I-TR_n4)/I)
+
+fprintf(<span class="string">'\n----------Simpsons 1/3 Rule----------\n'</span>)
+S13_n1 = Simpsons13(@func1, 0, 4, 2)
+S13_n1_error = abs((I-S13_n1)/I)
+S13_n4 = Simpsons13(@func1, 0, 4, 4)
+S13_n4_error = abs((I-S13_n4)/I)
+
+fprintf(<span class="string">'\n----------Simpsons 3/8 Rule----------\n'</span>)
+S38_n1 = Simpsons38(@func1, 0, 4, 3)
+S33_n1_error = abs((I-S38_n1)/I)
+
+fprintf(<span class="string">'\n----------Two Point Rule----------\n'</span>)
+TP = TwoPointRule(@func1, 0, 4)
+TP_error = abs((I-TP)/I)
+
+fprintf(<span class="string">'\n\n---------------PROBLEM 2---------------\n\n'</span>)
+i = 1;
+<span class="keyword">for</span> t = 0:0.1:2
+    Vals(i,:) = ode(t);
+    time(i) = t;
+    i = i + 1;
+<span class="keyword">end</span>
+
+fprintf(<span class="string">'\n---------- Euler Method----------\n'</span>)
+EulerValues_2s = EulerMethod(@ode, [pi/4, 0], 0, 2.1, 0.1)
+EulerValues_10s = EulerMethod(@ode, [pi/4, 0], 0, 10.1, 0.1)
+
+fprintf(<span class="string">'\n---------- Heun Method----------\n'</span>)
+HeunValues_2s = HeunMethod(@ode, [pi/4, 0], 0, 2.1, 0.1)
+HeunValues_10s = HeunMethod(@ode, [pi/4, 0], 0, 10.1, 0.1)
+
+fprintf(<span class="string">'\n---------- RK4 Method----------\n'</span>)
+RK4Values_2s = RK4Method(@ode, [pi/4, 0], 0, 2.1, 0.1)
+RK4Values_10s = RK4Method(@ode, [pi/4, 0], 0, 10.1, 0.1)
+
+<span class="comment">%---------------plot------------------------</span>
+figure(1)
+plot(time',Vals(:,1))
+hold <span class="string">all</span>
+plot(time',EulerValues_2s(:,1))
+hold <span class="string">all</span>
+plot(time',HeunValues_2s(:,1))
+hold <span class="string">all</span>
+plot(time',RK4Values_2s(:,1))
+hold <span class="string">all</span>
+legend(<span class="string">'Analytic'</span>,<span class="string">'Euler'</span>, <span class="string">'Heun'</span>, <span class="string">'RK4'</span>)
+
+hold <span class="string">all</span>
+figure(2)
+plot(time',Vals(:,2))
+hold <span class="string">all</span>
+plot(time',EulerValues_2s(:,2))
+hold <span class="string">all</span>
+plot(time',HeunValues_2s(:,2))
+hold <span class="string">all</span>
+plot(time',RK4Values_2s(:,2))
+hold <span class="string">all</span>
+legend(<span class="string">'Analytic'</span>,<span class="string">'Euler'</span>, <span class="string">'Heun'</span>, <span class="string">'RK4'</span>)
+
+hold <span class="string">all</span>
+figure(3)
+plot(EulerValues_10s(:,1),EulerValues_10s(:,2))
+hold <span class="string">all</span>
+plot(HeunValues_10s(:,1),HeunValues_10s(:,2))
+hold <span class="string">all</span>
+plot(RK4Values_10s(:,1),RK4Values_10s(:,2))
+hold <span class="string">all</span>
+legend(<span class="string">'Euler'</span>, <span class="string">'Heun'</span>, <span class="string">'RK4'</span>)
+</pre><pre class="codeoutput">---------------PROBLEM 1---------------
+
+----------Trapezoidal Rule----------
+
+TR_n1 =
+
+    1.9993
+
+
+TR_n1_error =
+
+    0.4288
+
+
+TR_n2 =
+
+    2.9630
+
+
+TR_n2_error =
+
+    0.1535
+
+
+TR_n4 =
+
+    3.3437
+
+
+TR_n4_error =
+
+    0.0447
+
+
+----------Simpsons 1/3 Rule----------
+
+S13_n1 =
+
+    3.2843
+
+
+S13_n1_error =
+
+    0.0617
+
+
+S13_n4 =
+
+    3.4706
+
+
+S13_n4_error =
+
+    0.0085
+
+
+----------Simpsons 3/8 Rule----------
+
+S38_n1 =
+
+    3.4921
+
+
+S33_n1_error =
+
+    0.0023
+
+
+----------Two Point Rule----------
+
+TP =
+
+    3.6275
+
+
+TP_error =
+
+    0.0364
+
+
+
+---------------PROBLEM 2---------------
+
+
+---------- Euler Method----------
+
+EulerValues_2s =
+
+    0.7854         0
+    0.8577   -0.1231
+    0.9669   -0.5763
+    1.0514   -1.4588
+    1.0407   -2.7186
+    0.8750   -4.1472
+    0.5252   -5.4139
+    0.0056   -6.1347
+   -0.6213   -5.9624
+   -1.2516   -4.6789
+   -1.7575   -2.2684
+   -2.0117    1.0447
+   -1.9152    4.8065
+   -1.4223    8.3942
+   -0.5575   11.1192
+    0.5796   12.3548
+    1.8245   11.6672
+    2.9711    8.9219
+    3.8057    4.3434
+    4.1463   -1.4862
+    3.8790   -7.6971
+
+
+EulerValues_10s =
+
+    0.7854         0
+    0.8577   -0.1231
+    0.9669   -0.5763
+    1.0514   -1.4588
+    1.0407   -2.7186
+    0.8750   -4.1472
+    0.5252   -5.4139
+    0.0056   -6.1347
+   -0.6213   -5.9624
+   -1.2516   -4.6789
+   -1.7575   -2.2684
+   -2.0117    1.0447
+   -1.9152    4.8065
+   -1.4223    8.3942
+   -0.5575   11.1192
+    0.5796   12.3548
+    1.8245   11.6672
+    2.9711    8.9219
+    3.8057    4.3434
+    4.1463   -1.4862
+    3.8790   -7.6971
+    2.9859  -13.2608
+    1.5572  -17.1601
+   -0.2146  -18.5722
+   -2.0600  -17.0313
+   -3.6734  -12.5411
+   -4.7635   -5.6126
+   -5.1053    2.7849
+   -4.5839   11.3572
+   -3.2226   18.6842
+   -1.1883   23.4549
+    1.2266   24.6989
+    3.6464   21.9744
+    5.6701   15.4772
+    6.9380    6.0472
+    7.1946   -4.9345
+    6.3381  -15.7465
+    4.4461  -24.5966
+    1.7725  -29.9188
+   -1.2852  -30.6470
+   -4.2449  -26.4200
+   -6.6158  -17.6771
+   -7.9800   -5.6261
+   -8.0647    7.9206
+   -6.7953   20.8173
+   -4.3162   30.9248
+   -0.9776   36.4650
+    2.7136   36.3301
+    6.1705   30.2956
+    8.8196   19.0943
+   10.1954    4.3361
+   10.0220  -11.7210
+    8.2657  -26.5155
+    5.1500  -37.5915
+    1.1292  -43.0052
+   -3.1776  -41.6634
+   -7.0813  -33.5337
+   -9.9337  -19.6890
+  -11.2344   -2.1719
+  -10.7179   16.3055
+   -8.4054   32.7805
+   -4.6106   44.5152
+    0.1009   49.4506
+    4.9964   46.5644
+    9.2891   36.0717
+   12.2654   19.4290
+   13.4025   -0.8636
+   12.4600  -21.6365
+    9.5272  -39.5458
+    5.0188  -51.6115
+   -0.3832  -55.7120
+   -5.8320  -50.9542
+  -10.4490  -37.8532
+  -13.4654  -18.2893
+  -14.3499    4.7594
+  -12.9013   27.6690
+   -9.2902   46.7397
+   -4.0415   58.7932
+    2.0416   61.7012
+    8.0000   54.7572
+   12.8701   38.8279
+   15.8396   16.2529
+   16.3824   -9.4966
+   14.3512  -34.3510
+   10.0103  -54.2855
+    4.0032  -65.9714
+   -2.7427  -67.3310
+   -9.1589  -57.9024
+  -14.2051  -38.9522
+  -17.0377  -13.3109
+  -17.1507   15.0480
+  -14.4649   41.6237
+   -9.3499   62.1020
+   -2.5750   73.0557
+    4.8065   72.5164
+   11.6210   60.3237
+   16.7610   38.1896
+   19.3650    9.4623
+   18.9619  -21.3790
+   15.5543  -49.4221
+
+
+---------- Heun Method----------
+
+HeunValues_2s =
+
+    0.7854         0
+    0.8608   -0.0615
+    0.9123   -0.3497
+    0.9095   -0.7811
+    0.8364   -1.2182
+    0.6959   -1.5017
+    0.5111   -1.4906
+    0.3215   -1.0993
+    0.1751   -0.3257
+    0.1176    0.7387
+    0.1823    1.9184
+    0.3800    2.9823
+    0.6950    3.6880
+    1.0841    3.8315
+    1.4832    3.2943
+    1.8172    2.0776
+    2.0143    0.3152
+    2.0200   -1.7379
+    1.8097   -3.7427
+    1.3962   -5.3312
+    0.8310   -6.1737
+
+
+HeunValues_10s =
+
+    0.7854         0
+    0.8608   -0.0615
+    0.9123   -0.3497
+    0.9095   -0.7811
+    0.8364   -1.2182
+    0.6959   -1.5017
+    0.5111   -1.4906
+    0.3215   -1.0993
+    0.1751   -0.3257
+    0.1176    0.7387
+    0.1823    1.9184
+    0.3800    2.9823
+    0.6950    3.6880
+    1.0841    3.8315
+    1.4832    3.2943
+    1.8172    2.0776
+    2.0143    0.3152
+    2.0200   -1.7379
+    1.8097   -3.7427
+    1.3962   -5.3312
+    0.8310   -6.1737
+    0.1985   -6.0426
+   -0.3968   -4.8640
+   -0.8473   -2.7443
+   -1.0617    0.0337
+   -0.9825    3.0477
+   -0.5986    5.7991
+    0.0485    7.7962
+    0.8689    8.6404
+    1.7361    8.1027
+    2.5066    6.1752
+    3.0439    3.0868
+    3.2417   -0.7202
+    3.0450   -4.6534
+    2.4619   -8.0620
+    1.5663  -10.3445
+    0.4891  -11.0537
+   -0.6008   -9.9812
+   -1.5230   -7.2058
+   -2.1154   -3.0952
+   -2.2625    1.7401
+   -1.9169    6.5378
+   -1.1111   10.5036
+    0.0447   12.9424
+    1.3768   13.3792
+    2.6741   11.6487
+    3.7218    7.9361
+    4.3366    2.7629
+    4.3987   -3.0861
+    3.8744   -8.6808
+    2.8249  -13.0941
+    1.4004  -15.5552
+   -0.1812  -15.5832
+   -1.6675  -13.0775
+   -2.8123   -8.3493
+   -3.4156   -2.0861
+   -3.3590    4.7480
+   -2.6275   11.0598
+   -1.3162   15.8024
+    0.3821   18.1483
+    2.2043   17.6328
+    3.8583   14.2421
+    5.0696    8.4312
+    5.6269    1.0644
+    5.4184   -6.7123
+    4.4534  -13.6497
+    2.8650  -18.5957
+    0.8913  -20.6865
+   -1.1593  -19.4961
+   -2.9568  -15.1192
+   -4.2025   -8.1705
+   -4.6786    0.2994
+   -4.2859    8.9629
+   -3.0634   16.4234
+   -1.1857   21.4403
+    1.0615   23.1349
+    3.3249   21.1429
+    5.2390   15.6876
+    6.4854    7.5590
+    6.8451   -1.9994
+    6.2374  -11.4806
+    4.7356  -19.3517
+    2.5598  -24.3016
+    0.0445  -25.4590
+   -2.4128  -22.5442
+   -4.4144  -15.9289
+   -5.6265   -6.5915
+   -5.8349    4.0266
+   -4.9827   14.2436
+   -3.1827   22.4034
+   -0.7033   27.1441
+    2.0712   27.6248
+    4.7006   23.6730
+    6.7581   15.8273
+    7.9000    5.2661
+    7.9227   -6.3688
+    6.7985  -17.2276
+    4.6842  -25.5460
+    1.8993  -29.9324
+   -1.1220  -29.5996
+
+
+---------- RK4 Method----------
+
+RK4Values_2s =
+
+    0.7854         0
+    0.8618   -0.0624
+    0.8497   -0.1772
+    0.8273   -0.2639
+    0.7983   -0.3087
+    0.7672   -0.3044
+    0.7391   -0.2518
+    0.7182   -0.1592
+    0.7081   -0.0413
+    0.7102    0.0832
+    0.7243    0.1945
+    0.7480    0.2748
+    0.7778    0.3115
+    0.8087    0.2988
+    0.8359    0.2385
+    0.8551    0.1404
+    0.8633    0.0200
+    0.8590   -0.1036
+    0.8431   -0.2108
+    0.8180   -0.2844
+    0.7877   -0.3129
+
+
+RK4Values_10s =
+
+    0.7854         0
+    0.8618   -0.0624
+    0.8497   -0.1772
+    0.8273   -0.2639
+    0.7983   -0.3087
+    0.7672   -0.3044
+    0.7391   -0.2518
+    0.7182   -0.1592
+    0.7081   -0.0413
+    0.7102    0.0832
+    0.7243    0.1945
+    0.7480    0.2748
+    0.7778    0.3115
+    0.8087    0.2988
+    0.8359    0.2385
+    0.8551    0.1404
+    0.8633    0.0200
+    0.8590   -0.1036
+    0.8431   -0.2108
+    0.8180   -0.2844
+    0.7877   -0.3129
+    0.7571   -0.2917
+    0.7309   -0.2241
+    0.7134   -0.1209
+    0.7074    0.0014
+    0.7137    0.1236
+    0.7314    0.2261
+    0.7577    0.2927
+    0.7884    0.3128
+    0.8186    0.2832
+    0.8436    0.2086
+    0.8592    0.1009
+    0.8632   -0.0228
+    0.8548   -0.1429
+    0.8354   -0.2404
+    0.8080   -0.2996
+    0.7771   -0.3112
+    0.7474   -0.2734
+    0.7238   -0.1922
+    0.7100   -0.0804
+    0.7082    0.0441
+    0.7186    0.1616
+    0.7396    0.2535
+    0.7679    0.3051
+    0.7990    0.3082
+    0.8279    0.2624
+    0.8501    0.1749
+    0.8620    0.0596
+    0.8617   -0.0652
+    0.8493   -0.1796
+    0.8267   -0.2655
+    0.7976   -0.3092
+    0.7666   -0.3038
+    0.7385   -0.2501
+    0.7179   -0.1567
+    0.7080   -0.0384
+    0.7104    0.0859
+    0.7247    0.1967
+    0.7487    0.2762
+    0.7785    0.3118
+    0.8094    0.2979
+    0.8365    0.2367
+    0.8554    0.1378
+    0.8633    0.0171
+    0.8588   -0.1063
+    0.8426   -0.2129
+    0.8173   -0.2856
+    0.7870   -0.3130
+    0.7564   -0.2906
+    0.7304   -0.2221
+    0.7132   -0.1183
+    0.7074    0.0043
+    0.7140    0.1262
+    0.7320    0.2280
+    0.7584    0.2937
+    0.7891    0.3127
+    0.8193    0.2820
+    0.8440    0.2065
+    0.8595    0.0982
+    0.8632   -0.0257
+    0.8545   -0.1455
+    0.8348   -0.2422
+    0.8073   -0.3004
+    0.7764   -0.3109
+    0.7468   -0.2720
+    0.7234   -0.1900
+    0.7098   -0.0777
+    0.7083    0.0469
+    0.7190    0.1641
+    0.7402    0.2552
+    0.7686    0.3057
+    0.7997    0.3077
+    0.8285    0.2608
+    0.8505    0.1725
+    0.8621    0.0568
+    0.8616   -0.0680
+    0.8489   -0.1819
+    0.8261   -0.2670
+    0.7969   -0.3096
+    0.7659   -0.3031
+
+</pre><img vspace="5" hspace="5" src="Driver_01.png" alt=""> <img vspace="5" hspace="5" src="Driver_02.png" alt=""> <img vspace="5" hspace="5" src="Driver_03.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+clear;clc
+
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-PROBLEM 1REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n\n')
+I = 3.50017;
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHTrapezoidal RuleREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+TR_n1 = TrapezoidalRule(@func1, 0, 4, 1)
+TR_n1_error = abs((I-TR_n1)/I)
+TR_n2 = TrapezoidalRule(@func1, 0, 4, 2)
+TR_n2_error = abs((I-TR_n2)/I)
+TR_n4 = TrapezoidalRule(@func1, 0, 4, 4)
+TR_n4_error = abs((I-TR_n4)/I)
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHSimpsons 1/3 RuleREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+S13_n1 = Simpsons13(@func1, 0, 4, 2)
+S13_n1_error = abs((I-S13_n1)/I)
+S13_n4 = Simpsons13(@func1, 0, 4, 4)
+S13_n4_error = abs((I-S13_n4)/I)
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHSimpsons 3/8 RuleREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+S38_n1 = Simpsons38(@func1, 0, 4, 3)
+S33_n1_error = abs((I-S38_n1)/I)
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHTwo Point RuleREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+TP = TwoPointRule(@func1, 0, 4)
+TP_error = abs((I-TP)/I)
+
+fprintf('\n\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-PROBLEM 2REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n\n')
+i = 1;
+for t = 0:0.1:2
+    Vals(i,:) = ode(t);
+    time(i) = t;
+    i = i + 1;
+end
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Euler MethodREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+EulerValues_2s = EulerMethod(@ode, [pi/4, 0], 0, 2.1, 0.1)
+EulerValues_10s = EulerMethod(@ode, [pi/4, 0], 0, 10.1, 0.1)
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Heun MethodREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+HeunValues_2s = HeunMethod(@ode, [pi/4, 0], 0, 2.1, 0.1)
+HeunValues_10s = HeunMethod(@ode, [pi/4, 0], 0, 10.1, 0.1)
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH RK4 MethodREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n')
+RK4Values_2s = RK4Method(@ode, [pi/4, 0], 0, 2.1, 0.1)
+RK4Values_10s = RK4Method(@ode, [pi/4, 0], 0, 10.1, 0.1)
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-plotREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+figure(1)
+plot(time',Vals(:,1))
+hold all
+plot(time',EulerValues_2s(:,1))
+hold all
+plot(time',HeunValues_2s(:,1))
+hold all
+plot(time',RK4Values_2s(:,1))
+hold all
+legend('Analytic','Euler', 'Heun', 'RK4')
+
+hold all
+figure(2)
+plot(time',Vals(:,2))
+hold all
+plot(time',EulerValues_2s(:,2))
+hold all
+plot(time',HeunValues_2s(:,2))
+hold all
+plot(time',RK4Values_2s(:,2))
+hold all
+legend('Analytic','Euler', 'Heun', 'RK4')
+
+hold all
+figure(3)
+plot(EulerValues_10s(:,1),EulerValues_10s(:,2)) 
+hold all
+plot(HeunValues_10s(:,1),HeunValues_10s(:,2))
+hold all
+plot(RK4Values_10s(:,1),RK4Values_10s(:,2)) 
+hold all
+legend('Euler', 'Heun', 'RK4')
+
+##### SOURCE END #####
+--></body></html>
+<a name="EulerMethod"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>EulerMethod</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="EulerMethod.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ Values, t ] = EulerMethod( func, f0, t_init, t_fin, stepsize )
+<span class="comment">%EULERMETHOD Summary of this function goes here</span>
+<span class="comment">%   Detailed explanation goes here</span>
+
+t = [t_init:stepsize:t_fin]';
+Values = f0;
+steps = (t_fin-t_init)/stepsize;
+
+<span class="keyword">for</span> i = 1:steps-1
+    Values(i+1,:) = Values(i,:) + (stepsize*i)*func(t(i+1));
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="HeunMethod"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>HeunMethod</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="HeunMethod.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ Values, t ] = HeunMethod( func, f0, t_init, t_fin, stepsize )
+<span class="comment">%HEUNMETHOD Summary of this function goes here</span>
+<span class="comment">%   Detailed explanation goes here</span>
+
+t = [t_init:stepsize:t_fin]';
+Values = f0;
+steps = (t_fin-t_init)/stepsize;
+Values(2,:) = Values(1,:) + stepsize*func(t(2));
+
+<span class="keyword">for</span> i = 1:steps-1
+    j = i+1;
+    m = (stepsize*i)/2;
+
+    Values(j,:) = Values(1,:) + m*(func(t(i)) + func(t(j)));
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="RK4Method"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>RK4Method</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="RK4Method.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ Values, t ] = RK4Method( func, f0, t_init, t_fin, stepsize )
+<span class="comment">%RK4Method Summary of this function goes here</span>
+<span class="comment">%   Detailed explanation goes here</span>
+m = stepsize;
+t = [t_init:m:t_fin]';
+Values = f0;
+steps = (t_fin-t_init)/m;
+
+<span class="keyword">for</span> i = 1:steps-1
+    k1 = m*func(t(i));
+    k2 = m*func(t(i) + m/2);
+    k3 = m*func(t(i+1));
+
+    Values(i+1,:) = Values(1,:) + (k1+4*k2+k3)/6;
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="Simpsons13"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Simpsons13</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="Simpsons13.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ Sim13Value ] = Simpsons13( func, x1, x2, intervals )
+<span class="comment">%SIMPSONS13 Calculates the estimate of an integral using the</span>
+<span class="comment">% composite Simpson's 1/3 method with an even number of intervals.</span>
+
+<span class="comment">% INPUT DEFINITIONS:</span>
+<span class="comment">% func -&gt; takes in any function with one argument using a function handle</span>
+<span class="comment">% x1 -&gt; initial value of x</span>
+<span class="comment">% x2 -&gt; final value of x</span>
+<span class="comment">% intervals -&gt; number of intervals</span>
+
+<span class="comment">% Check if number of intervals is even</span>
+    <span class="keyword">if</span> mod(intervals,2) ~= 0
+        error(<span class="string">'Number of intervals must be even'</span>);
+    <span class="keyword">end</span>
+
+<span class="comment">% Initialize step size, inital/final value sum and odd/even sums</span>
+    h = (x2-x1)/intervals;
+    Sum0 = func(x1) + func(x2);
+    Sum1 = 0;
+    Sum2 = 0;
+<span class="comment">% Sum odd and even terms</span>
+    <span class="keyword">for</span> i = 1:intervals-1
+        x = x1 + i.*h;
+        <span class="comment">% Check if odd or even term</span>
+        <span class="keyword">if</span> mod(i,2) == 0
+            Sum1 = Sum1+2*func(x);
+        <span class="keyword">else</span>
+            Sum2 = Sum2+4*func(x);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="comment">% Calculate Integral Value</span>
+    Sim13Value = (h/3)*(Sum0 + Sum1 + Sum2);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="Simpsons38"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Simpsons38</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="Simpsons38.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ Sim38Val ] = Simpsons38( func, x1, x2, intervals )
+<span class="comment">%SIMPSONS38 Calculates the estimate of an integral using the</span>
+<span class="comment">% composite Simpson's 3/8 method with a mumber of intervals divisible by 3.</span>
+
+<span class="comment">%INPUT DEFINITIONS:</span>
+<span class="comment">% func -&gt; takes in any function with one argument using a function handle</span>
+<span class="comment">% x1 -&gt; initial value of x</span>
+<span class="comment">% x2 -&gt; final value of x</span>
+<span class="comment">% intervals -&gt; number of intervals</span>
+
+<span class="comment">% Check if number of intervals is divisible by 3</span>
+<span class="keyword">if</span> mod(intervals,3) ~= 0;
+    error(<span class="string">'Number of intervals must be divisible by 3!'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Initialize step size, inital/final value sum and 3*/2* sums</span>
+h = (x2-x1)/intervals;
+Sum1 = 0;
+Sum2 = 0;
+Sum = func(x1) + func(x2);
+
+<span class="comment">% Calculate sum of values multiplied by 3</span>
+<span class="comment">% n = 2,3,5,6....</span>
+<span class="keyword">for</span> i = 2:3:intervals-1
+    xa = x1 + i*h;
+    xb = x1 + (i+1) * h;
+    Sum1 = Sum1 + 3*(func(xa) + func(xb));
+<span class="keyword">end</span>
+
+<span class="comment">% Calculate sum of values multiplied by 2</span>
+<span class="comment">% n = 4,7,10...</span>
+<span class="keyword">for</span> i = 4:3:intervals-2
+    x = x1 + i*h;
+    Sum2 = Sum2 + 2*func(x);
+<span class="keyword">end</span>
+
+<span class="comment">% Calculate integral value</span>
+Sim38Val = (3*h/8)*(Sum + Sum1 + Sum2);
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="TrapezoidalRule"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TrapezoidalRule</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="TrapezoidalRule.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ TRValue ] = TrapezoidalRule( func, x1, x2, intervals )
+<span class="comment">%TRAPEZOIDALRULE Calculates the estimate of an integral using the</span>
+<span class="comment">% composite Trapezoidal Rule.</span>
+
+<span class="comment">%INPUT DEFINITIONS:</span>
+<span class="comment">% func -&gt; takes in any function with one argument using a function handle</span>
+<span class="comment">% x1 -&gt; initial value of x</span>
+<span class="comment">% x2 -&gt; final value of x</span>
+<span class="comment">% intervals -&gt; number of intervals</span>
+
+<span class="comment">% Initialize Sum and Step Size</span>
+TRSum = 0;
+h = (x2-x1)/intervals;
+
+<span class="comment">% Calculate Sum</span>
+<span class="keyword">for</span> i = 1:intervals-1
+    TRSum = TRSum + func(x1+i*h);
+<span class="keyword">end</span>
+
+<span class="comment">% Calculate integral value</span>
+TRValue = (h/2)*(func(x1) + 2*TRSum + func(x2));
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="TwoPointRule"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TwoPointRule</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="TwoPointRule.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ TwoPtVal ] = TwoPointRule( func, x1, x2 )
+<span class="comment">%TWOPOINTRULE calculates an integral value using a single application of</span>
+<span class="comment">% the Two Point Gaussian Quadrature</span>
+
+<span class="comment">%INPUT</span>
+<span class="comment">% func -&gt; Function handle for a function with one input argument</span>
+<span class="comment">% x1 -&gt; Initial value of x</span>
+<span class="comment">% x2 -&gt; Final value of x</span>
+
+<span class="comment">% Initialize step size, weight, and the two evaluation points</span>
+h = (x2-x1)/2;
+w = 1/sqrt(3);
+xa = (h * -w) + h;
+xb = (h*w) + h;
+
+<span class="comment">% Calculate Value of the function</span>
+TwoPtVal = h* (func(xa) + func(xb));
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="func1"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>func1</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="func1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ y ] = funcc( x )
+    <span class="comment">%FUNCTION Summary of this function goes here</span>
+    <span class="comment">%   Detailed explanation goes here</span>
+    y = (1 - exp(-2*x));
+
+    <span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="ode"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ode</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-03-30"><meta name="DC.source" content="ode.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ vals ] = ode( t )
+<span class="comment">%ODE Summary of this function goes here</span>
+<span class="comment">%   Detailed explanation goes here</span>
+vals = zeros(1,2);
+m = 32.2/2;
+theta = (pi/4)*cos((sqrt(m)*t));
+v = (-pi/4)*sqrt(m)*sin(sqrt(m)*t);
+
+vals(1,1) = theta;
+vals(1,2) = v;
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
