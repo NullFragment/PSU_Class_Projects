@@ -1,0 +1,406 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>driver</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-05-03"><meta name="DC.source" content="driver.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Plot Stream Functions</a></li><li><a href="#3">Plot Velocity and Pressure along body</a></li><li><a href="#4">Calculate Coefficients of Drag and Lift</a></li></ul><h2>Called Functions</h2><ul><li><a href="#drag">drag </a></li><li><a href="#lift">lift </a></li><li><a href="#rankine">rankine </a></li></ul></div><pre class="codeinput">clear;clc;
+</pre><h2>Plot Stream Functions<a name="2"></a></h2><pre class="codeinput"><span class="keyword">for</span> i = 1:4
+    rankine(i-1,1,1,i);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="driver_01.png" alt=""> <img vspace="5" hspace="5" src="driver_02.png" alt=""> <img vspace="5" hspace="5" src="driver_03.png" alt=""> <img vspace="5" hspace="5" src="driver_04.png" alt=""> <h2>Plot Velocity and Pressure along body<a name="3"></a></h2><pre class="codeinput">th = 0:pi/100:2*pi;
+X = meshgrid(sin(th));
+Y = meshgrid(cos(th));
+m = 5;
+<span class="keyword">for</span> K = 0:1
+    b = X.*0;
+    v = -2.*X + K;
+    p = 500*(1 - 4.*X^2 + 4*K.*X - K^2);
+    figure(m)
+    quiver(X,Y,v,b,2)
+    str = strcat(<span class="string">'Velocity, K = '</span>, num2str(K));    title(str)
+    m = m + 1;
+    figure(m)
+    quiver(X,Y,p,b,2)
+    m = m + 1;
+    str = strcat(<span class="string">'Pressure, K = '</span>, num2str(K));
+    title(str)
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="driver_05.png" alt=""> <img vspace="5" hspace="5" src="driver_06.png" alt=""> <img vspace="5" hspace="5" src="driver_07.png" alt=""> <img vspace="5" hspace="5" src="driver_08.png" alt=""> <h2>Calculate Coefficients of Drag and Lift<a name="4"></a></h2><pre class="codeinput"><span class="keyword">for</span> i = 0:1
+    D = @(theta) drag(theta, i);
+    L = @(theta) lift(theta, i);
+    Drag = -integral(D, 0, 2*pi);
+    Lift = -integral(L, 0, 2*pi);
+    M(i+1, 1) = i;
+    M(i+1, 2) = Lift/(0.5*1000*1*1*1*2);
+    M(i+1, 3) = Drag/(0.5*1000*1*1*1*2);
+<span class="keyword">end</span>
+M = dataset({M <span class="string">'K'</span> <span class="string">'Cl'</span> <span class="string">'Cd'</span>})
+</pre><pre class="codeoutput">
+M = 
+
+    K    Cl             Cd         
+    0    -2.1316e-17     2.2737e-16
+    1        -6.2832    -1.7053e-16
+
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+clear;clc;
+
+%% Plot Stream Functions
+for i = 1:4
+    rankine(i-1,1,1,i);
+end
+
+
+%% Plot Velocity and Pressure along body
+th = 0:pi/100:2*pi;
+X = meshgrid(sin(th));
+Y = meshgrid(cos(th));
+m = 5;
+for K = 0:1
+    b = X.*0;
+    v = -2.*X + K;
+    p = 500*(1 - 4.*X^2 + 4*K.*X - K^2);
+    figure(m)
+    quiver(X,Y,v,b,2)
+    str = strcat('Velocity, K = ', num2str(K));    title(str)
+    m = m + 1;
+    figure(m)
+    quiver(X,Y,p,b,2)
+    m = m + 1;
+    str = strcat('Pressure, K = ', num2str(K));
+    title(str)
+end
+
+
+
+%% Calculate Coefficients of Drag and Lift
+for i = 0:1
+    D = @(theta) drag(theta, i);
+    L = @(theta) lift(theta, i);
+    Drag = -integral(D, 0, 2*pi);
+    Lift = -integral(L, 0, 2*pi);
+    M(i+1, 1) = i;
+    M(i+1, 2) = Lift/(0.5*1000*1*1*1*2);
+    M(i+1, 3) = Drag/(0.5*1000*1*1*1*2);
+end 
+M = dataset({M 'K' 'Cl' 'Cd'})
+##### SOURCE END #####
+--></body></html>
+<a name="drag"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>drag</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-05-03"><meta name="DC.source" content="drag.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ D ] = drag( theta, K )
+P = 1/2*(1000)*(1-4*(sin(theta)).^2+4*K*sin(theta) - K^2);
+D = P.*cos(theta);
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="lift"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lift</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-05-03"><meta name="DC.source" content="lift.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [ L ] = lift( theta, K )
+P = 1/2*(1000)*(1-4*(sin(theta)).^2+4*K*sin(theta) - K^2);
+L = P.*sin(theta);
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
+<a name="rankine"></a>
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>rankine</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-05-03"><meta name="DC.source" content="rankine.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">creates a potential Flow Field for various functions</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [  ] = rankine( K, Uinf, RG, n )
+</pre><h2>creates a potential Flow Field for various functions<a name="2"></a></h2><pre class="codeinput"><span class="comment">%plotting limits</span>
+xmin=6;xmax=-xmin;dx=(xmax-xmin)/200;
+<span class="comment">%create domain of interest (Cart)</span>
+[X,Y]=meshgrid(xmin:dx:xmax);
+<span class="comment">%Polar Coordinates</span>
+R=sqrt(X.^2+Y.^2);
+TH=atan2M(Y,X);
+
+<span class="comment">%velocity Field initialization</span>
+u=0*R;
+v=0*R;
+
+<span class="comment">%setup plotting</span>
+numContour=20; <span class="comment">%number of contours</span>
+figure(n); clf(n); <span class="comment">%be sure to start with a clean figure</span>
+
+EPS=1.e-5; <span class="comment">% this removes log(0) issues</span>
+
+<span class="comment">%Fluid properties</span>
+pinf=1e5; <span class="comment">%Pa</span>
+rhoinf= 1; <span class="comment">%kg/m^3</span>
+
+
+<span class="comment">%%%Lets start adding components</span>
+
+<span class="comment">%Uniform flow (adjust Uinf to modify strength)</span>
+alpha= 0; <span class="comment">%incidence angle in rad</span>
+PHI = Uinf*(Y*cos(alpha)+X*sin(alpha));
+PSI = Uinf*(X*cos(alpha)-Y*sin(alpha));
+u=Uinf*cos(alpha);
+v=Uinf*sin(alpha);
+
+<span class="comment">% Doublet</span>
+X0=0;
+Y0=.0;
+THS=atan2M((Y-Y0),(X-X0));
+RS=sqrt((X-X0).^2+(Y-Y0).^2+EPS);
+lambda = Uinf*RG^2;
+PHI = PHI - (lambda.*sin(THS))./RS;
+PSI = PSI + (lambda.*cos(THS))./RS;
+u = u + (lambda .* cos(2.*THS)./RS);
+v = v - (lambda .* sin(2.*THS)./RS);
+
+<span class="comment">%vortex (adjust K to modify strength)s</span>
+X0=0;
+Y0=.0;
+THS=atan2M((Y-Y0),(X-X0));
+RS=sqrt((X-X0).^2+(Y-Y0).^2+EPS);
+PHI = -K*log(RS) + PHI;
+PSI = K*THS + PSI;
+u=u+K*sin(THS)./RS;
+v=v+K*cos(THS)./RS;
+
+
+<span class="comment">%Bernoulli Eqn</span>
+Vmag=sqrt(u.^2+v.^2); <span class="comment">%calculate velocity magnitude</span>
+Vmag=min(Vmag,1.64*Uinf); <span class="comment">%limit to realistic values, eliminates peaks inside body</span>
+p=0.5*rhoinf*(Uinf^2-Vmag.^2); <span class="comment">%apply Bernoulli to get pressure field</span>
+
+<span class="comment">%Plot %</span>
+CS=contourf(X,Y,Vmag,numContour*2,<span class="string">':'</span>,<span class="string">'LineWidth'</span>,0.01); <span class="comment">%filled contour of Vel Mag%CS=contourf(X,Y,p,numContour*2,':','LineWidth',0.01); %filled contour of pressure</span>
+
+hold <span class="string">on</span>
+CS=contour(X,Y,PHI,numContour,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,2);
+<span class="comment">%CS=contour(X,Y,PSI,numContour,'--b','LineWidth',2);</span>
+xlabel(<span class="string">'X-direction'</span>)
+ylabel(<span class="string">'Y-direction'</span>)
+hold <span class="string">off</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+\n
+--></body></html>
