@@ -43,7 +43,7 @@ int main()
 	outfile.open("finaltask.txt");
 	time_t current_Time = time(0);
 	const int elements = 14;
-	int a, b, cycles = 0;
+	int a, b, cycles, loops = 0;
 	std::vector<int> list;
 	std::vector<std::vector<int>> permutations = {};
 	std::vector<int> shortestDistance = {};
@@ -85,7 +85,7 @@ int main()
 	}
 
 	std::random_shuffle(list.begin(), list.end());
-	std::cout << "Choose a reasonable value (under 50,000). 100,000 will take approximately an hour to run." << std::endl  << "Enter Number of Paths to Find: ";
+	std::cout << "Choose a reasonable value (under 10,000). 10,000 will take approximately an hour to run." << std::endl  << "Enter Number of Paths to Find: ";
 	std::cin >> cycles;
 	
 	std::cout << "Start Time: " << ctime(&current_Time);
@@ -93,7 +93,9 @@ int main()
 
 	for (int i = 0; i < cycles; i++)
 	{
-		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end())
+		std::cout << "Cycle: " << i+1 << std::endl;
+		loops = 0;
+		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end() || loops >= 100)
 		{
 			std::random_shuffle(list.begin(), list.end());
 		}
