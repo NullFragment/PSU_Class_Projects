@@ -39,12 +39,13 @@ void PrintPath(std::vector<int> path, int length, bool shortest, std::ofstream &
 
 int main()
 {
-	std::ofstream permutations;
-	permutations.open("finaltask.txt");
+	std::ofstream outfile;
+	outfile.open("finaltask.txt");
 	time_t current_Time = time(0);
 	const int elements = 14;
-	int a, b = 0;
+	int a, b, cycles = 0;
 	std::vector<int> list;
+	std::vector<std::vector<int>> permutations = {};
 	std::vector<int> shortestDistance = {};
 	std::vector<int> longestDistance = {};
 
@@ -83,43 +84,55 @@ int main()
 		list.push_back(i);
 	}
 
-	std::sort(list.begin(), list.end());
-
+	std::random_shuffle(list.begin(), list.end());
+	std::cout << "Choose a reasonable value (under 50,000). 100,000 will take approximately an hour to run." << std::endl  << "Enter Number of Paths to Find: ";
+	std::cin >> cycles;
+	
 	std::cout << "Start Time: " << ctime(&current_Time);
-	permutations << "Start Time: " << ctime(&current_Time);
-	do
+	outfile << "Start Time: " << ctime(&current_Time);
+
+	for (int i = 0; i < cycles; i++)
+	{
+		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end())
+		{
+			std::random_shuffle(list.begin(), list.end());
+		}
+		permutations.push_back(list);
+	}
+
+	for each (std::vector<int> currentList in permutations)
 	{
 		int newDistance = 0;
 		for (int i = 1; i < elements; i++)
 		{
-			a = list[i-1] - 1;
-			b = list[i] - 1;
+			a = currentList[i-1] - 1;
+			b = currentList[i] - 1;
 			newDistance = newDistance + weights[a][b];
 		}
-
+		
 		if (shortestDistance.empty())
 		{
 			shortestDistance.push_back(newDistance);
-			PrintPath(list, newDistance, true, permutations);
+			PrintPath(currentList, newDistance, true, outfile);
 		}
 		else if (newDistance < shortestDistance.back())
 		{
 			shortestDistance.push_back(newDistance);
-			PrintPath(list, newDistance, true, permutations);
+			PrintPath(currentList, newDistance, true, outfile);
 		}
 
 		if (longestDistance.empty())
 		{
 			longestDistance.push_back(newDistance);
-			PrintPath(list, newDistance, false, permutations);
+			PrintPath(currentList, newDistance, false, outfile);
 
 		}
 		else if (newDistance > longestDistance.back())
 		{
 			longestDistance.push_back(newDistance);
-			PrintPath(list, newDistance, false, permutations);
+			PrintPath(currentList, newDistance, false, outfile);
 		}
-	} while (std::next_permutation(list.begin(), list.end()));
+	}
 	current_Time = time(0);
 	std::cout << "End Time: " << ctime(&current_Time) << std::endl;
 	system("pause");
