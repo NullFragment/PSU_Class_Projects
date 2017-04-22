@@ -66,5 +66,5 @@ E_SC_407H/HW5/html/* linguist-vendored
 E_SC_407H/HW6/html/* linguist-vendored
 E_SC_407H/HW7/html/* linguist-vendored
 AERSP_308H/html/* linguist-vendored
-CMPSC_360/00_Documents/* linguist-documentation
+CMPSC_360/00_Documents/ExampleCode linguist-vendored
 *.html linguist-vendored
