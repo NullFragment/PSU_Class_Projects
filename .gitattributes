@@ -61,3 +61,10 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+E_SC_407H/HW5/html/* linguist-vendored
+E_SC_407H/HW6/html/* linguist-vendored
+E_SC_407H/HW7/html/* linguist-vendored
+AERSP_308H/html/* linguist-vendored
+CMPSC_360/00_Documents/* linguist-documentation
+*.html linguist-vendored
