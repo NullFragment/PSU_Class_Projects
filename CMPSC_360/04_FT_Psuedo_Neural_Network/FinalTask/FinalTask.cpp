@@ -136,6 +136,7 @@ int main()
 		}
 	}
 	current_Time = time(0);
+	outfile <<"End Time: " << ctime(&current_Time) << std::endl;
 	std::cout << "End Time: " << ctime(&current_Time) << std::endl;
 	system("pause");
 
