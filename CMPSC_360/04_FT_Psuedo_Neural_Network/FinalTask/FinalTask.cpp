@@ -95,9 +95,10 @@ int main()
 	{
 		std::cout << "Cycle: " << i+1 << std::endl;
 		loops = 0;
-		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end() || loops >= 100)
+		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end() && loops <= 100)
 		{
 			std::random_shuffle(list.begin(), list.end());
+			loops++;
 		}
 		permutations.push_back(list);
 	}

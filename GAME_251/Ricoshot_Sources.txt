@@ -1,0 +1,3 @@
+Green and Silver floor sprites were made by sgtcrispy: https://opengameart.org/content/colored-metal-tiles-1b
+Wall, gate and 45 degree angle sprites were made by adythewolf: https://opengameart.org/content/sci-fi-top-down-tileset-unfinished-cursors
+Bullet and key-card sprites were made by me using Piskel: http://www.piskelapp.com/
