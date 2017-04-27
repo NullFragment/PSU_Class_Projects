@@ -8,8 +8,6 @@
 #include <vector>
 #include <ctime>
 
-
-
 void PrintPath(std::vector<int> path, int length, bool shortest, std::ofstream &output)
 {
 	int loop = 0;
@@ -33,9 +31,6 @@ void PrintPath(std::vector<int> path, int length, bool shortest, std::ofstream &
 	}
 	output << std::endl;
 }
-
-
-
 
 int main()
 {
@@ -93,7 +88,7 @@ int main()
 
 	for (int i = 0; i < cycles; i++)
 	{
-		std::cout << "Cycle: " << i+1 << std::endl;
+		//std::cout << "Cycle: " << i+1 << std::endl;
 		loops = 0;
 		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end() && loops <= 100)
 		{
@@ -143,5 +138,3 @@ int main()
 
 	return 0;
 }
-
-

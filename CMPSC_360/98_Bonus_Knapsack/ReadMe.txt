@@ -1,27 +1,27 @@
 ========================================================================
-    CONSOLE APPLICATION : Bounty2-Dijkstra Project Overview
+    CONSOLE APPLICATION : 98_Bonus_Knapsack Project Overview
 ========================================================================
 
-AppWizard has created this Bounty2-Dijkstra application for you.
+AppWizard has created this 98_Bonus_Knapsack application for you.
 
 This file contains a summary of what you will find in each of the files that
-make up your Bounty2-Dijkstra application.
+make up your 98_Bonus_Knapsack application.
 
 
-Bounty2-Dijkstra.vcxproj
+98_Bonus_Knapsack.vcxproj
     This is the main project file for VC++ projects generated using an Application Wizard.
     It contains information about the version of Visual C++ that generated the file, and
     information about the platforms, configurations, and project features selected with the
     Application Wizard.
 
-Bounty2-Dijkstra.vcxproj.filters
+98_Bonus_Knapsack.vcxproj.filters
     This is the filters file for VC++ projects generated using an Application Wizard. 
     It contains information about the association between the files in your project 
     and the filters. This association is used in the IDE to show grouping of files with
     similar extensions under a specific node (for e.g. ".cpp" files are associated with the
     "Source Files" filter).
 
-Bounty2-Dijkstra.cpp
+98_Bonus_Knapsack.cpp
     This is the main application source file.
 
 /////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ Other standard files:
 
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
-    named Bounty2-Dijkstra.pch and a precompiled types file named StdAfx.obj.
+    named 98_Bonus_Knapsack.pch and a precompiled types file named StdAfx.obj.
 
 /////////////////////////////////////////////////////////////////////////////
 Other notes:
