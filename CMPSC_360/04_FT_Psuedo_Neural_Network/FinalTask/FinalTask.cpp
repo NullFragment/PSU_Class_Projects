@@ -13,11 +13,11 @@ void PrintPath(std::vector<int> path, int length, bool shortest, std::ofstream &
 	int loop = 0;
 	if (shortest == true)
 	{
-		output << "New Shortest Distance: " << length << " Path: ";
+		output << "New Shortest Distance:" << '\t' << length << '\t' << " Path: " << '\t';
 	}
 	else if (shortest == false)
 	{
-		output << "New Longest Distance: " << length << " Path: ";
+		output << "New Longest Distance:" << '\t' << length << '\t' << " Path: " << '\t';
 	}
 
 	for each (int i in path)
@@ -37,14 +37,14 @@ int main()
 	std::ofstream outfile;
 	outfile.open("finaltask.txt");
 	time_t current_Time = time(0);
-	const int elements = 14;
+	const int elements = 4;
 	int a, b, cycles, loops = 0;
 	std::vector<int> list;
 	std::vector<std::vector<int>> permutations = {};
 	std::vector<int> shortestDistance = {};
 	std::vector<int> longestDistance = {};
 
-	/*
+	
 	int weights[elements][elements] = 
 	{
 		{0, 432, 1436, 2509},
@@ -52,8 +52,8 @@ int main()
 		{ 1436,1779,0,1317 },
 		{ 2509,2852,1317,0 }
 	};
-	*/
 	
+	/*
 	int weights[elements][elements] =
 	{
 		{0, 13, 12, 3, 6, 5, 5, 5, 3, 1, 12, 7, 7, 3},
@@ -72,7 +72,7 @@ int main()
 		{ 3,9,3,4,5,2,4,3,4,2,11,5,3,0 }
 
 	};
-	
+	*/
 
 	for (int i = 1; i <= elements; i++)
 	{
@@ -88,7 +88,10 @@ int main()
 
 	for (int i = 0; i < cycles; i++)
 	{
-		//std::cout << "Cycle: " << i+1 << std::endl;
+		if ((i+1)% 100 == 0)
+		{
+			std::cout << "Cycle: " << i+1 << std::endl;
+		}
 		loops = 0;
 		while (std::find(permutations.begin(), permutations.end(), list) != permutations.end() && loops <= 100)
 		{
