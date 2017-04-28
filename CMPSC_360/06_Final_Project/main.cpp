@@ -6,7 +6,6 @@
 //  Copyright © 2017 Michael DeLeo. All rights reserved.
 //
 
-#include "stdafx.h"
 #include "board.h"
 
 
@@ -31,7 +30,8 @@ int main()
     
     if (result)
     {
-        
+        std::cout << "Protaganist wins!" << std::endl;
+        new_board.printBoard();
     }
     
     else

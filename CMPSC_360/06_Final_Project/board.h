@@ -6,9 +6,6 @@
 //  Copyright © 2017 Michael DeLeo. All rights reserved.
 //
 
-#include "stdafx.h"
-
-
 #ifndef board_h
 #define board_h
 
@@ -20,7 +17,6 @@
 #include <iterator>
 #include <cmath>
 #include <map>
-
 
 class object
 {
@@ -84,7 +80,7 @@ private:
     //Precondition:: character and searching varaibles, same as pathfinder. size (x,y), and the array
     //Postcondition: resizes the array until it finds the closest 'searching'
     
-    std::string ** shrink(std::string searching, std::string character, std::pair<int,int> size, std::pair<std::pair<int,int>,std::pair<int,int> > bc, std::string ** set);
+    std::string ** shrink(std::string searching, std::pair<int,int> size, std::pair<std::pair<int,int>,std::pair<int,int> > bc, std::string ** set);
     //Precondition: character and searching varaibles, same as pathfinder. size(x,y), and the array
     //Postcondition: shrinks the array until it is 3x3 with a pseudo 'searhing'
     std::string bunny;
@@ -110,6 +106,8 @@ private:
     std::string board[5][5];
     //R: Robot | G: Gold | B: Bomb | X: nothing
     
+    template <typename Iterator>
+    inline bool next_combination(const Iterator first, Iterator k, const Iterator last);
 };
 
 #endif /* board_h */
