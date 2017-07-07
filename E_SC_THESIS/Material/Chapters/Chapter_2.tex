@@ -1,0 +1,169 @@
+\chapter{Literature Review}
+%-------------------------------------------------------------------------
+\section{Background of Additive Manufacturing}
+\subsection{Types of 3D Printers}
+	There exist many types of additive manufacturing devices that exist \citep{Gross2014, Savini2015}. Today, when one thinks of a 3D printer, the archetype of Fused Deposition Modeling (FDM) type comes to mind. This is due to the popularity of FDM printers with mainstream culture because the ease of access to these printers and their relatively affordable prices compared to other 3D printing devices \citep{Gross2014, Savini2015}. However, the idea of additive manufacturing dates back to the 1970s where patents were first filed for ideas of AM techniques \citep{Savini2015}.\par
+		The first instance of additive manufacturing, or 3D Printing, was the creation of a small cup using Stereolithography (STL) and was invented by Charles Hull in August of 1984 \citep{Savini2015}. Hull developed the method of additive manufacturing (AM) by using a laser to heat a base located in a resin bath in order to harden and fuse the resin into a solid shape, the bed would then lower and the process would start again until the final object was created \citep{Gross2014}. Along with taking a matter of months to make a 5cm tall cup \citep{Savini2015}, another drawback of this --- and many other --- AM method is the limited height of a print \citep{Gross2014}. This was overcome by creating STL manufacturers that held the bed above the resin bath in order to increase print volume significantly \citep{Gross2014}.\par
+		Another early method of additive manufacturing was also developed in the late 1980s called Laminated Object Manufacturing (LOM) \citep{Savini2015}. This technique of 3D printing consists of cutting cross-sectional layers of a material, usually with a laser, and laminating the layers together \citep{Savini2015}.\par
+		In 1989, a technology using the same Inkjet principles already used by 2D printers was developed and trademarked by MIT and the term "3D Printing" was finally coined \citep{Savini2015}. During the process of Inkjet AM the device lays a level bed of powder and then passes over it either depositing a binding liquid that solidifies the particles into a layer or uses a laser to melt the particles into a cross-section; the bed then lowers and starts the process over again until the object is built \citep{Gross2014}. Also, in 1989, Selective Laser Sintering was developed, which is a technique similar to the inkjet printing where a laser is used to harden powdered material into a layer of an object \citep{Savini2015}.\par
+		Returning to what people commonly think of when they hear the term "3D Printer," Fused Deposition Modeling was also developed in the late 80s. The process of building an object with this method starts by melting a filament (usually a thermoplastic) and extruding it onto a base, layer by layer, until the object is formed \citep{Savini2015}. FDM printers would go on to facilitate the creation of two major projects run by universities and jump start their popularity. In 2005, the Replicating Rapid Prototyper --- or Rep Rap --- project was started by A. Bowyer, a professor at the University of Bath \citep{Savini2015}. The RepRap printers were designed using Open Source hardware such as Arduino micro-controllers and software, with the idea of being able to 'replicate' themselves by printing as many parts of themselves as possible \citep{Savini2015}. The Hammond Engineering Building at Penn State University Park has its own 3D Printing lab that is mostly powered by Rep Rap printers. The second project was started by Cornell in 2006 and was dubbed Fab@Home \citep{Savini2015}.\par
+		Since the 1980s, there have been over 20,000 patents filed related to additive manufacturing techniques \citep{Savini2015}. Today, common desktop 3D printers such as the Ultimaker 2+, Witbox 2, and Lulzbot TAZ 6, amongst others, can print filaments containing metals, carbon fiber and even wood. However, Hull's Stereolithography development brought with it the gold standard for the files that nearly all additive manufacturers use even to this day, the .STL format, which stands for Standard Tessellation Language \citep{Gross2014}. These files contain the information of an object designed with 3D CAD software, broken down into triangles; to use these files with a 3D printer, they must first be interpreted by a slicing program that 'slices' the object into layers and produces an output file that can be read as instructions by the 3D printer, usually a .gcode file \citep{Savini2015, Gross2014}.
+
+%-------------------------------------------------------------------------
+\subsection{Difficulties of Extrusion Printing}	
+	There are, however, downsides to printing using filament extrusion printers. Some types of plastic, such as ABS, require the use of a heated bed in order to help prevent the structure from warping and lifting. Another point of failure is first layer adhesion. If the first layer would lift from the printing base for some reason, that could cause the entire print to become offset or warped.Most printers are also unable to print objects with large gaps or 90 degree bends without a supporting structure, creating waste and possible defect sites during removal.\par
+	Internal stress is another risk of FDM methods for 3D printing. During the process of printing, as a layer cools, it has the potential to shrink and induce a small amount of internal stress is that can build up over time. This can lead to warped structures, failed prints and even points of catastrophic failure if the print orientation is parallel to the direction that external forces are applied to the object.\par
+	The layering of material is also important to us in our exploration of the mechanical properties of rapid prototyped structures. The layering creates many points of failure on the structure when faced with forces parallel to the direction of layering. The layers will, for lack of a better term, delaminate and fail at much lower forces than if they were exerted perpendicular to the layering. Transverse shear stress is another point of consideration when studying the layered structures.\par
+
+%-------------------------------------------------------------------------
+\subsection{Uses of 3D Printers}
+	Additive Manufacturing has applications in nearly every market space that consists of physical goods. According to Savini, additive manufacturing is already used regularly in the aircraft, automobile, electronics, robotics, tool, toy, jewelry, food, prosthetic and tissue engineering industries \citep{Savini2015}. Gross, et al. go into detail on industry uses of 3D Printing regarding electronics and bioengineering. There is currently ongoing research and development in printing bone and dental structures, as well as scaffolds for organ and vascular tissue \citep{Gross2014}.\par
+	Of particular interest to bioengineering tissue are the properties of bioresorption --- the capability of the body to absorb a substance --- and biocompatibility, whether or not the body will accept or reject the object \citep{Gross2014}.\par
+On the topic of biocompatibility, Gross, et al. reported that tissue scaffolds made from tissue that was sourced from the person had a higher acceptance rate by the body than a foreign implant \citep{Gross2014}. The porosity and biodegradability of printed bone grafts is also an interesting area of research as adhesion to current bone structures is dependent on the ability of the natural bone to adhere to the printed graft by growing into and/or through the pores \citep{Gross2014}. Another use of 3D printing in the medical field is to gain insight into the patient's anatomy before surgery that may not have been apparent from MRI or x-ray imaging by reconstructing the anatomy in a physical object \citep{Gross2014}. Surgeries ave also been simulated using this method \citep{Gross2014}.\par
+	In the field of electronics, both lithium ion batteries and conductive copper have been fabricated using additive manufacturing, allowing the creation of PCBs using simpler fabrication methods \citep{Gross2014}. Even apparel companies are entering the market using additive manufacturing techniques to create customized products \citep{Weller2015}. This leads into the ways that 3D printing is disruptive to current market structures and how the mass adoption of 3D printing could affect the economic climates.\par
+
+%-------------------------------------------------------------------------
+\section{Economic Impacts}
+	The introduction of additive manufacturing to markets could potentially to cause significant changes in the ways consumers perceive, consume, develop and even produce goods. Firms that employ additive manufacturing methods have the potential benefits of increasing their share(s) of their current market(s) as well as the potential to enter other markets with little to no extra costs \citep{Weller2015, Rayna2016}. This section will provide an insight into the potential economic impacts of widespread additive manufacturing being employed into the current market. According to Weller, et al. there are four main markets that appeal to additive manufacturing: "small production output, high product complexity, high demand for product customization, and spatially remote demand for products" \citep{Weller2015}.
+
+%-------------------------------------------------------------------------
+\subsection{Market Entry, Expansion, and Disruption}
+	Additive manufacturing provides a unique advantage of being a relatively low-cost market entry method due to the fact that, excluding the 3D printing devices themselves, a company does not need to invest in tools or costly molds for mass production \citep{Weller2015, Rayna2016}. Another major benefit of businesses employing additive manufacturing is that there is no up-front costs for production runs or storage (other than the material for production), allowing the company to focus their assets on other aspects of the business such as advertising and product development \citep{Rayna2016}. Then, when a firm finally receives orders, they can print and ship the products on demand to the consumer \citep{Rayna2016}. This allows small firms and start-ups to potentially enter markets that were once out of reach due to the high cost of starting production using current mass production methods \citep{Rayna2016}.\par
+	The increase in market competition and the low cost of production for small batches of products allows the new firms to potentially disrupt the current markets and drive down the cost of currently existing products and benefit consumers \citep{Weller2015, Rayna2016}. in an example given by Rayna, et al. additive manufacturing methods allowed a business to significantly cut production time and cost of pump castings for U.S. nuclear submarines \citep{Rayna2016}. In reality there is still a place for traditional manufacturing methods. Small economies of scale allow firms to thrive using additive manufacturing, however at this point, methods like injection molding are still significantly less expensive for large production volume \citep{Weller2015}.
+
+%-------------------------------------------------------------------------
+\subsection{Product Development}
+	The first significant, and potentially obvious, advantage of additive manufacturing in consumer product offerings is the ability of a firm to provide highly customized products at little to no cost to the firm and without the need to purchase new molds or tools for new products as with traditional manufacturing methods \citep{Weller2015, Rayna2016}. Markets that demand similar, yet unique products benefit from additive manufacturing because there is no cost in changing what is being produced as the only difference is using a different CAD file \citep{Weller2015, Rayna2016}. Lead times are also significantly reduced for custom small batch or single run production due to the flexibility of the additive manufacturing systems \citep{Weller2015, Rayna2016}. In essence, as put by Weller, additive manufacturing enables product "flexibility and customization for free" \citep{Weller2015}. These customization methods using 3D printing techniques have already been employed by Nike in 2013 by offering customized football cleats \citep{Weller2015}. These customized products could potentially lead to the ability for the firm to make a larger profit due to the perceived worth of a personalized product being higher than a mass produced one \citep{Weller2015}.\par
+	Rapid prototyping also allows firms to increase their market share by significantly reducing the time it takes to go from concept to production \citep{Weller2015, Rayna2016}. The use of rapid prototyping enables firms to create new product iterations with minimal costs \citep{Weller2015}. However, product prototyping is not limited to any specific industry. The flexibility of additive manufacturing allows companies to acquire competencies in markets that they were previously unable to access, tying back to the ability of AM to allow low market entry costs \citep{Rayna2016}. Along with rapid prototyping, rapid tooling is another very useful tool for companies. Rapid tooling allows the company to make customized "tools, jigs, hardware and molds" for their products and increase production by having the exact tools they need \citep{Rayna2016}.\par
+	A third major advantage of 3D printing technologies is the ability to create very complex products with no special tools or equipment \citep{Weller2015}. This ability to build complex structures that would normally require a significant amount of money invested in special tools or paying someone to manually manufacture is provided, essentially, for the same cost of producing a very simple object \citep{Weller2015}. Along the same lines of cost savings, multi-part products could potentially be built fully or partially assembled using AM in order to cut costs on paying workers for assembly \citep{Weller2015}. The free complexity and potential one-step production are both appealing to new entrants to market and current firms alike.
+
+%-------------------------------------------------------------------------
+\subsection{Crowdsourced Economy}
+	3D Printing also has a history of crowdsourcing for innovation and development \citep{Rayna2016}. There are many outlets for individuals to provide or procure 3D printing services either from a company or another individual that owns a 3D printing device \citep{Rayna2015}. The first of these was Ponoko, followed shortly by Shapeways and Thingiverse \citep{Rayna2015}. This crowdsourced market allows the potential for companies to create print-at-home, or home fabricated, products much like tickets used by the transport and entertainment industries \citep{Rayna2015}. Additive manufacturing platforms also enable consumers to insert themselves at any stage of the production process from concept, to design, and now finally production \citep{Rayna2015}. The hope of these platforms and the interaction between consumers and industries is to enable more innovation by allowing individuals to creatively come up with solutions to issues with products, ultimately creating competition within the market \citep{Rayna2015, Rayna2016}.
+
+%-------------------------------------------------------------------------	
+\section{Prior Mechanical Testing on 3D Printed Objects}
+%-------------------------------------------------------------------------
+\subsection{Fused Deposition Modeling}
+	As Fused Deposition Modeling (FDM) is one of the most common types of 3D printing methods use, nearly every 'personal' 3D printer that can be found on the market for $\approx \$2500$ or less are FDM printers. While it is possible to get high quality parts from these machines, it is not without effort as many defects appear in prints from voids, delamination, and deformation to under-extrusion, mis- or over-stepping of the stepper motors and electronic failures. The quality of prints significantly depends on the type of stepper motors used, the thread pitch of the threaded rods, and the stepper motor controller as these components determine how far the printer head or bed moves with one step. Although not covered in this thesis, one observation during the printing of the test specimens used was the consistency of the quality of prints due to user error and/or power failure.
+
+%-------------------------------------------------------------------------
+\subsubsection{ABS}
+	Testing on ABS was relatively more prevalent than PLA, and more data could be found on the subject. Both Novakova-Marcincinova and Perez noted that they followed ISO and ASTM standards, respectively: Novakova-Marcincinova, et al. followed EN ISO 527-1 and 527-2 for Plastics Testing Methods, while Perez, et al. followed ASTM D638 and used Type V test specimens \citep{Novakova-Marcincinova2013, TorradoPerez2014}. Wendt posed concerns with the currently available standards as they do not account for the anisotropy and/or heterogeneity imposed by additive manufacturing and proposes that a better standard be developed \citep{Wendt2015}.\par
+	Ahn reported that due to the nature of how FDM parts are constructed, they show anisotropic behavior of their modulus in perpendicular axes, which is intuitively predictable \citep{Ahn2003}. Perez also stated that this was one of the major flaws of Additive Manufacturing \citep{TorradoPerez2014}. During testing, Ahn discovered that the printing raster angle and air gaps between filament layers had the most significant impact on an objects strength \citep{Ahn2003}. Ahn's team printed specimens that had layers printed purely parallel, purely perpendicular, at 45\degree alternating 90\degree between layers, and 90 degrees alternating between layers \citep{Ahn2003}. When performing tensile tests they noticed that the specimens printed with 45\degree angles sheared along a 45\degree angled plane with respect to the loading direction while the parallel and perpendicular layers failed perpendicular to loading direction \citep{Ahn2003}. The model that Ahn came up with during their investigation could predict the behavior of samples fairly well \citep{Ahn2003}. The following table summarizes the mechanical properties of Ahn, et al.'s specimens.
+
+	\begin{table} [h]
+		\centering
+		\begin{tabularx}{\textwidth}{| X | l | X | l |}
+		\noalign{\hrule height 2pt}
+    		\multicolumn{4}{|c|}{\textbf{Mechanical Properties of Ahn's ABS Specimens}}\\ \hline
+		Longitudinal Strength & 22.1 MPa & Longitudinal Modulus & 25.1 GPa\\ 
+		Transverse Strength & 14.4 MPa & Transverse Modulus & 9.49 GPa\\ 
+		Shear Strength & 10 MPa & Shear Modulus & 1.41 GPa\\ 
+		Poisson's Ratio & 0.367 & &\\ \hline
+		\end{tabularx}
+		\caption{ABS Specimen Mechanical Properties from Ahn \citep{Ahn2003}}
+		\label{tab:AhnABS}
+	\end{table}
+	\par
+	Perez's group also performed similar testing on Type V ASTM D638 tensile specimens, as stated before \citep{TorradoPerez2014}. A few more details were provided by Perez, such as the speed at which the tests were performed: 10 mm/min and the values were based on a 5 sample average \citep{TorradoPerez2014}. Perez also investigated the effects of print layer orientation on ABS pieces, printing samples with layers perpendicular to the load direction and parallel to the loading direction \citep{TorradoPerez2014}. The horizontally printed specimens were closer in material properties to the specimens created by Ahn, while the vertically printed specimens --- the ones with layers perpendicular to the loading direction --- were significantly weaker, with nearly half of the strength of the horizontally printed specimens \citep{TorradoPerez2014}. The data provided by Perez follows.
+	
+	\begin{table} [h]
+		\centering
+		\begin{tabularx}{\textwidth}{| l | l | X | }
+		\noalign{\hrule height 2pt}
+    		\multicolumn{3}{|c|}{\textbf{Mechanical Properties of Perez's ABS Specimens}}\\ \hline
+		Parameter & Longitudinal & Transverse \\ \hline
+		Strength & 28.4 MPa & 14.1 MPa \\
+		Modulus & 1530 MPa & 1190 MPa \\
+		Elongation & 4.5\% & 1.5\% \\ \hline
+		\end{tabularx}
+		\caption{ABS Specimen Mechanical Properties from Perez \citep{TorradoPerez2014}}
+		\label{tab:PerezABS}
+	\end{table}
+
+%-------------------------------------------------------------------------
+\subsubsection{PLA}
+	ABS is usually preferred over PLA in manufacturing settings due to the brittleness of PLA. Wendt, et al. investigated the mechanical properties of PLA printed objects in 2015 and provided useful data for comparison. Wendt noted that most failures were due to manufacturing defects in the tested samples \citep{Wendt2015}. Suggestions were given on how to avoid common defects: gas bubbles were found less commonly when the extrusion temperatures were reduced and out of plane distortions were easier to control when the print bed was properly leveled \citep{Wendt2015}. Another suggestion for avoiding out of printing plane distortions was to design the path that the extrusion would follow to facilitate heat dissipation \citep{Wendt2015}. Along with testing their test specimens Wendt, et al. tested the raw PLA filament and the following results were found.
+	
+	\begin{table} [h]
+		\centering
+		\begin{tabularx}{\textwidth}{| X | X |}
+		\noalign{\hrule height 2pt}
+    		\multicolumn{2}{|c|}{\textbf{Mechanical Properties of PLA Filament}}\\ \hline
+		Testing Stress & 8 -- 13 MPa \\ 
+		Modulus of Elasticity & 1775 -- 2392 MPa\\
+		Tensile Strength & 43 $\pm$ 2 MPa\\ \hline
+		\end{tabularx}
+		\caption{PLA Filament Mechanical Properties from Wendt \citep{Wendt2015}}
+		\label{tab:WendtPLAF}
+	\end{table}
+	\par
+	Wendt stated that the thickness of the printed specimens varied from the specified values significantly \citep{Wendt2015}. Table \ref{tab:WendtPLAS} references data taken from Wendt's study with the Applied Stress adapted from applied force \citep{Wendt2015}.
+	
+	\begin{table} [h]
+		\centering
+		\begin{tabularx}{\textwidth}{| X | X | X |}
+		\noalign{\hrule height 2pt}
+    		\multicolumn{3}{|c|}{\textbf{Mechanical Properties of PLA Specimens}}\\ \hline
+		Applied Stress & 69.0 -- 70.9 MPa & 69.8 MPa avg.\\ 
+		Modulus of Elasticity & 2086 -- 2249 MPa & 2159 MPa avg.\\
+		Tensile Strength & 42.9 -- 44.1 MPa & 43.4 MPa avg\\ \hline
+		\end{tabularx}
+		\caption{PLA Specimen Mechanical Properties from Wendt \citep{Wendt2015}}
+		\label{tab:WendtPLAS}
+	\end{table}
+	\par
+	One interesting result is that the variance of the modulus of elasticity was not as significant in the printed parts as it was in the raw filament, which may point to an improvement in consistency of build materials once the part is extruded. The tensile strength, however, seemed to remain fairly constant from filament to printed part in this case.
+	
+%-------------------------------------------------------------------------
+\subsubsection{Other Materials}
+
+	While PLA and ABS are two of the most common materials, especially for the hobbyist market, there are many other types of FDM filament are available. Two studies investigated here involved polycarbonate and carbon fiber reinforced thermo-plastic (CFRTP) 3D printed objects \citep{Lipina2015, Klift2016}. Lipina, et al. studied fractures in polycarbonate structures due to high torques being applied to bolts on fixtures made of polycarbonate as well as fatigue failures \citep{Lipina2015}. Polycarbonate is of particular interest due to its' use in the automotive and aircraft industries \citep{Lipina2015}. The samples made by the group were compared to the manufacturer given properties and found the tensile strength to be about 81\% of the prescribed tensile strength.\par
+	The investigation by Klift, et al. into CFRTP structures was more exhaustive than the polycarbonate study and involved determining how much of the strength of composite materials is preserved when used in additive manufacturing \citep{Klift2016}. They found that the strength of the part was directly related to the size of the objects being printed, noting that increases in print size correlated to a loss in overall strength of the print \citep{Klift2016}. Due to the difficulty of manufacturing layers of continuous composite fibers, the print trajectories were varied in order to minimize the number of discontinuities in the carbon fiber \citep{Klift2016}. Klift found that when following the rule of mixtures for composites, specimens with more layers of CFRTP deviated more from the predicted strength than those with fewer layers \citep{Klift2016}.\par
+	Three types of samples were tested in the study: one group of pure nylon, a second group with two layers of carbon fiber reinforced nylon in the middle layers of the print, and the third and final group with six layers of CFRTP in the center \citep{Klift2016}. Tests were performed at a strain rate of 2mm/min \citep{Klift2016}. They found that the CFRTP samples failed, following suit with other types of FDM failures, where discontinuities or manufacturing defects were located \citep{Klift2016}. The results from Klift, et al. are re-summarized below.
+
+	\begin{table} [h]
+		\centering
+		\begin{tabularx}{\textwidth}{| l | X | X |}
+		\noalign{\hrule height 2pt}
+    		\multicolumn{3}{|c|}{\textbf{Mechanical Properties of PLA Specimens}}\\ \hline
+		& 2 CFRTP Layers & 6 CFRTP Layers\\ 
+		Modulus of Elasticity & 231.4 GPa & 173.24 GPa\\
+		Ultimate Tensile Strength & 128-171 & 370-520 MPa \\ 
+		Strain & 1.3\% & 1.3-2.0\& \\ \hline
+		\end{tabularx}
+		\caption{CFRTP Specimen Mechanical Properties from Klift \citep{Klift2016}}
+		\label{tab:KliftCFRTP}
+	\end{table}
+\par
+%-------------------------------------------------------------------------
+\subsection{Stereolithography (SLA)}
+	Although it is not a method being studied by this thesis, Stereolithography continues to be a fairly common additive manufacturing method and provides another point of reference for the mechanical properties of layer based manufacturing. According to Alharbi, SLA is one of the more present 3D printing methods used in dentistry \citep{Alharbi2016}. Alharbi's team studied the effects of build direction on compressive strength in cylinders made from a specialized dental material called Temporis \citep{Alharbi2016}. Intuitively, specimens with layers printed perpendicular to the applied loading had a significantly higher compressive strength than those that were printed with layers parallel to the loading direction; 297 MPa for perpendicular specimens vs 257 MPa for parallel \citep{Alharbi2016}. As with FDM, they concluded that the bonding between layers of additive manufactured parts is weaker than the layer of the material itself \citep{Alharbi2016}.\par
+	Adamczak, et al. however, studied the uncertainty in the strength of 3D printed objects using SLA. Following ASTM D638, they chose to investigate the Type I specimens, as opposed to the Type V specimens used by Perez, et al. \citep{Adamczak2014, TorradoPerez2014}. They stated that determining the mechanical properties of products for every additive manufacturing process would be difficult, but knowing the uncertainty/deviation in cross-sectional geometry of test specimens would allow one to more accurately determine the potential range of the strength of a manufactured object \citep{Adamczak2014}. \par
+
+\subsection{Directed Energy Deposition}
+	One final study of interest used a method of additive manufacturing known as directed energy deposition. It performs similarly to FDM, however instead of a nozzle being heated to the melting point of a plastic and extruding layers of thermoplastic onto a bed, DED melts powdered metal into a molten mixture and deposits it onto a cooled bed while moving to shape the part \citep{Wang2016}. A major issue noted with DED manufacturing is that the cycles of heating and cooling caused by the process can lead to anisotropic and/or heterogeneous material properties and defects seen in FDM such as gas voids or lack of layers bonding \citep{Wang2016}. Wang studied the manufacturing of 304L Austenitic Stainless Steel specimens, noting that the tensile strength tends to decrease as laser power increases and scanning speed lowers due to the large grain structures that are allowed to form with slower cooling \citep{Wang2016}. \par
+	An interesting note was that the specimens made with AM techniques tended to have a higher strength than wrought parts made from the same materials, unlike thermoplastics \citep{Wang2016}. Another un-intuitive discovery was that specimens with layers perpendicular to the loading axis (Transverse) have a higher tolerance for elongation than those with layers parallel to the loading direction (Longitudinal) ; however they do also have lower strength which is to be expected \citep{Wang2016}. Data was provided for specimens using a low power wall and high power wall to determine the effects of laser power on mechanical properties \citep{Wang2016}.
+	
+	\begin{table} [h]
+		\centering
+		\begin{tabularx}{\textwidth}{| l | X | X | X |}
+		\noalign{\hrule height 2pt}
+    		\multicolumn{4}{|c|}{\textbf{Mechanical Properties of 304L Specimens}}\\ \hline
+		& Parameter & Longitudinal & Transverse \\ \hline
+		\multirow{3}{*}{Low Power} & Yield Strength & 337$\pm$29 MPa & 314$\pm$6 MPa\\
+		& Tensile Strength & 609$\pm$18 MPa & 606$\pm$13 MPa\\
+		& Elongation & 48.2$\pm$2.5\% & 56.4$\pm$5.8\% \\ \hline
+		\multirow{3}{*}{High Power} & Yield Strength & 277$\pm$27 MPa & 274$\pm$7 MPa\\
+		& Tensile Strength & 581$\pm$20 MPa & 560$\pm$12 MPa\\
+		& Elongation & 41.8$\pm$3.5\% & 50.5$\pm$6.7\% \\ \hline
+		\end{tabularx}
+		\caption{304L Specimen Mechanical Properties from Wang \citep{Wang2016}}
+		\label{tab:Wang304L}
+	\end{table}
+	
+%-------------------------------------------------------------------------
+\subsection{Summary}
+	
+	A few key points taken away from the prior studies on FDM are that failures, when they occur, are potentially due to manufacturing defects and not necessarily the failure due to the material being pushed beyond its' physical limits. The strength of correctly printed parts tends to be similar to that of the raw material it is made from and are capable of providing reliable data on creating a predictable mathematical model of the behavior of constructed parts. Finally, although standards do already exist for testing plastics, they may not be suitable for parts made using additive manufacturing methods due to the fact that they assume isotropic and homogeneous properties, which studies have proven that parts made with FDM do no exhibit. No research could be found around the subject of varying in-fill density and observing the impact on structural integrity, which is one variable that is investigated in this thesis.

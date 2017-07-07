@@ -1,0 +1,43 @@
+\chapter{Conclusions \& Future Work}
+\section{Conclusions}
+	From the previous chapter, uncertainties observed with predicting the behavior of ABS and PLA specimens are all under a 5\% variance from predicted behavior. It is reasonable to predict the behavior of an object once the material properties have been experimentally determined for a given material and fill density. The uncertainty of the 25\% fill density square specimens was most likely significantly higher than any of the other specimens due to manufacturing defects and , in fact, only specimens 1 and 4 had an uncertainty greater than 6.5\%. It is also worth noting that ABS seemed to be more consistently predictable with a maximum uncertainty of $\approx 4.1\%$ on specimen 100\% \#3 as shown in Appendix B.2.\par
+	The density of fill has a significant impact on the strength of an object and shows a clear trend that higher fill density specimens have a larger modulus of elasticity and that 100\% fill objects are significantly stronger than a 25\% or 50\% fill object. This implies that the fill structure does support the loading applied and is not completely dependent on wall thickness. Worthy of note, the standard deviation for the densities seems to be near the same percentage variation for each density and structure. \par
+	As shown by the experiments performed on the I-Beam specimens, there is a significant correlation between layer orientation and strength of an object. Table \ref{tab:Layer_Moduli} lists the percentage variance of the average modulus of the sample sets of I-beams from the average modulus of 100\% fill square and rectangular PLA beams. This shows that the strength of the object depends significantly on the orientation of layers with respect to the applied force which implies the bond between the layers is as important as the material itself for the strength. \par
+
+	 	\begin{table} [H]
+		\centering	
+		\begin{tabular}{ l l }
+		\noalign{\hrule height 2pt}
+			\multicolumn{2}{c}{EFFECTS OF LAYER ORIENTATION} \\ \hline
+			PRINT ORIENTATION & DIFFERENCE IN MODULUS (\%) \\ \hline
+			XY & 20.165 \\
+			XZ & 3.218 \\
+			YZ & 15.674 \\ \hline
+		\end{tabular}
+		\caption{Effects of Layer Orientation on Modulus}
+		\label{tab:Layer_Moduli}
+		\end{table}
+
+
+	The reason that modulus of elasiticy that was found for PLA is high in the performed experiments when compared to Wendt's data is most likely due to having multi-layer objects and the strength that is provided by the bonding between the layers shown by the data from the I-beam experiments. This along with the rotation of the printing path that the slicing software performs allows defects to not have as much of an effect as with a single layer specimen. \par
+	The experiments performed here clearly show that the layer orientation significantly impacts the strength of an object. While products may not be constructed from ABS or PLA plastics, the same limitations are likely arise. More research is necessary, but it is logical to conclude that the layer orientation will be a significant factor to consider in future applications such as medical implants or structural components. Another trend of note is that the surface area between layers may play a more significant role than expected as shown by figures \ref{fig:PLA_Modulus} and \ref{fig:ABS_Modulus}. There is a trend shown that the rectangular specimens tend to have a higher modulus of elasticity than the square counterparts, however this diminishes as the fill density nears 100\% fill. This is a point of interest that should be investigated.\par
+
+
+\section{Proposed Work}
+	One variable that should be studied is the diminishing returns on increasing the amount of fill density and determine the amount of fill that would be most economical to use. For further investigation it would be beneficial to observe the shear strength of layers for different fill densities and layer orientations to determine how the surface area of a layer effects the shear strength. \par
+	Table \ref{tab:Print_settings} lists the settings used on the printer that are referenced in this section. Based on the data from Phase I fill density has an effect on the modulus of elasticity, however it appears that the wall thickness provides a large amount of strength to the structure. Varying the wall thickness for 25\% and 50\% fill to study the effects on the modulus of elasticity is suggested. Similarly, varying layer height could also significantly impact the strength of an object. Print speed is a variable that should be examined as the rate at which layers cool is dependent on how quickly material is deposited. As shown in the study by Wang, a slower print speed tended to cause a more uniform structure and increased strength \citep{Wang2016}. Print consistency, or the amount of variance between prints and the design should be minimized in order to provide a considerable comparison between samples. \par
+	
+
+	 	\begin{table} [H]
+		\centering	
+		\begin{tabular}{ l l }
+		\noalign{\hrule height 2pt}
+			Print Speed & $60\frac{mm}{s}$\\
+			Wall Thickness & 0.8mm \\
+			Layer Height & 0.1mm \\ \hline
+		\end{tabular}
+		\caption{Printer Settings}
+		\label{tab:Print_settings}
+		\end{table}
+	
+	Once more understanding of how the printing process affects the final products, inducing defects would be the next major step in determining how these structures would behave. Voids, delamination and shifts in layers seemed to be the most common defects from both the literature and first hand experience printing the specimens for this study.
