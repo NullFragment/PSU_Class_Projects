@@ -17,4 +17,4 @@ This repository contains code for projects for classes during my attendance at P
 	* _CMPSC 360_ - Automated algorithm where a robot tries to collect all of the gold on a board before a bomb destroys it.
 * __LaTeX:__
 	* _CMPSC 360_ - Homework documentation.	
-
+    * _E SC THESIS_ - Engineering Science Capstone Research: Studies the effects of fill density, size and print orientation on PLA and ABS 3D printed objects.
