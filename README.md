@@ -12,7 +12,7 @@ This repository contains code for projects for classes during my attendance at P
 	* _CMPSC 360_ - Caesar Cipher w/ salting function
 * __C++:__
 	* _CMPSC 122_ - Various introductory C++ projects ranging from class basics to building hash functions and binary trees.
-	* _CMPSC 360_ - Truth Table Generator, Pseudo-"Neural Network" pathfinder, and Incomplete Dijkstra (using Boost)
+	* _CMPSC 360_ - Truth Table Generator, Pseudo-"Neural Network" pathfinder, and Dijkstra's Algorithm
 * __Python:__
 	* _CMPSC 360_ - Automated algorithm where a robot tries to collect all of the gold on a board before a bomb destroys it.
 * __LaTeX:__
