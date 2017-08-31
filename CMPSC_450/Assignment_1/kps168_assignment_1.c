@@ -12,7 +12,6 @@ System Info:
     Compiler: GCC
 
 compiled using: gcc -Wall kps168_assignment_1.c -o benchmark -O2; ./benchmark
-
 */
 
 void get_walltime(double *wcTime)
@@ -23,9 +22,7 @@ void get_walltime(double *wcTime)
 }
 
 void dummy(double A, double B, double C, double D)
-{
-
-}
+{}
 
 double benchmark(long int R, long int N)
 {
@@ -37,9 +34,7 @@ double benchmark(long int R, long int N)
         C[i] = 2.0;
         D[i] = 3.0;
     }
-
     get_walltime(&S);
-
     for (int j = 1; j < R; j++)
     {
         for (int i = 1; i < N; i++)
@@ -57,7 +52,6 @@ double benchmark(long int R, long int N)
     return (MFLOPS);
 }
 
-
 int main()
 {
     double mflops;
@@ -67,9 +61,9 @@ int main()
     printf("R,N,MFLOPS\n");
     for (int i = 0; i < m; i++)
     {
-        n = 5000 + 5000*i;
+        n = 5000 + 5000 * i;
         mflops = benchmark(r, n);
-        printf("%ld,%ld,%f\n", r,n, mflops);
+        printf("%ld,%ld,%f\n", r, n, mflops);
     }
     return 0;
 }
