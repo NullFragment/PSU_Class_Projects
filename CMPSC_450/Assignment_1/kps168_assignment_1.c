@@ -3,6 +3,16 @@
 
 /*
 MEMORY READ BENCHMARK
+
+System Info:
+    CPU: Intel Core i7-6700HQ, 2.6 GHz
+    GPU: GeForce GTX 1060
+    Memory: 16GB
+    Operating System: Ubuntu 16.04 LTS 64-bit
+    Compiler: GCC
+
+compiled using: gcc -Wall kps168_assignment_1.c -o benchmark -O2; ./benchmark
+
 */
 
 void get_walltime(double *wcTime)
@@ -17,7 +27,7 @@ void dummy(double A, double B, double C, double D)
 
 }
 
-double benchmark(int R, int N)
+double benchmark(long int R, long int N)
 {
     double A[N], B[N], C[N], D[N], S, E, MFLOPS;
     for (int i = 0; i < N; i++)
@@ -43,7 +53,6 @@ double benchmark(int R, int N)
     }
 
     get_walltime(&E);
-
     MFLOPS = (R * N * 2.0) / ((E - S) * 1000000.0);
     return (MFLOPS);
 }
@@ -52,7 +61,15 @@ double benchmark(int R, int N)
 int main()
 {
     double mflops;
-    mflops = benchmark(1000, 1000);
-    printf("MFLOPS: %G", mflops);
+    long int m, n, r;
+    m = 20;
+    r = 100000;
+    printf("R,N,MFLOPS\n");
+    for (int i = 0; i < m; i++)
+    {
+        n = 5000 + 5000*i;
+        mflops = benchmark(r, n);
+        printf("%ld,%ld,%f\n", r,n, mflops);
+    }
     return 0;
 }
