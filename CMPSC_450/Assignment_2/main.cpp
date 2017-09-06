@@ -1,10 +1,30 @@
-// compiles with:
-// g++ slow_code.cpp -o slow_code
+/*
+Compiled using:
 
+g++ main.cpp -o main_default
+g++ main.cpp -o main_O1 -O1
+g++ main.cpp -o main_O2 -O2
+g++ main.cpp -o main_O3 -O3
+g++ main.cpp -o main_O1_mavx -O1 -mavx
+g++ main.cpp -o main_O2_mavx -O2 -mavx
+g++ main.cpp -o main_O3_mavx -O3 -mavx
+
+===============================================
+
+main_default   Elapsed time: 0.190453
+main_O1        Elapsed time: 0.029483
+main_O2        Elapsed time: 0.020534
+main_O3        Elapsed time: 0.018077
+main_O1_mavx   Elapsed time: 0.026962
+main_O2_mavx   Elapsed time: 0.017295
+main_O3_mavx   Elapsed time: 0.016406
+*/
+
+#include <stdio.h>
 #include <sys/time.h>
 #include <vector>
-#include <map>
 #include <cmath>
+#include <stdlib.h>
 
 void get_walltime(double *wcTime)
 {
@@ -16,7 +36,7 @@ void get_walltime(double *wcTime)
 // complex algorithm for evaluation
 void myfunc(std::vector<std::vector<double> > &v_s,
             std::vector<std::vector<double> > &v_mat, std::vector<int> &i_v,
-            std::map<int, double> &value_map)
+            std::vector<double> &value_map)
 {
     int d_val;
     for (int j = 0; j < v_s.size(); j++)
@@ -50,13 +70,20 @@ int main(int argc, char *argv[])
     std::vector<std::vector<double> > vd_s(i_N, std::vector<double>(i_N));
     std::vector<std::vector<double> > vd_mat(i_N, std::vector<double>(i_N));
     std::vector<int> vi_v(i_N);
-    std::map<int, double> m_difference;
+    std::vector<double> vd_difference(256);
+    int sin_val;
+    double sine, cosine;
     // populate memory with some random data
+    for (int i=0;i<256;i++)
+    {
+        sine = sin(i);
+        cosine = cos(i);
+        vd_difference[i]= sine*sine - cosine*cosine;
+    }
+
     for (int i = 0; i < i_N; i++)
     {
         vi_v[i] = i * i;
-        m_difference[(i * i) % 256] = sin((i * i) % 256) * sin((i * i) % 256)
-                                      - cos((i * i) % 256) * cos((i * i) % 256);
         for (int j = 0; j < i_N; j++)
         {
             vd_s[i][j] = j + i;
@@ -69,7 +96,7 @@ int main(int argc, char *argv[])
     // iterative test loop
     for (int i = 0; i < i_R; i++)
     {
-        myfunc(vd_s, vd_mat, vi_v, m_difference);
+        myfunc(vd_s, vd_mat, vi_v, vd_difference);
     }
 
     // end benchmark
