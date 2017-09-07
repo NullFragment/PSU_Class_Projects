@@ -10,14 +10,17 @@ g++ main.cpp -o main_O2_mavx -O2 -mavx
 g++ main.cpp -o main_O3_mavx -O3 -mavx
 
 ===============================================
+CPU: Intel i7-6700k
+OS: Ubuntu 16.04
 
-main_default   Elapsed time: 0.190453
-main_O1        Elapsed time: 0.029483
-main_O2        Elapsed time: 0.020534
-main_O3        Elapsed time: 0.018077
-main_O1_mavx   Elapsed time: 0.026962
-main_O2_mavx   Elapsed time: 0.017295
-main_O3_mavx   Elapsed time: 0.016406
+main_default   Elapsed time: 0.134950
+main_O1        Elapsed time: 0.018026
+main_O2        Elapsed time: 0.015184
+main_O3        Elapsed time: 0.015131
+main_O1_mavx   Elapsed time: 0.018367
+main_O2_mavx   Elapsed time: 0.011529
+main_O3_mavx   Elapsed time: 0.011716
+
 */
 
 #include <stdio.h>
