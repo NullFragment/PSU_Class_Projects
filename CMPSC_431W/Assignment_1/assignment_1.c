@@ -77,7 +77,6 @@ _Bool loadDatabase(char file[255])
         strncpy(read_in.email, fields, 49);
         fields = strtok(NULL, ",");
         strncpy(read_in.alias, fields, 49);
-        fwrite(&read_in, sizeof(struct _record), 1, database);
         printf("*** LOG: Appending record to database ***\n");
         fgets(str_in,2000,stdin);
     }
@@ -212,4 +211,11 @@ _Bool changeRecord(char file[255], int record_number, char field[10], char new_s
     fwrite(&temp, sizeof(struct _record), 1, database);
     fclose(database);
     return true;
+}
+#include <stdio.h>
+
+int main()
+{
+    printf("Hello, World!\n");
+    return 0;
 }
