@@ -50,25 +50,54 @@ p_w = 1-pnorm(t_w)
 ####################################################################
 
 ## Fit linear model between density and weight
-lin_fit_w = lm(bfp_data$Density ~ bfp_data$Weight, data = bfp_data)
+lin_fit_w = lm(bfp_data$SiriBFperc ~ bfp_data$Weight, data = bfp_data)
 summary(lin_fit_w)
+lin_fit_w$coefficients
+sigma(lin_fit_w)^2
+
+plot(bfp_data$Weight, bfp_data$SiriBFperc)
+abline(lin_fit_w$coefficients[1],lin_fit_w$coefficients[2],col='red')
 
 ## Fit linear model between density and height
-lin_fit_h = lm(bfp_data$Density ~ bfp_data$Height, data = bfp_data)
+lin_fit_h = lm(bfp_data$SiriBFperc ~ bfp_data$Height, data = bfp_data)
 summary(lin_fit_h)
+lin_fit_h$coefficients
+sigma(lin_fit_h)^2
+
+plot(bfp_data$Height, bfp_data$SiriBFperc)
+abline(lin_fit_h$coefficients[1],lin_fit_h$coefficients[2],col='red')
 
 ## Fit linear model between density and abdomen circumference
-lin_fit_a = lm(bfp_data$Density ~ bfp_data$AbdomenC, data = bfp_data)
+lin_fit_a = lm(bfp_data$SiriBFperc ~ bfp_data$AbdomenC, data = bfp_data)
 summary(lin_fit_a)
+lin_fit_a$coefficients
+sigma(lin_fit_a)^2
+
+plot(bfp_data$AbdomenC, bfp_data$SiriBFperc)
+abline(lin_fit_a$coefficients[1],lin_fit_a$coefficients[2],col='red')
 
 
 ####################################################################
-#### Part
+#### Part D
 ####################################################################
+weight_height = bfp_data$Weight/bfp_data$Height
+lin_fit_np = lm(bfp_data$SiriBFperc ~ weight_height, data = bfp_data)
+summary(lin_fit_np)
+lin_fit_np$coefficients
+sigma(lin_fit_np)^2
+
+plot(weight_height, bfp_data$SiriBFperc)
+abline(lin_fit_np$coefficients[1],lin_fit_np$coefficients[2],col='red')
+
+
 ####################################################################
-#### Part
-####################################################################
-####################################################################
-#### Part
+#### Part E
 ####################################################################
 
+lin_fit_ratio = lm(weight_height ~ bfp_data$AbdomenC, data = bfp_data)
+summary(lin_fit_ratio)
+lin_fit_ratio$coefficients
+sigma(lin_fit_ratio)^2
+
+plot(bfp_data$AbdomenC,weight_height)
+abline(lin_fit_ratio$coefficients[1],lin_fit_ratio$coefficients[2],col='red')
