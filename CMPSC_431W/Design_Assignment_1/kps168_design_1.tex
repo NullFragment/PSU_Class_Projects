@@ -1,0 +1,53 @@
+%\title{Overleaf Memo Template}
+% Using the texMemo package by Rob Oakes
+\documentclass[a4paper,12pt]{texMemo}
+\usepackage[english]{babel}
+\usepackage{graphicx, lipsum, outlines}
+\pagenumbering{gobble}
+
+%% Edit the header section here. To include your
+%% own logo, upload a file via the files menu.
+\memoto{Whom It May Concern}
+\memofrom{Kyle Salitrik}
+\memosubject{Design of Nurse Scheduling Database}
+\memodate{\today}
+%\logo{\includegraphics[width=0.3\textwidth]{Overleaf-logo.jpg}}
+
+\begin{document}
+\maketitle
+We are glad to be working with you on the project of restructuring your scheduling database for nurse personnel. In order to begin preliminary design work on the database, our engineers would like to gather answers for the following questions. I am confident that we will be able to design a system to fit the needs of your company during the iterative design process.
+	\begin{itemize}
+	\setlength\itemsep{0em}
+			\item What information will be need to stored for each nurse?
+			\item Should the nurse's entry link to their medical history within the patient database, if applicable?
+			\item Will safeguards need to be implemented to prevent at-risk employees from working in locations where they will encounter things such as allergens?
+			\item Regarding scheduling days:
+			\begin{itemize}
+			\setlength\itemsep{0em}
+				\item Will nurses have dynamic schedules or steady cyclical schedules?
+				\item Is the ability to prevent nurses from being scheduled specific days required?
+				\item How many days in a row are nurses permitted to work?
+				\item Will the scheduling database also keep track of time worked by nurses?
+				\item How many days off in a week must a nurse have?
+				\item Are shift times pre-definied or is it necessary to have the ability to enter specific times for each nurse?
+			\end{itemize}
+			\item What is the minimum ratio of nurses to patients allowed?
+			\item Are there required to be nurses with a minimum certification or amount of experience during each shift?
+			\item Are all nurses full-time employees or are some part-time?
+			\item How far out must the schedule be defined?
+			\item Will database users need to interface with the database using:
+			\begin{itemize}
+			\setlength\itemsep{0em}
+				\item a Graphical User Interface (GUI)?
+				\item a command line interface?
+			\end{itemize}
+			\item Will the database need to have unique access by wards or will nurses be allowed to float between wards?
+	\end{itemize}
+
+We look forward to hearing back from you with any comments or concerns along with answers for any of the above questions. Feel free to contact me at any time if anything urgent comes up.
+\bigskip{}\decorativeline\bigskip{}
+
+Sincerely,\\
+
+\quad Kyle Salitrik
+\end{document}
