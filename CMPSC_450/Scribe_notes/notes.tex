@@ -1,0 +1,103 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{fullpage} % changes the margin
+\usepackage{color, listings, graphicx,float, booktabs, tabularx, multirow, outlines}
+\usepackage[colorlinks=true, urlcolor=blue]{hyperref}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+
+\begin{document}
+\graphicspath{{./figures/}}
+\noindent
+\large\textbf{Scribe Notes 9/21/2017} \\
+\normalsize CMPSC 450\\
+\large{Kyle Salitrik} \hfill 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SECTION: OpenMP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{OpenMP}
+
+\begin{outline}
+	\1 Private Variables
+		\2 Firstprivate - initializes variables from serial part of the code
+		\2 Lastprivate - thread that executes the final loop copies it's value to the master thread
+	\1 Barriers 
+		\2 Using \textit{\#pragma omp critical} causes each thread to perform computation sequentially instead of in parallel for structured block
+		\2 Each structured block has implicit barriers at the end of the block where finished threads will hang until all threads reach that point
+		\2 The \textit{nowait} flag prevents the threads from waiting at the barrier. Caution should be used if the output from the nowait section is needed further in the code.
+	\1 Reduction
+		\2 Reduction actions (+:sum, subtract, etc.) can be used in order to accumulate values from threads.
+	\1 For Loops
+		\2 \textit{\#pragma omp for}$\rightarrow$ loop will be executed concurrently by P threads. Removes need to skip by number of threads assigned to a parallel block.
+		\2 \textit{\#pragma omp parallel}for $\rightarrow$ loop will execute entirely in all P threads (causes P times the amount of work).
+		\2 Loop variables must be an integer and control parameters are the same for all threads.
+		\2 Branching out of loops is prohibited (this would cause more than one control parameter).
+	
+	\1 Scheduling
+		\2 Static scheduling is default and breaks up a loop in a logical fashion, such as n/p consecutive values per thread.
+		\2 \textit{schedule(dynamic)} 
+		
+\end{outline}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SECTION: ICS-ACI
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{ICS-ACI}
+
+\begin{outline}
+	\1 Login via SSH or EoD (Exceed on Demand, ACI-I only) with 2-factor authentication
+		\2 SSH to ACI-B: ssh user@aci-b.aci.ics.psu.edu
+		\2 SSH to ACI-I: ssh user@aci-i.aci.ics.psu.edu
+	\1 Help email: iask@ics.psu.edu
+	\1 ACI-I vs ACI-B
+		\2 ACI-I (Interactive) nodes are shared with other people
+			\3 Limited to 4 processors at 12 total user hours with 48GB of memory.
+		\2 ACI-B (Batch) nodes are allocated to individuals based on need and open nodes.
+			\3 Limited to 20 processors
+			\3 Shell scripts are used to perform batch programs via submission
+			\3 Modules are called in the script to load software to the stack
+	\1 Environments
+		\2 Home: 10GB backed up
+		\2 Work: 128GB backed up (faster than home)
+		\2 Scratch: 1 million file limit (no size limit)
+	\1 Filezilla/WinSCP can be used for file transfer to the ACI servers
+		\2 url: datamgr.aci.ics.psu.edu
+\end{outline}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SECTION: HW Assign
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Homework}
+\begin{outline}
+	\1 Due Oct 3.
+	\1 Write two implementations of the PRAM summation algorithm using OpenMP to sum N elements.
+		\2 The first version should not use the reduction clauses from OpenMP, the second should use the clauses.
+\end{outline}
+
+
+\end{document}

@@ -17,9 +17,12 @@ This repository contains code for projects for classes during my attendance at P
     * _(LaTeX)_ Homework documents
 * __CMPSC 431W:__ _(C)_ Database Management Systems
     * Re-creating an SQL-like database management structure in C
+    * _(LaTeX)_ Homework documents
 * __CMPSC 450:__ _(C, C++, OpenMP)_ Concurrent Scientific Programming
     * _(C)_ Vector Triad benchmark test
+    * _(LaTeX)_ Homework documents
 * __STAT  462:__ _(R)_ Linear Regression Methods
+    * _(LaTeX)_ Homework documents
 * __AERSP 308:__ _(Matlab)_ Fluid Dynamics
 * __E SC  407:__ _(Matlab)_ Computer Methods in Engineering Science
     * Linear 1D and 2D ODE Solutions using Gaussian Quadrature, Runge-Kutta, etc.
