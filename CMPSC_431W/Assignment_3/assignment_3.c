@@ -36,13 +36,12 @@ typedef enum
 
 void trimwhitespace(char *to_trim)
 {
-    char *j = to_trim;
-    while (isspace(*j))
+    char *j;
+    while (isspace(*to_trim))
     {
-        j++;
+        to_trim++;
     }
-    size_t length = strlen(j);
-    memmove(to_trim, j, length);
+    size_t length = strlen(to_trim);
     j = to_trim + length - 1;
     while (isspace(*j))
     {
@@ -50,6 +49,7 @@ void trimwhitespace(char *to_trim)
         j--;
     }
 }
+
 
 
 // #############################################################################
@@ -192,6 +192,7 @@ bool loadDatabase(struct _table *table)
             {
                 printf("*** WARNING: Data in field %s is being truncated ***\n", table->fields[i].fieldName);
             }
+            trimwhitespace(current);
             strncat(&record[rec_loc], current, f_length - 1);
             rec_loc += f_length;
             current = strtok(NULL, ",\n");
@@ -284,6 +285,7 @@ void selectRecord(struct _table *schema, char *fields)
                     printf("%s ", buffer);
                 }
             }
+            memset(buffer, 0, MAXINPUTLENGTH);
         }
         printf("\n");
         fread(buffer, (uint) schema->fields[0].fieldLength, 1, table);
