@@ -1,5 +1,4 @@
 CREATE TABLE people
-ADD id char 50
 ADD lname char 50
 ADD fname char 50
 ADD mname char 50
@@ -18,3 +17,14 @@ ADD phone1 char 30
 ADD phone2 char 30
 ADD email char 30
 ADD alias char 100
+END
+SELECT lname, zip, alias FROM people
+
+TESTBUFFER
+
+CREATE TABLE quotes
+ADD quote char 500
+ADD author char 50
+END
+LOAD TABLE quotes
+SELECT quote, author FROM quotes

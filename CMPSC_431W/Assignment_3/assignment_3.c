@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <unistd.h>
 
 #define MAXFIELDS 100 // for now
 #define MAXINPUTLENGTH 5000
@@ -27,36 +29,66 @@ typedef enum
     false, true
 } bool;
 
+// #############################################################################
+// ### UTILITY FUNCTIONS
+// #############################################################################
 
-bool createSchema()
+
+void trimwhitespace(char *to_trim)
 {
-
+    char *j = to_trim;
+    while (isspace(*j))
+    {
+        j++;
+    }
+    size_t length = strlen(j);
+    memmove(to_trim, j, length);
+    j = to_trim + length - 1;
+    while (isspace(*j))
+    {
+        *j = 0;
+        j--;
+    }
 }
 
 
-bool loadSchema(struct _table *table)
+// #############################################################################
+// ### SCHEMA FUNCTIONS
+// #############################################################################
+
+// LOAD SCHEMA
+// *table - structure of table to create
+// *schema_name - string that will be used to create filenames
+// logging - if true, turns on print statements
+// Function parses through a .schema file (if it exists) and assigns all schema
+// fields to the given table struct.
+
+bool loadSchema(struct _table *table, char *schema_name, bool logging)
 {
+    // Set file name and open schema file
+    char *filename = calloc(1, strlen(schema_name));
+    memcpy(filename, schema_name, strlen(schema_name));
+    strcat(filename, ".schema");
+    if (access(filename, F_OK) == -1) return false;
+    FILE *schema = fopen(filename, "rb");
+
+    // Initialize number of fields counter and buffer string
     int field_number = 0;
     char *str_in = calloc(MAXINPUTLENGTH, sizeof(char));
-    fgets(str_in, MAXINPUTLENGTH, stdin);
-    char *current = strtok(str_in, " \n");
-    current = strcat(current, strtok(NULL, " "));
-    if (strcmp(current, "CREATETABLE") == 0)
-    {
-        printf("*** LOG: Loading table fields...\n");
-        current = strtok(NULL, " \n");
-        table->tableFileName = calloc(MAXLENOFFIELDNAMES, sizeof(char));
-        strncpy(table->tableFileName, current, MAXLENOFFIELDNAMES);
-        strcat(table->tableFileName, ".bin");
-        printf("*** LOG: Table name is [%s]\n", table->tableFileName);
-        table->reclen = 0;
-    } else
-    {
-        return false;
-    }
+    fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
+
+    // Print log statements and initialize table metadata
+    if (logging) printf("*** LOG: Loading table fields...\n");
+    table->tableFileName = calloc(MAXLENOFFIELDNAMES, sizeof(char));
+    strncpy(table->tableFileName, schema_name, MAXLENOFFIELDNAMES);
+    strcat(table->tableFileName, ".bin");
+    if (logging) printf("*** LOG: Table data name is [%s]\n", table->tableFileName);
+    table->reclen = 0;
+
+    // Start reading file string and read until end of file
     do
     {
-        current = strtok(str_in, " \n");
+        char *current = strtok(str_in, " \n");
         if (strcmp(current, "ADD") == 0)
         {
             struct _field *current_field = &table->fields[field_number];
@@ -65,20 +97,73 @@ bool loadSchema(struct _table *table)
             strncpy(current_field->fieldType, strtok(NULL, " \n"), MAXLENOFFIELDTYPES);
             current_field->fieldLength = atoi(strtok(NULL, " \n"));
             table->reclen += current_field->fieldLength;
-            printf("*** LOG: ADDING FIELD [%s] [%s] [%d]\n",
-                   current_field->fieldName, current_field->fieldType, current_field->fieldLength);
+            //printf("*** LOG: ADDING FIELD [%s] [%s] [%d]\n",
+            //       current_field->fieldName, current_field->fieldType, current_field->fieldLength);
             field_number++;
         }
-        free(str_in);
-        str_in = calloc(MAXINPUTLENGTH, sizeof(char));
-        fgets(str_in, MAXINPUTLENGTH, stdin);
-    } while (strncmp(str_in, "END", 3) != 0);
+        memset(str_in, 0, MAXINPUTLENGTH);
+        fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
+    } while (strlen(str_in) > 3);
+    fclose(schema);
     free(str_in);
-    printf("*** LOG: END OF CREATE TABLE\n");
-    printf("*** LOG: %d Fields loaded\n", table->fieldcount);
-    printf("*** LOG: Total record length is %d\n", table->reclen);
+    if (logging) printf("*** LOG: Table schema name is [%s]\n", filename);
+    if (logging) printf("*** LOG: END OF CREATE TABLE\n");
+    //printf("*** LOG: %d Fields loaded\n", table->fieldcount);
+    //printf("*** LOG: Total record length is %d\n", table->reclen);
     return true;
 }
+
+
+// CREATE SCHEMA
+// *file_name - takes name of file to be used excluding file extension
+// *buffer - pointer to buffer for stdin
+// Function takes the input, and simply saves schema creation "ADD"
+// SQL-like commands to a file with a .schema extension.
+
+bool createSchema(char *file_name, char *buffer)
+{
+    char *schema_name = calloc(1, strlen(file_name + 1));
+    memcpy(schema_name, file_name, strlen(file_name));
+    strcat(file_name, ".schema");
+    /*
+    // UNCOMMENT TO NOT OVERWRITE SCHEMA FILES
+    if(access(filename, F_OK) == -1)
+    {
+    */
+    printf("*** LOG: Creating table...\n");
+    FILE *schema = fopen(file_name, "wb+");
+    memset(buffer, 0, MAXINPUTLENGTH);
+    fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+    while (strncmp(buffer, "END", 3) != 0 && buffer != NULL)
+    {
+        fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
+        memset(buffer, 0, MAXINPUTLENGTH);
+        fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+    }
+    fclose(schema);
+    struct _table table;
+    loadSchema(&table, schema_name, true);
+    /*
+    // UNCOMMENT TO NOT OVERWRITE SCHEMA FILES
+    }
+    */
+}
+
+// Parses through a given schema file
+void printSchema(struct _table *schema)
+{
+    printf("----------- SCHEMA --------------\n");
+    printf("TABLE NAME: %.*s\n", (int) strlen(schema->tableFileName) - 4, schema->tableFileName);
+    for (int i = 0; i < schema->fieldcount; i++)
+    {
+        printf("--- %s (%s-%d)\n", schema->fields[i].fieldName, schema->fields[i].fieldType,
+               schema->fields[i].fieldLength);
+    }
+}
+
+// #############################################################################
+// ### DATABASE FUNCTIONS
+// #############################################################################
 
 bool loadDatabase(struct _table *table)
 {
@@ -94,7 +179,7 @@ bool loadDatabase(struct _table *table)
     record = calloc(1, record_length);
     str_in = calloc(MAXINPUTLENGTH, sizeof(char));
 
-    fgets(str_in, MAXINPUTLENGTH, stdin);
+    fgets(str_in, MAXINPUTLENGTH - 1, stdin);
     printf("*** LOG: Loading database from input ***\n");
     do
     {
@@ -117,14 +202,18 @@ bool loadDatabase(struct _table *table)
         free(record);
         str_in = calloc(MAXINPUTLENGTH, sizeof(char));
         record = calloc(1, record_length);
-        fgets(str_in, MAXINPUTLENGTH, stdin);
+        fgets(str_in, MAXINPUTLENGTH - 1, stdin);
     } while (str_in != NULL && strlen(str_in) > 11);
     printf("*** LOG: Closing file\n");
     fclose(database);
     return true;
 }
 
-// GET THE RECORD FROM THE FILE BY FSEEKING TO THE RIGHT SPOT AND READING IT
+// #############################################################################
+// ### RECORD FUNCTIONS
+// #############################################################################
+
+
 bool getRecord(int recnum, char *record, struct _table *table)
 {
     char *filename = table->tableFileName;
@@ -138,7 +227,6 @@ bool getRecord(int recnum, char *record, struct _table *table)
 }
 
 
-// DISPLAY THE CURRENT RECORD USING THE ASSOCIATED FIELD NAMES
 void showRecord(struct _field *fields, char *record, int fieldcount)
 {
     int rec_loc = 0;
@@ -150,24 +238,99 @@ void showRecord(struct _field *fields, char *record, int fieldcount)
     }
 }
 
-void trimwhitespace(char *to_trim)
+
+void selectRecord(struct _table *schema, char *fields)
 {
-    while (*to_trim == ' ')
+    // Initialize values
+    char *buffer = calloc(MAXINPUTLENGTH, 1);
+    int field_counter = 0;
+    int *field_numbers = calloc((uint)schema->fieldcount, sizeof(int));
+    char *field = strtok(fields, ",");
+    // Find all matching fields and create an array of their indices.
+    while (field != NULL)
     {
-        
-        to_trim++;
-        *to_trim = 0;
+        for (int i = 0; i < schema->fieldcount; i++)
+        {
+            if (strcmp(schema->fields[i].fieldName, field) == 0)
+            {
+                field_numbers[field_counter] = i;
+                field_counter++;
+                break;
+            }
+        }
+        field = strtok(NULL, ",");
     }
-    while (*to_trim != '\0')
+
+    // Open schema file and search through all records for wanted information
+    FILE *table = fopen(schema->tableFileName, "rb");
+    strtok(buffer, " \n\0");
+    fread(buffer, (uint) schema->fields[0].fieldLength, 1, table);
+    while (!feof(table))
     {
-        to_trim++;
+        for(int j = 0; j < field_counter; j++)
+        {
+            if(field_numbers[j] == 0)
+            {
+                printf("%s ", buffer);
+            }
+        }
+        for(int i = 1; i < schema->fieldcount; i++)
+        {
+            fread(buffer, (uint) schema->fields[i].fieldLength, 1, table);
+            for(int j = 0; j < field_counter; j++)
+            {
+                if(field_numbers[j] == i)
+                {
+                    printf("%s ", buffer);
+                }
+            }
+        }
+        printf("\n");
+        fread(buffer, (uint) schema->fields[0].fieldLength, 1, table);
     }
-    while (*to_trim == ' ')
+    fclose(table);
+}
+
+
+void processCommand(char *buffer)
+{
+    char *cmd = strtok(buffer, " ");
+    if (strcmp(cmd, "CREATE") == 0)
     {
-        to_trim--;
-        *to_trim = 0;
+        cmd = strtok(NULL, " ");
+        cmd = strtok(NULL, "\n");
+        createSchema(cmd, buffer);
     }
-    printf("%s\n", to_trim);
+    else if (strcmp(cmd, "LOAD") == 0)
+    {
+        cmd = strtok(NULL, " ");
+        cmd = strtok(NULL, "\n");
+        struct _table table;
+        if (loadSchema(&table, cmd, false))
+        {
+            printSchema(&table);
+            loadDatabase(&table);
+        }
+    }
+    else if (strcmp(cmd, "SELECT") == 0)
+    {
+        cmd = strtok(NULL, ", ");
+        char *fields = calloc(MAXINPUTLENGTH, 1);
+        while (strcmp(cmd, "FROM") != 0 && cmd != NULL)
+        {
+            strncat(fields, cmd, MAXINPUTLENGTH - strlen(fields) - 1);
+            strcat(fields, ",");
+            cmd = strtok(NULL, ", ");
+        }
+        if (strcmp(cmd, "FROM") == 0)
+        {
+            cmd = strtok(NULL, " \n");
+            struct _table table;
+            loadSchema(&table, cmd, false);
+            selectRecord(&table, fields);
+        }
+
+    }
 }
 
 int main()
@@ -180,9 +343,9 @@ int main()
     {
         trimwhitespace(buffer);
         if (strlen(buffer) < 5)
-            break; // not a real command, CR/LF, extra line, etc.
+            break;
         printf("===> %s\n", buffer);
-        //processCommand(buffer);
+        processCommand(buffer);
         status = fgets(buffer, MAXINPUTLENGTH - 1, stdin);
     }
     printf("Goodbye!\n");
