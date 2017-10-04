@@ -26,45 +26,32 @@ lm_weight = lm(SiriBFperc~Weight, data = bfp_data)
 lm_height = lm(SiriBFperc~Height, data = bfp_data)
 lm_abdomen = lm(SiriBFperc~AbdomenC, data = bfp_data)
 
-summary(lm_weight)
-summary(lm_height)
-summary(lm_abdomen)
-
-confint(lm_weight, level = 0.99)
-confint(lm_height, level = 0.99)
-confint(lm_abdomen, level = 0.99)
+lm_weight_conf = confint(lm_weight, level = 0.99)
+lm_height_conf = confint(lm_height, level = 0.99)
+lm_abdomen_conf = confint(lm_abdomen, level = 0.99)
 
 ####################################################################
 #### Part B
 ####################################################################
+t_abdomen = (summary(lm_abdomen)$coefficients[2] - 0.5)/summary(lm_abdomen)$coefficients[4]
+p_abdomen = 1-pnorm(t_abdomen)
 
 ####################################################################
 #### Part C
 ####################################################################
-lm_NeckC = lm(SiriBFperc~NeckC, data = bfp_data)
-lm_ChestC = lm(SiriBFperc~ChestC, data = bfp_data)
-lm_HipC = lm(SiriBFperc~HipC, data = bfp_data)
-lm_ThighC = lm(SiriBFperc~ThighC, data = bfp_data)
-lm_KneeC = lm(SiriBFperc~KneeC, data = bfp_data)
-lm_AnkleC = lm(SiriBFperc~AnkleC, data = bfp_data)
-lm_BicepsC = lm(SiriBFperc~BicepsC, data = bfp_data)
-lm_ForearmC = lm(SiriBFperc~ForearmC, data = bfp_data)
-lm_WristC = lm(SiriBFperc~WristC, data = bfp_data)
 
-p1 <- ggplot(bfp_data, aes(x=lm_weight$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p2 <- ggplot(bfp_data, aes(x=lm_height$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p3 <- ggplot(bfp_data, aes(x=lm_NeckC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p4 <- ggplot(bfp_data, aes(x=lm_ChestC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p5 <- ggplot(bfp_data, aes(x=lm_HipC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p6 <- ggplot(bfp_data, aes(x=lm_ThighC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p7 <- ggplot(bfp_data, aes(x=lm_KneeC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p8 <- ggplot(bfp_data, aes(x=lm_AnkleC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p9 <- ggplot(bfp_data, aes(x=lm_BicepsC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p10 <- ggplot(bfp_data, aes(x=lm_ForearmC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
-p11 <- ggplot(bfp_data, aes(x=lm_WristC$residuals, y=lm_abdomen$residuals)) + geom_point(size=1)
+p1 <- ggplot(bfp_data, aes(x=bfp_data$AbdomenC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p2 <- ggplot(bfp_data, aes(x=bfp_data$Height, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p3 <- ggplot(bfp_data, aes(x=bfp_data$NeckC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p4 <- ggplot(bfp_data, aes(x=bfp_data$ChestC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p5 <- ggplot(bfp_data, aes(x=bfp_data$HipC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p6 <- ggplot(bfp_data, aes(x=bfp_data$ThighC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p7 <- ggplot(bfp_data, aes(x=bfp_data$KneeC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p8 <- ggplot(bfp_data, aes(x=bfp_data$AnkleC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p9 <- ggplot(bfp_data, aes(x=bfp_data$BicepsC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p10 <- ggplot(bfp_data,aes(x=bfp_data$ForearmC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
+p11 <- ggplot(bfp_data,aes(x=bfp_data$WristC, y=lm_abdomen$residuals)) + geom_point(size=1) + geom_hline(yintercept = 0, color="red")
 
-
-grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol=3)
 ####################################################################
 #### Part D
 ####################################################################
@@ -80,15 +67,32 @@ q=length(lm_abdomen$coefficients)
 f=((RSS_reduced-RSS_full)/(p-q))/(RSS_full/(n-p))
 pvalue=pf(f,p-q,n-p,lower.tail=FALSE)
 
+####################################################################
+#### Display Results
+####################################################################
+
+## Part A
+summary(lm_weight)
+summary(lm_height)
+summary(lm_abdomen)
+
+lm_weight_conf
+lm_height_conf
+lm_abdomen_conf
+
+# Part B
+t_abdomen
+p_abdomen
+
+# Part C
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol=3)
+
+
+# Part D
+f
+pvalue
+
 # Check results
 anova(lm_abdomen,lm_full)
 
 
-y=c(3,-2,7,4)
-x1=c(5,5,-5,-5)
-x2=c(2,0,2,0)
-X=model.matrix(y~x1+x2)
-a = solve(t(X)%*%X)
-b = t(X)%*%y
-a%*%b
-1-0.5*x1+2*x2

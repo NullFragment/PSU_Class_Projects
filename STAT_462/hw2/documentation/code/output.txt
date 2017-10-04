@@ -1,0 +1,86 @@
+####################################################################
+#### Display Results
+####################################################################
+
+## Part A
+summary(lm_weight)
+	Residuals:
+	     Min       1Q   Median       3Q      Max 
+	-18.1734  -4.5946   0.0303   4.8440  18.5365 
+	Coefficients:
+        	     Estimate Std. Error t value Pr(>|t|)    
+	(Intercept) -13.30646    2.76104  -4.819 2.53e-06 ***
+	Weight        0.18185    0.01533  11.864  < 2e-16 ***
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+	Residual standard error: 6.355 on 244 degrees of freedom
+	Multiple R-squared:  0.3658,	Adjusted R-squared:  0.3632 
+	F-statistic: 140.8 on 1 and 244 DF,  p-value: < 2.2e-16
+
+summary(lm_height)
+	Residuals:
+	     Min       1Q   Median       3Q      Max 
+	-16.2242  -6.4851   0.2486   6.0752  20.7394 
+	Coefficients:
+	            Estimate Std. Error t value Pr(>|t|)
+	(Intercept)  22.5848    14.1206   1.599    0.111
+	Height       -0.0496     0.2006  -0.247    0.805
+	Residual standard error: 7.979 on 244 degrees of freedom
+	Multiple R-squared:  0.0002504,	Adjusted R-squared:  -0.003847 
+	F-statistic: 0.06111 on 1 and 244 DF,  p-value: 0.805
+
+summary(lm_abdomen)
+	Residuals:
+	     Min       1Q   Median       3Q      Max 
+	-10.9111  -3.5650   0.1989   3.1421  12.7618 
+	Coefficients:
+	             Estimate Std. Error t value Pr(>|t|)    
+	(Intercept) -41.03612    2.77484  -14.79   <2e-16 ***
+	AbdomenC      0.65148    0.02989   21.80   <2e-16 ***
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+	Residual standard error: 4.648 on 244 degrees of freedom
+	Multiple R-squared:  0.6607,	Adjusted R-squared:  0.6593 
+	F-statistic:   475 on 1 and 244 DF,  p-value: < 2.2e-16
+	
+lm_weight_conf
+	                  0.5 %     99.5 %
+	(Intercept) -20.4744889 -6.1384398
+	Weight        0.1420582  0.2216441
+
+lm_height_conf
+	                  0.5 %     99.5 %
+	(Intercept) -14.0740731 59.2436692
+	Height       -0.5705262  0.4713198
+
+lm_abdomen_conf
+	                  0.5 %      99.5 %
+	(Intercept) -48.2399646 -33.8322748
+	AbdomenC      0.5738825   0.7290846
+
+# Part B
+t_abdomen
+	[1] 5.067856
+p_abdomen
+	[1] 2.011611e-07
+
+
+# Part D
+f
+	[1] 5.482263
+pvalue
+	[1] 9.011923e-08
+
+# Check results
+anova(lm_abdomen,lm_full)
+	Analysis of Variance Table
+
+	Model 1: SiriBFperc ~ AbdomenC
+	Model 2: SiriBFperc ~ (Density + AbdomenC + Weight + Height + NeckC + 
+	    ChestC + HipC + ThighC + KneeC + AnkleC + BicepsC + ForearmC + 
+	    WristC) - Density
+	  Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+	1    244 5272.4                                  
+	2    233 4188.4 11      1084 5.4823 9.012e-08 ***
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
