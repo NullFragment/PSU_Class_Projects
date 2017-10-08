@@ -1,5 +1,3 @@
-TEST 1 - INPUT
------
 CREATE TABLE people
 ADD id char 50
 ADD lname char 50
@@ -25,7 +23,6 @@ CREATE TABLE quotes
 ADD quote char 500
 ADD author char 50
 END
-
 LOAD TABLE quotes
 Theres nothing ill can dwell in such a temple.,William
 If the ill spirit have so fair a house Good things will strive to dwell with it.,Shakespeare
@@ -40,11 +37,6 @@ Yea all which it inherit shall dissolve.,S. Shaffer
 And like an insubstantial pageant faded.,S.S.
 Leave not a rack behind.,S.C.S.
 END
-
-
-
-TEST 4 - INPUT
------
 LOAD TABLE people
 13125316,BERRYMAN,MARTHA,n/a,n/a,8/6/1993,FEMALE,857-46-5079,1120 CLAY AVE,4G,10456,n/a,n/a,BRONX,NY,732-461-9820,n/a,n/a,n/a
 14423865,DESCHOMP,HAROLD,n/a,n/a,6/13/1973,MALE,822-36-9891,1172 E 73RD ST,PVT,11224,n/a,n/a,BROOKLYN,NY,929-275-3170,n/a,n/a,n/a

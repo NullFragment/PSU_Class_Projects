@@ -23,12 +23,14 @@ void processCommand(char *buffer)
     {
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, " \n");
-        struct _table table;
-        if (loadSchema(&table, cmd))
+        struct _table *table = (struct _table*)malloc(sizeof(struct _table));
+        if (loadSchema(table, cmd))
         {
             //printSchema(&table);
-            loadDatabase(&table);
+            loadDatabase(table);
         }
+        memset(table, 0, sizeof(struct _table));
+        free(table);
     } else if (strcmp(cmd, "SELECT") == 0)
     {
         cmd = strtok(NULL, ", ");

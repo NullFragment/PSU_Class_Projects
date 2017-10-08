@@ -49,7 +49,8 @@ bool loadSchema(struct _table *table, char *schema_name)
             table->reclen += current_field->fieldLength;
             field_number++;
         }
-        memset(str_in, 0, MAXINPUTLENGTH);
+        free(str_in);
+        str_in = calloc(MAXINPUTLENGTH, sizeof(char));
         fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
     } while (strlen(str_in) > 3);
     fclose(schema); /** CLOSE FILE: SCHEMA */
@@ -84,12 +85,12 @@ bool createSchema(char *schema_name, char *buffer)
     while (strncmp(buffer, "END", 3) != 0 && buffer != NULL)
     {
         fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
+        fwrite("\n", 1, 1, schema);
         memset(buffer, 0, MAXINPUTLENGTH);
         fgets(buffer, MAXINPUTLENGTH - 1, stdin);
         trimwhitespace(buffer);
         printf("===> %s\n", buffer);
     }
-    printf("LENGTH: %d\n", strlen("END\n"));
     fwrite("END\n", 4, 1, schema);
     fclose(schema); /** CLOSE FILE: SCHEMA */
     free(file_name); /** DEALLOCATE: FILE NAME */
