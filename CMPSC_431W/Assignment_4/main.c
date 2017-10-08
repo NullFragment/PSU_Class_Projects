@@ -26,7 +26,7 @@ void processCommand(char *buffer)
         struct _table table;
         if (loadSchema(&table, cmd))
         {
-            printSchema(&table);
+            //printSchema(&table);
             loadDatabase(&table);
         }
     } else if (strcmp(cmd, "SELECT") == 0)

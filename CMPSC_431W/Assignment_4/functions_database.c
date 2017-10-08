@@ -16,9 +16,8 @@ bool loadDatabase(struct _table *table)
     FILE *database;
 
     database = fopen(filename, "wb+");
-    record = calloc(1, (size_t)record_length);
+    record = calloc(1, (size_t) record_length);
     str_in = calloc(MAXINPUTLENGTH, sizeof(char));
-
     fgets(str_in, MAXINPUTLENGTH - 1, stdin);
     do
     {
@@ -30,7 +29,6 @@ bool loadDatabase(struct _table *table)
             {
                 printf("*** WARNING: Data in field %s is being truncated ***\n", table->fields[i].fieldName);
             }
-            trimwhitespace(current);
             strncat(&record[rec_loc], current, (size_t)(f_length - 1));
             rec_loc += f_length;
             current = strtok(NULL, ",\n");
@@ -42,7 +40,8 @@ bool loadDatabase(struct _table *table)
         str_in = calloc(MAXINPUTLENGTH, sizeof(char));
         record = calloc(1, (size_t)record_length);
         fgets(str_in, MAXINPUTLENGTH - 1, stdin);
-    } while (strncmp(str_in, "END", 3) != 0 );
+    } while (str_in != NULL && strlen(str_in) > 11);
+    printf("*** LOG: Closing file\n");
     fclose(database);
     return true;
 }

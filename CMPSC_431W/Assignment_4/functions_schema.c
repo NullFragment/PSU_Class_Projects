@@ -15,23 +15,24 @@
 bool loadSchema(struct _table *table, char *schema_name)
 {
     // Set file name and open schema file
-    char *filename = calloc(1, strlen(schema_name));
-    memcpy(filename, schema_name, strlen(schema_name));
-    strcat(filename, ".schema");
-    if (access(filename, F_OK) == -1) return false;
-    FILE *schema = fopen(filename, "rb");
+    char *file_name = calloc(1, MAXLENOFFIELDNAMES + 8); /** ALLOCATE: FILE NAME */
+    strcat(file_name, schema_name);
+    strcat(file_name, ".schema");
+
+    // Exit out if schema file does not exist
+    if (access(file_name, F_OK) == -1) return false;
+
+    FILE *schema = fopen(file_name, "rb"); /** OPEN FILE: SCHEMA */
 
     // Initialize number of fields counter and buffer string
     int field_number = 0;
-    char *str_in = calloc(MAXINPUTLENGTH, sizeof(char));
+    char *str_in = calloc(MAXINPUTLENGTH, sizeof(char)); /** ALLOCATE: STR IN */
     fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
 
-    // Print log statements and initialize table metadata
-    printf("*** LOG: Loading table fields...\n");
+    // Initialize table metadata
     table->tableFileName = calloc(MAXLENOFFIELDNAMES, sizeof(char));
     strncpy(table->tableFileName, schema_name, MAXLENOFFIELDNAMES);
     strcat(table->tableFileName, ".bin");
-    printf("*** LOG: Table data name is [%s]\n", table->tableFileName);
     table->reclen = 0;
 
     // Start reading file string and read until end of file
@@ -46,52 +47,56 @@ bool loadSchema(struct _table *table, char *schema_name)
             strncpy(current_field->fieldType, strtok(NULL, " \n"), MAXLENOFFIELDTYPES);
             current_field->fieldLength = atoi(strtok(NULL, " \n"));
             table->reclen += current_field->fieldLength;
-            //printf("*** LOG: ADDING FIELD [%s] [%s] [%d]\n",
-            //       current_field->fieldName, current_field->fieldType, current_field->fieldLength);
             field_number++;
         }
         memset(str_in, 0, MAXINPUTLENGTH);
         fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
     } while (strlen(str_in) > 3);
-    fclose(schema);
-    free(str_in);
-    printf("*** LOG: Table schema name is [%s]\n", filename);
-    printf("*** LOG: END OF CREATE TABLE\n");
+    fclose(schema); /** CLOSE FILE: SCHEMA */
+    free(file_name); /** DEALLOCATE: FILE NAME */
+    free(str_in); /** DEALLOCATE: STR IN */
     return true;
 }
+
 /**
  * @brief Function saves SQL add calls and saves them to .schema file.
  * @param file_name - takes name of file to be used excluding file extension
  * @param buffer - pointer to buffer for stdin
  * @return
  */
-bool createSchema(char *file_name, char *buffer)
+bool createSchema(char *schema_name, char *buffer)
 {
-char *schema_name = calloc(1, strlen(file_name + 1));
-memcpy(schema_name, file_name, strlen(file_name));
-strcat(file_name, ".schema");
-/*
-// UNCOMMENT TO NOT OVERWRITE SCHEMA FILES
-if(access(filename, F_OK) == -1)
-{
-*/
-printf("*** LOG: Creating table...\n");
-FILE *schema = fopen(file_name, "wb+");
-memset(buffer, 0, MAXINPUTLENGTH);
-fgets(buffer, MAXINPUTLENGTH - 1, stdin);
-while (strncmp(buffer, "END", 3) != 0 && buffer != NULL)
-{
-fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
-memset(buffer, 0, MAXINPUTLENGTH);
-fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+    // Allocate memory for and create filename
+    char *file_name = calloc(1, MAXLENOFFIELDNAMES + 8); /** ALLOCATE: FILE NAME */
+    strcat(file_name, schema_name);
+    strcat(file_name, ".schema");
+
+//    if (access(file_name, F_OK) == -1) // UNCOMMENT TO NOT OVERWRITE SCHEMA FILES
+//    {
+
+    FILE *schema = fopen(file_name, "wb+"); /** OPEN FILE: SCHEMA */
+    memset(buffer, 0, MAXINPUTLENGTH);
+    fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+
+    // Start reading in schema structure and saving to file
+    trimwhitespace(buffer);
+    printf("===> %s\n", buffer);
+    while (strncmp(buffer, "END", 3) != 0 && buffer != NULL)
+    {
+        fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
+        memset(buffer, 0, MAXINPUTLENGTH);
+        fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+        trimwhitespace(buffer);
+        printf("===> %s\n", buffer);
+    }
+    printf("LENGTH: %d\n", strlen("END\n"));
+    fwrite("END\n", 4, 1, schema);
+    fclose(schema); /** CLOSE FILE: SCHEMA */
+    free(file_name); /** DEALLOCATE: FILE NAME */
+//    } // UNCOMMENT TO NOT OVERWRITE SCHEMA FILES
+
 }
-fclose(schema);
-struct _table table;
-/*
-// UNCOMMENT TO NOT OVERWRITE SCHEMA FILES
-}
-*/
-}
+
 
 /**
  * @brief - Parses through a given schema file and prints out records

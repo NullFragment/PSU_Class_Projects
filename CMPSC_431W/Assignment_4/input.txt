@@ -25,6 +25,7 @@ CREATE TABLE quotes
 ADD quote char 500
 ADD author char 50
 END
+
 LOAD TABLE quotes
 Theres nothing ill can dwell in such a temple.,William
 If the ill spirit have so fair a house Good things will strive to dwell with it.,Shakespeare

@@ -17,7 +17,6 @@ bool getRecord(int recnum, char *record, struct _table *table)
     return true;
 }
 
-
 void showRecord(struct _field *fields, char *record, int fieldcount)
 {
     int rec_loc = 0;
@@ -28,7 +27,6 @@ void showRecord(struct _field *fields, char *record, int fieldcount)
         rec_loc += fields[i].fieldLength;
     }
 }
-
 
 void selectRecord(struct _table *schema, char *fields)
 {

@@ -22,4 +22,5 @@ void trimwhitespace(char *to_trim)
         *j = 0;
         j--;
     }
+    strcat(j, "\n");
 }
