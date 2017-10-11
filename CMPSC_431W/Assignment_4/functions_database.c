@@ -4,6 +4,26 @@
 // #############################################################################
 // ### DATABASE FUNCTIONS
 // #############################################################################
+
+/**
+ * @brief deletes table and schema files of database
+ * @param schema_name
+ * @return
+ */
+bool dropTable(char *schema_name)
+{
+    char *schema_file = calloc(MAXLENOFFIELDNAMES, sizeof(char) + 7),
+            *database_file = calloc(MAXLENOFFIELDNAMES, sizeof(char) + 4);
+    strcat(schema_file, schema_name);
+    strcat(schema_file, ".schema");
+    strcat(database_file, schema_name);
+    strcat(database_file, ".bin");
+
+    remove(schema_file);
+    remove(database_file);
+
+}
+
 /**
  * @brief Saves data into a .schema file given a table structure for reference
  * @param table - pointer to table structure generated with loadSchema
@@ -53,9 +73,9 @@ bool loadDatabase(struct _table *table)
         printf("===> %s\n", str_in);
     } while (strncmp(str_in, "END", 3) != 0);
     fclose(database); /** CLOSE FILE: DATABASE */
-    free(current); /** DEALLOCATE: CURRENT */
-    free(database); /** DEALLOCATE: DATABASE*/
-    free(filename); /** DEALLOCATE: RECORD */
+    //free(current); /** DEALLOCATE: CURRENT */
+    //free(database); /** DEALLOCATE: DATABASE*/
+    //free(filename); /** DEALLOCATE: RECORD */
     free(str_in); /** DEALLOCATE: STR IN */
     free(record); /** DEALLOCATE: RECORD */
     return true;

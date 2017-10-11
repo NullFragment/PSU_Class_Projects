@@ -53,84 +53,25 @@ void trimwhitespace(char *to_trim)
     }
 }
 
-// #############################################################################
-// ### RECORD FUNCTIONS
-// #############################################################################
-
-
-bool getRecord(int recnum, char *record, struct _table *table)
+/**
+ * @brief Trims quotes from a given character array
+ * @param to_trim - pointer to array to trim whitespace from
+ */
+char *trimQuotes(char *to_trim)
 {
-    char *filename = table->tableFileName;
-    FILE *database;
-    database = fopen(filename, "rb");
-    fseek(database, recnum * (table->reclen), SEEK_SET);
-    fread(record, (size_t) table->reclen, 1, database);
-    fclose(database);
-    return true;
-}
-
-void showRecord(struct _field *fields, char *record, int fieldcount)
-{
-    int rec_loc = 0;
-    printf("----------- RECORD --------------\n");
-    for (int i = 0; i < fieldcount; i++)
+    char *j;
+    while (strncmp(to_trim, "\"", 1) == 0)
     {
-        printf("--- %s: [%s]\n", fields[i].fieldName, &record[rec_loc]);
-        rec_loc += fields[i].fieldLength;
+        to_trim++;
     }
-}
-
-void selectRecord(struct _table *schema, char *fields)
-{
-    // Initialize values
-    char *buffer = calloc(MAXINPUTLENGTH, 1);
-    int field_counter = 0;
-    int *field_numbers = calloc((unsigned) schema->fieldcount, sizeof(int));
-    char *field = strtok(fields, ",");
-    // Find all matching fields and create an array of their indices.
-    while (field != NULL)
+    size_t length = strlen(to_trim);
+    j = to_trim + length - 1;
+    while (strcmp(j, "\"") == 0)
     {
-        for (int i = 0; i < schema->fieldcount; i++)
-        {
-            if (strcmp(schema->fields[i].fieldName, field) == 0)
-            {
-                field_numbers[field_counter] = i;
-                field_counter++;
-                break;
-            }
-        }
-        field = strtok(NULL, ",");
+        *j = 0;
+        j--;
     }
-
-    // Open schema file and search through all records for wanted information
-    FILE *table = fopen(schema->tableFileName, "rb");
-    strtok(buffer, " \n\0");
-    fread(buffer, (unsigned) schema->fields[0].fieldLength, 1, table);
-    while (!feof(table))
-    {
-        for (int j = 0; j < field_counter; j++)
-        {
-            if (field_numbers[j] == 0)
-            {
-                printf("%s ", buffer);
-            }
-        }
-        for (int i = 1; i < schema->fieldcount; i++)
-        {
-            fread(buffer, (unsigned) schema->fields[i].fieldLength, 1, table);
-            for (int j = 0; j < field_counter; j++)
-            {
-                if (field_numbers[j] == i)
-                {
-                    printf("%s ", buffer);
-                }
-            }
-            memset(buffer, 0, MAXINPUTLENGTH);
-        }
-        printf("\n");
-        fread(buffer, (unsigned) schema->fields[0].fieldLength, 1, table);
-    }
-    fclose(table);
+    return to_trim;
 }
 
 // #############################################################################
@@ -152,14 +93,22 @@ bool loadSchema(struct _table *table, char *schema_name)
     strcat(file_name, ".schema");
 
     // Exit out if schema file does not exist
-    if (access(file_name, F_OK) == -1) return false;
+    if (access(file_name, F_OK) == -1)
+    {
+        // Read next line
+        fgets(schema_name, MAXINPUTLENGTH - 1, stdin);
+        trimwhitespace(schema_name);
+        printf("===> %s\n", schema_name);
+        printf("Table %s does not exist.\n", schema_name);
+        return false;
+    }
 
     FILE *schema = fopen(file_name, "rb"); /** OPEN FILE: SCHEMA */
 
     // Initialize number of fields counter and buffer string
     int field_number = 0;
     char *str_in = calloc(MAXINPUTLENGTH, sizeof(char)); /** ALLOCATE: STR IN */
-    fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
+    fread(str_in, MAXINPUTLENGTH, 1, schema);
 
     // Initialize table metadata
     table->tableFileName = calloc(MAXLENOFFIELDNAMES, sizeof(char));
@@ -183,8 +132,8 @@ bool loadSchema(struct _table *table, char *schema_name)
         }
         free(str_in);
         str_in = calloc(MAXINPUTLENGTH, sizeof(char));
-        fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
-    } while (strlen(str_in) > 3);
+        fread(str_in, MAXINPUTLENGTH, 1, schema);
+    } while (strncmp(str_in, "END", 3) != 0);
     fclose(schema); /** CLOSE FILE: SCHEMA */
     free(file_name); /** DEALLOCATE: FILE NAME */
     free(str_in); /** DEALLOCATE: STR IN */
@@ -249,6 +198,26 @@ void printSchema(struct _table *schema)
 // #############################################################################
 // ### DATABASE FUNCTIONS
 // #############################################################################
+
+/**
+ * @brief deletes table and schema files of database
+ * @param schema_name
+ * @return
+ */
+bool dropTable(char *schema_name)
+{
+    char *schema_file = calloc(MAXLENOFFIELDNAMES, sizeof(char) + 7),
+            *database_file = calloc(MAXLENOFFIELDNAMES, sizeof(char) + 4);
+    strcat(schema_file, schema_name);
+    strcat(schema_file, ".schema");
+    strcat(database_file, schema_name);
+    strcat(database_file, ".bin");
+
+    remove(schema_file);
+    remove(database_file);
+
+}
+
 /**
  * @brief Saves data into a .schema file given a table structure for reference
  * @param table - pointer to table structure generated with loadSchema
@@ -283,7 +252,7 @@ bool loadDatabase(struct _table *table)
             rec_loc += f_length; // Ensure next field is written at proper location
             current = strtok(NULL, ",");
         }
-        fwrite(record, record_length, 1, database);
+        fwrite(record, record_length - 1, 1, database);
         fwrite("\n", 1, 1, database);
         // Reset values to empty
         rec_loc = 0;
@@ -298,9 +267,159 @@ bool loadDatabase(struct _table *table)
         printf("===> %s\n", str_in);
     } while (strncmp(str_in, "END", 3) != 0);
     fclose(database); /** CLOSE FILE: DATABASE */
+    //free(current); /** DEALLOCATE: CURRENT */
+    //free(database); /** DEALLOCATE: DATABASE*/
+    //free(filename); /** DEALLOCATE: RECORD */
     free(str_in); /** DEALLOCATE: STR IN */
     free(record); /** DEALLOCATE: RECORD */
     return true;
+}
+
+// #############################################################################
+// ### RECORD FUNCTIONS
+// #############################################################################
+
+/**
+ * @brief finds all records in a given populated table
+ * @param schema - pointer to loaded schema
+ * @param fields - pointer to comma separated string of fields
+ * @param to_match - pointer to character of field to compare against for where clause
+ * @param condition - pointer to value to compare with for where clause
+ */
+void getRecord(struct _table *schema, char *fields, char *to_match, char *condition)
+{
+    // Initialize values
+    char *buffer = calloc(MAXINPUTLENGTH, 1);
+    int field_counter = 0, matching_field = -1;
+    bool where_check = false, print_flag = false;
+    int *field_numbers = calloc((unsigned) schema->fieldcount, sizeof(int));
+    char *field = strtok(fields, ",");
+
+    // Determine whether or not to check where clause
+    if (strlen(to_match) > 0)
+    {
+        where_check = true;
+    }
+
+    // Find all matching fields and create an array of their indices.
+    while (field != NULL)
+    {
+        for (int i = 0; i < schema->fieldcount; i++)
+        {
+            if (strcmp(schema->fields[i].fieldName, field) == 0)
+            {
+                field_numbers[field_counter] = i;
+                field_counter++;
+            }
+            if (where_check == true && matching_field < 0 && strcmp(schema->fields[i].fieldName, to_match) == 0)
+            {
+                matching_field = i;
+            }
+        }
+        field = strtok(NULL, ",");
+    }
+
+    // Open schema file and search through all records for wanted information
+    FILE *table = fopen(schema->tableFileName, "rb");
+    strtok(buffer, " \n\0");
+    while (!feof(table))
+    {
+        char *to_print = calloc(sizeof(char), MAXINPUTLENGTH);
+        for (int i = 0; i < schema->fieldcount; i++)
+        {
+            fread(buffer, (unsigned) schema->fields[i].fieldLength, 1, table);
+            trimwhitespace(buffer);
+            if (strlen(buffer) == 0) break;
+            for (int j = 0; j < field_counter; j++)
+            {
+                if (field_numbers[j] == i)
+                {
+                    trimwhitespace(buffer);
+                    strcat(to_print, buffer);
+                    strcat(to_print, " ");
+                }
+            }
+            if (where_check == true && i == matching_field && strcmp(buffer, condition) == 0)
+            {
+                print_flag = true;
+            }
+            memset(buffer, 0, MAXINPUTLENGTH);
+        }
+
+        if (strlen(to_print) > 0 && (print_flag == true || where_check == false))
+        {
+            printf("%s\n", to_print);
+            print_flag = false;
+        }
+        free(to_print);
+    }
+    fclose(table);
+}
+
+
+/**
+ * @brief creates a list of fields to select from a table and whether a where clause was included, then calls the
+ * appropriate function call.
+ * @param buffer - pointer to stdin
+ */
+bool selectRecord(char *buffer)
+{
+    char *cmd = strtok(NULL, ", ");
+    char *fields = calloc(MAXINPUTLENGTH, 1);
+    struct _table table;
+
+    // Read in comma delimited fields and reconstruct search field array.
+    while (cmd != NULL)
+    {
+        strncat(fields, cmd, MAXINPUTLENGTH - strlen(fields) - 1);
+        strcat(fields, ",");
+        cmd = strtok(NULL, ", ");
+    }
+
+    // Read next line
+    fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+    trimwhitespace(buffer);
+    printf("===> %s\n", buffer);
+    cmd = strtok(buffer, ", ");
+
+    // Load table if it exists, if not, break early
+    if (strcmp(cmd, "FROM") == 0)
+    {
+        cmd = strtok(NULL, " \n");
+        if (!loadSchema(&table, cmd)) return false;
+    }
+
+    // Read next line
+    fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+    trimwhitespace(buffer);
+    printf("===> %s\n", buffer);
+    cmd = strtok(buffer, ", ");
+
+    if (strcmp(cmd, "WHERE") == 0)
+    {
+        // Initialize fields
+        char *condition = calloc(MAXLENOFFIELDNAMES, sizeof(char)),
+                *field = calloc(MAXINPUTLENGTH, sizeof(char));
+
+        // Create field name and string to match for where clause
+        cmd = strtok(NULL, " ");
+        strncat(field, cmd, MAXLENOFFIELDNAMES);
+        cmd = strtok(NULL, " =");
+        cmd = trimQuotes(cmd);
+        strncat(condition, cmd, MAXINPUTLENGTH);
+
+        // Read next line
+        fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+        trimwhitespace(buffer);
+        printf("===> %s\n", buffer);
+
+        getRecord(&table, fields, field, condition);
+    }
+    else if (strcmp(cmd, "WHERE") != 0)
+    {
+        // Pass in fields to read without where clause info
+        getRecord(&table, fields, "", "");
+    }
 }
 
 // #############################################################################
@@ -319,35 +438,31 @@ void processCommand(char *buffer)
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, "\n");
         createSchema(cmd, buffer);
-    } else if (strcmp(cmd, "LOAD") == 0)
+    }
+    else if (strcmp(cmd, "LOAD") == 0)
     {
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, " \n");
-        struct _table table;
-        if (loadSchema(&table, cmd))
+        struct _table *table = (struct _table *) malloc(sizeof(struct _table));
+        if (loadSchema(table, cmd))
         {
-            //printSchema(&table);
-            loadDatabase(&table);
+            // printSchema(table);
+            loadDatabase(table);
         }
-    } else if (strcmp(cmd, "SELECT") == 0)
-    {
-        cmd = strtok(NULL, ", ");
-        char *fields = calloc(MAXINPUTLENGTH, 1);
-        while (strcmp(cmd, "FROM") != 0 && cmd != NULL)
-        {
-            strncat(fields, cmd, MAXINPUTLENGTH - strlen(fields) - 1);
-            strcat(fields, ",");
-            cmd = strtok(NULL, ", ");
-        }
-        if (strcmp(cmd, "FROM") == 0)
-        {
-            cmd = strtok(NULL, " \n");
-            struct _table table;
-            loadSchema(&table, cmd);
-            selectRecord(&table, fields);
-        }
-
+        memset(table, 0, sizeof(struct _table));
+        free(table);
     }
+    else if (strcmp(cmd, "SELECT") == 0)
+    {
+        selectRecord(buffer);
+    }
+    else if (strcmp(cmd, "DROP") == 0)
+    {
+        cmd = strtok(NULL, " ");
+        cmd = strtok(NULL, "\n");
+        dropTable(cmd);
+    }
+
 }
 
 int main()

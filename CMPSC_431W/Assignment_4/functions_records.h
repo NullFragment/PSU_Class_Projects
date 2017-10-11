@@ -5,6 +5,6 @@
 
 void getRecord(struct _table *schema, char *fields, char *to_match, char *condition);
 
-void selectRecord(char *buffer);
+bool selectRecord(char *buffer);
 
 #endif //ASSIGNMENT_4_FUNCTIONS_RECORDS_H

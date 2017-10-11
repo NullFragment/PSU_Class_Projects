@@ -6,7 +6,13 @@
 // ### RECORD FUNCTIONS
 // #############################################################################
 
-
+/**
+ * @brief finds all records in a given populated table
+ * @param schema - pointer to loaded schema
+ * @param fields - pointer to comma separated string of fields
+ * @param to_match - pointer to character of field to compare against for where clause
+ * @param condition - pointer to value to compare with for where clause
+ */
 void getRecord(struct _table *schema, char *fields, char *to_match, char *condition)
 {
     // Initialize values
@@ -31,7 +37,6 @@ void getRecord(struct _table *schema, char *fields, char *to_match, char *condit
             {
                 field_numbers[field_counter] = i;
                 field_counter++;
-                break;
             }
             if (where_check == true && matching_field < 0 && strcmp(schema->fields[i].fieldName, to_match) == 0)
             {
@@ -50,22 +55,25 @@ void getRecord(struct _table *schema, char *fields, char *to_match, char *condit
         for (int i = 0; i < schema->fieldcount; i++)
         {
             fread(buffer, (unsigned) schema->fields[i].fieldLength, 1, table);
+            trimwhitespace(buffer);
+            if (strlen(buffer) == 0) break;
             for (int j = 0; j < field_counter; j++)
             {
                 if (field_numbers[j] == i)
                 {
+                    trimwhitespace(buffer);
                     strcat(to_print, buffer);
                     strcat(to_print, " ");
                 }
-                if (where_check == true && field_numbers[j] == matching_field && strcmp(buffer, condition) == 0)
-                {
-                    print_flag = true;
-                }
+            }
+            if (where_check == true && i == matching_field && strcmp(buffer, condition) == 0)
+            {
+                print_flag = true;
             }
             memset(buffer, 0, MAXINPUTLENGTH);
         }
 
-        if (print_flag == true || where_check == false)
+        if (strlen(to_print) > 0 && (print_flag == true || where_check == false))
         {
             printf("%s\n", to_print);
             print_flag = false;
@@ -81,48 +89,62 @@ void getRecord(struct _table *schema, char *fields, char *to_match, char *condit
  * appropriate function call.
  * @param buffer - pointer to stdin
  */
-void selectRecord(char *buffer)
+bool selectRecord(char *buffer)
 {
     char *cmd = strtok(NULL, ", ");
     char *fields = calloc(MAXINPUTLENGTH, 1);
     struct _table table;
+
+    // Read in comma delimited fields and reconstruct search field array.
     while (cmd != NULL)
     {
         strncat(fields, cmd, MAXINPUTLENGTH - strlen(fields) - 1);
         strcat(fields, ",");
         cmd = strtok(NULL, ", ");
     }
+
+    // Read next line
     fgets(buffer, MAXINPUTLENGTH - 1, stdin);
     trimwhitespace(buffer);
     printf("===> %s\n", buffer);
     cmd = strtok(buffer, ", ");
+
+    // Load table if it exists, if not, break early
     if (strcmp(cmd, "FROM") == 0)
     {
         cmd = strtok(NULL, " \n");
-        loadSchema(&table, cmd);
+        if (!loadSchema(&table, cmd)) return false;
     }
+
+    // Read next line
     fgets(buffer, MAXINPUTLENGTH - 1, stdin);
     trimwhitespace(buffer);
     printf("===> %s\n", buffer);
     cmd = strtok(buffer, ", ");
+
     if (strcmp(cmd, "WHERE") == 0)
     {
-        fgets(buffer, MAXINPUTLENGTH - 1, stdin);
-        trimwhitespace(buffer);
-        printf("===> %s\n", buffer);
-        char *condition = calloc(MAXLENOFFIELDNAMES, sizeof(char))
-        , *field = calloc(MAXINPUTLENGTH, sizeof(char));
+        // Initialize fields
+        char *condition = calloc(MAXLENOFFIELDNAMES, sizeof(char)),
+                *field = calloc(MAXINPUTLENGTH, sizeof(char));
+
+        // Create field name and string to match for where clause
         cmd = strtok(NULL, " ");
         strncat(field, cmd, MAXLENOFFIELDNAMES);
         cmd = strtok(NULL, " =");
         cmd = trimQuotes(cmd);
-        strncat(condition, cmd, MAXLENOFFIELDNAMES);
-        getRecord(&table, fields, field, condition);
-    } else if (strcmp(cmd, "WHERE") != 0)
-    {
+        strncat(condition, cmd, MAXINPUTLENGTH);
+
+        // Read next line
         fgets(buffer, MAXINPUTLENGTH - 1, stdin);
         trimwhitespace(buffer);
         printf("===> %s\n", buffer);
+
+        getRecord(&table, fields, field, condition);
+    }
+    else if (strcmp(cmd, "WHERE") != 0)
+    {
+        // Pass in fields to read without where clause info
         getRecord(&table, fields, "", "");
     }
 }

@@ -19,22 +19,31 @@ void processCommand(char *buffer)
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, "\n");
         createSchema(cmd, buffer);
-    } else if (strcmp(cmd, "LOAD") == 0)
+    }
+    else if (strcmp(cmd, "LOAD") == 0)
     {
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, " \n");
-        struct _table *table = (struct _table*)malloc(sizeof(struct _table));
+        struct _table *table = (struct _table *) malloc(sizeof(struct _table));
         if (loadSchema(table, cmd))
         {
-            printSchema(table);
+            // printSchema(table);
             loadDatabase(table);
         }
         memset(table, 0, sizeof(struct _table));
         free(table);
-    } else if (strcmp(cmd, "SELECT") == 0)
+    }
+    else if (strcmp(cmd, "SELECT") == 0)
     {
         selectRecord(buffer);
     }
+    else if (strcmp(cmd, "DROP") == 0)
+    {
+        cmd = strtok(NULL, " ");
+        cmd = strtok(NULL, "\n");
+        dropTable(cmd);
+    }
+
 }
 
 int main()

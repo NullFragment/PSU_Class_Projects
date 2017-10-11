@@ -20,7 +20,15 @@ bool loadSchema(struct _table *table, char *schema_name)
     strcat(file_name, ".schema");
 
     // Exit out if schema file does not exist
-    if (access(file_name, F_OK) == -1) return false;
+    if (access(file_name, F_OK) == -1)
+    {
+        // Read next line
+        fgets(schema_name, MAXINPUTLENGTH - 1, stdin);
+        trimwhitespace(schema_name);
+        printf("===> %s\n", schema_name);
+        printf("Table %s does not exist.\n", schema_name);
+        return false;
+    }
 
     FILE *schema = fopen(file_name, "rb"); /** OPEN FILE: SCHEMA */
 
