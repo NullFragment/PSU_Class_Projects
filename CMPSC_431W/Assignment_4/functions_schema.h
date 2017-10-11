@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-bool loadSchema(struct _table *table, char *schema_name);
+bool loadSchema(struct _table *table, char *buffer);
 
 bool createSchema(char *file_name, char *buffer);
 
