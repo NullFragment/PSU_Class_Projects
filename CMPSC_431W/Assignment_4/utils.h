@@ -34,4 +34,6 @@ typedef enum
 
 void trimwhitespace(char *to_trim);
 
+char* trimQuotes(char *to_trim);
+
 #endif //ASSIGNMENT_4_UTILS_H

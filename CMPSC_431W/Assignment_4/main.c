@@ -26,29 +26,14 @@ void processCommand(char *buffer)
         struct _table *table = (struct _table*)malloc(sizeof(struct _table));
         if (loadSchema(table, cmd))
         {
-            //printSchema(&table);
+            printSchema(table);
             loadDatabase(table);
         }
         memset(table, 0, sizeof(struct _table));
         free(table);
     } else if (strcmp(cmd, "SELECT") == 0)
     {
-        cmd = strtok(NULL, ", ");
-        char *fields = calloc(MAXINPUTLENGTH, 1);
-        while (strcmp(cmd, "FROM") != 0 && cmd != NULL)
-        {
-            strncat(fields, cmd, MAXINPUTLENGTH - strlen(fields) - 1);
-            strcat(fields, ",");
-            cmd = strtok(NULL, ", ");
-        }
-        if (strcmp(cmd, "FROM") == 0)
-        {
-            cmd = strtok(NULL, " \n");
-            struct _table table;
-            loadSchema(&table, cmd);
-            selectRecord(&table, fields);
-        }
-
+        selectRecord(buffer);
     }
 }
 

@@ -27,7 +27,7 @@ bool loadSchema(struct _table *table, char *schema_name)
     // Initialize number of fields counter and buffer string
     int field_number = 0;
     char *str_in = calloc(MAXINPUTLENGTH, sizeof(char)); /** ALLOCATE: STR IN */
-    fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
+    fread(str_in, MAXINPUTLENGTH, 1, schema);
 
     // Initialize table metadata
     table->tableFileName = calloc(MAXLENOFFIELDNAMES, sizeof(char));
@@ -51,8 +51,8 @@ bool loadSchema(struct _table *table, char *schema_name)
         }
         free(str_in);
         str_in = calloc(MAXINPUTLENGTH, sizeof(char));
-        fread(str_in, MAXINPUTLENGTH - 1, 1, schema);
-    } while (strlen(str_in) > 3);
+        fread(str_in, MAXINPUTLENGTH, 1, schema);
+    } while (strncmp(str_in, "END", 3) != 0);
     fclose(schema); /** CLOSE FILE: SCHEMA */
     free(file_name); /** DEALLOCATE: FILE NAME */
     free(str_in); /** DEALLOCATE: STR IN */

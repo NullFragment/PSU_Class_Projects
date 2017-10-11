@@ -38,7 +38,7 @@ bool loadDatabase(struct _table *table)
             rec_loc += f_length; // Ensure next field is written at proper location
             current = strtok(NULL, ",");
         }
-        fwrite(record, record_length, 1, database);
+        fwrite(record, record_length - 1, 1, database);
         fwrite("\n", 1, 1, database);
         // Reset values to empty
         rec_loc = 0;

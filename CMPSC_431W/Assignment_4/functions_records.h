@@ -3,10 +3,8 @@
 
 #include "utils.h"
 
-bool getRecord(int recnum, char *record, struct _table *table);
+void getRecord(struct _table *schema, char *fields, char *to_match, char *condition);
 
-void showRecord(struct _field *fields, char *record, int fieldcount);
-
-void selectRecord(struct _table *schema, char *fields);
+void selectRecord(char *buffer);
 
 #endif //ASSIGNMENT_4_FUNCTIONS_RECORDS_H
