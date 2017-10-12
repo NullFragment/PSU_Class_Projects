@@ -62,6 +62,7 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
+zz_latex_templates/* linguist-vendored
 E_SC_407H/HW5/html/* linguist-vendored
 E_SC_407H/HW6/html/* linguist-vendored
 E_SC_407H/HW7/html/* linguist-vendored
