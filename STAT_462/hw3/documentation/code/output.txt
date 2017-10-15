@@ -1,0 +1,25 @@
+> ## Part A
+> quantiles
+   10%    25%    50%    75%    90% 
+ 79.65  84.75  90.90  99.05 105.40 
+> estimates
+     10%      25%      50%      75%      90% 
+10.85454 14.17711 18.18373 23.49333 27.63025 
+> 
+> ## Part B
+> plot(bfp_data$AbdomenC,bfp_data$SiriBFperc)
+> 
+> ## Part C
+> shapiro_reduced
+
+	Shapiro-Wilk normality test
+
+data:  lm_abdomen$residuals
+W = 0.99373, p-value = 0.3954
+
+> shapiro_full
+
+	Shapiro-Wilk normality test
+
+data:  lm_full$residuals
+W = 0.99087, p-value = 0.1271
