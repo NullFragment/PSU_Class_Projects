@@ -31,7 +31,7 @@ This repository contains code for projects for classes during my attendance at P
 * __E SC  THESIS:__ _(LaTeX)_ Engineering Science Capstone Research Thesis
     * Studies on the effects of fill density, size and print orientation on PLA and ABS 3D printed objects
 * __GAME  251:__ _(HTML, JavaScript, Construct2)_ 2D Game Programming
-    * Simple browser-based games made in JavaScript and Construct2
+    * Simple browser-based games made in JavaScript and Construct2. The final project, RicoShot, is available [here!](https://nullfragment.github.io/Ricoshot/ "RicoShot!")
 * __GAME  250:__ _(LaTeX, Game Design)_ Technical Game Development
     * Includes one-pagers and other game design documentation. Document context is explained by directory readme
     * Actual game design/programming was done through Unreal Tutorials for class
