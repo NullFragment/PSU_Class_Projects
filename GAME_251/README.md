@@ -1,6 +1,7 @@
 # Hello! Please read me for clarification. 
-## The sources for all of the assets used in the game are listed below. A copy of the game is available to play [here!](https://nullfragment.github.io/Ricoshot/ "RicoShot!") 
- 
+
+## RicoShot!
+Sources for the assets used in RicoShot are listed below. A copy of the game is available to play [here!](https://nullfragment.github.io/Ricoshot/ "RicoShot!") 
 * __Sprites:__ 
     * sgtcrispy: Floor Tiles 
         * <https://opengameart.org/content/colored-metal-tiles-1b> 
