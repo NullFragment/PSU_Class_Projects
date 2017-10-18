@@ -1,7 +1,9 @@
 # Hello! Please read me for clarification.
 ## Welcome to my class project/assignment code repository.
 
-This repository contains code for projects for classes during my attendance at Penn State consisting of various programming and scripting languages as well as LaTeX documents.
+This repository contains code for projects for classes during my attendance at Penn State consisting of various programming and scripting languages as well as LaTeX documents. 
+
+## __Unless otherwise specified within a directory's readme file, all work was completed solely by myself.__
 
 ### The breakdown of each course is as follows:
 * __COURSE:__ _(Language)_ Course Description
