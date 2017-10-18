@@ -1,0 +1,162 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% baposter Portrait Poster
+% LaTeX Template
+% Version 1.0 (15/5/13)
+%
+% Created by:
+% Brian Amberg (baposter@brian-amberg.de)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\title{GAME220 - Assignment X}
+\documentclass[archE1,portrait]{baposter}
+
+%841mm x 1189mm
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{relsize} % Used for making text smaller in some places
+\usepackage[urlcolor  = blue]{hyperref}
+\usepackage{outlines}
+\usepackage{tabularx}
+
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\definecolor{bordercol}{RGB}{5,2,82} % Border color of content boxes
+\definecolor{headercol1}{RGB}{5,2,82} % Background color for the header in the content boxes (left side)
+\definecolor{headercol2}{RGB}{5,2,82} % Background color for the header in the content boxes (right side)
+\definecolor{headerfontcol}{RGB}{255,255,255} % Text color for the header text in the content boxes
+\definecolor{boxcolor}{RGB}{255,255,255} % Background color for the content in the content boxes
+
+\begin{document}
+\newgeometry{top=.4in, bottom=.4in, left=.55in,right=.55in}
+\background{ % Set the background to an image (background.pdf)
+
+}
+
+\begin{poster}
+{
+	grid=false,
+	borderColor=bordercol, % Border color of content boxes
+	headerColorOne=headercol1, % Background color for the header in the content boxes (left side)
+	headerColorTwo=headercol1, % Background color for the header in the content boxes (right side)
+	headerFontColor=headerfontcol, % Text color for the header text in the content boxes
+	boxColorOne=boxcolor, % Background color for the content in the content boxes
+	headershape=roundedright, % Specify the rounded corner in the content box headers
+	headerfont=\Large\sf\bf, % Font modifiers for the text in the content box headers
+	textborder=rectangle,
+	background=user,
+	headerborder=open, % Change to closed for a line under the content box headers
+	boxshade=plain,
+	columns=4
+}
+{}
+%
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR NAME
+%----------------------------------------------------------------------------------------
+%
+%\vspace{2em}
+{
+%\newline
+\sf\bf Titan Arena} % Poster title
+{\vspace{.5em} Kyle Salitrik\\ % Author names
+% {\smaller kps168@psu.edu}\\
+% %\vspace{1em}
+% \underline{\url{http://moca.usc.edu}}
+%\vspace{1em}
+} % Author email addresses
+%
+
+
+
+%----------------------------------------------------------------------------------------
+%	GENRES
+%----------------------------------------------------------------------------------------
+
+\headerbox{Genres}{name=game_genre,span=4,column=0}
+{ 
+	\begin{tabularx}{\textwidth}{ X | X }
+	\underline{\textbf{Story:}} N/A, Gameplay-Driven & \underline{\textbf{Gameplay:}} First Person Shooter, Competition
+	\end{tabularx}
+	\vspace*{-.6\baselineskip}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	Intended Audience
+%----------------------------------------------------------------------------------------
+\headerbox{Intended Audience}{name=intended_audience,span=3,column=0, below=game_genre}
+{ 
+	Hardcore mobile gamers
+}
+
+%----------------------------------------------------------------------------------------
+%	Intended Platform
+%----------------------------------------------------------------------------------------
+\headerbox{Platforms:}{name=intended_platform,span=1,column=3, below=game_genre}
+{ 
+	Android \& iPhone
+}
+
+%----------------------------------------------------------------------------------------
+%	Summary
+%----------------------------------------------------------------------------------------
+
+\headerbox{Game Summary}{name=summary,column=0,row=0, span=4, below=intended_audience}
+{
+	\quad In this game, players battle titanic Bosses in a time trial arena. There are no health packs, power ups or advancement mechanics. Only player skill matters in this game.
+}
+
+%----------------------------------------------------------------------------------------
+%	Narrative
+%----------------------------------------------------------------------------------------
+
+\headerbox{Narrative Summary}{name=narrative,column=0,row=0, span=4, below=summary}
+{
+	\quad As a gameplay-driven game, the narrative is minimal. Contestants have been picked to enter the arena and challenge the Titans inside. Only those who survive the battle live to tell their tales and continue on to the next challenge.
+}
+
+%----------------------------------------------------------------------------------------
+%	Game Outline
+%----------------------------------------------------------------------------------------
+
+\headerbox{Gameplay Outline}{name=outline,column=0,row=0, span=4, below=narrative}
+{
+	\quad After a brief tutorial, players are given a few options of Titans to battle once they begin the game. When they start a battle, the start time is logged with the server and when they defeat a Titan, the end time is sent and a total time in battle is displayed on a Leaderboard per Titan. Titans are set up in tiers: each tier contains 2-3 unlocked titans, defeating those Titans will grant a piece of the key to unlock the next tier as well as unlock another 1 or 2 Titans to defeat on the current tier. Each consecutive Tier will require more Titans to be defeated to gain the key to the next tier.
+	
+	\quad Each Titan will have unique weak spots and battle mechanics, as well as a unique level layout. Environmental hazards and morphing level layouts will challenge even the most competent players.
+	
+}
+
+%----------------------------------------------------------------------------------------
+%	USP
+%----------------------------------------------------------------------------------------
+
+\headerbox{Mechanics Breakdown}{name=USPs,span=4,column=0,below=outline}
+{ 
+	\begin{outline}
+		\1 Titan Selection
+			\2 Each tier will have a unique series of titans for players to defeat
+			\2 Not all titans will have to be defeated to proceed to the next tier
+				\3 Ex: Tier 1 -> Tier 2 will require 3 titans to be defeated, but Tier 2 -> Tier 3 will require 5
+			\2 Every time an initially unlocked titan is defeated, more titans on that tier are unlocked.
+		\1 Leaderboards
+			\2 Time taken to defeat a titan will be recorded by an external server in order to prevent hacking.
+			\2 Leaderboards will display time that the player took to defeat the titan as well as their final health.
+			\2 Weekly challenges will be issued in order to keep players engaged
+				\3 Ex: Last the longest in the arena with a specific titan before defeating it
+				\3 Ex: Defeat a specific titan with 100\% health remaining and the fastest time
+	\end{outline}
+}
+\end{poster}
+
+\end{document}

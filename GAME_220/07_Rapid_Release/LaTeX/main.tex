@@ -1,0 +1,379 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The Legrand Orange Book
+% LaTeX Template
+% Version 2.1.1 (14/2/16)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Mathias Legrand (legrand.mathias@gmail.com) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% Compiling this template:
+% This template uses biber for its bibliography and makeindex for its index.
+% When you first open the template, compile it from the command line with the 
+% commands below to make sure your LaTeX distribution is configured correctly:
+%
+% 1) pdflatex main
+% 2) makeindex main.idx -s StyleInd.ist
+% 3) biber main
+% 4) pdflatex main x 2
+%
+% After this, when you wish to update the bibliography/index use the appropriate
+% command above and make sure to compile with pdflatex several times 
+% afterwards to propagate your changes to the document.
+%
+% This template also uses a number of packages which may need to be
+% updated to the newest versions for the template to compile. It is strongly
+% recommended you update your LaTeX distribution if you have any
+% compilation errors.
+%
+% Important note:
+% Chapter heading images should have a 2:1 width:height ratio,
+% e.g. 920px width and 460px height.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,fleqn]{book} % Default font size and left-justified equations
+
+%----------------------------------------------------------------------------------------
+
+\input{structure} % Insert the commands.tex file which contains the majority of the structure behind the template
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\coordinate [below=12cm] (midpoint) at (current page.north);
+\node at (current page.north west)
+{\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north west,inner sep=0pt] at (0,0) {\includegraphics[width=\paperwidth]{background3.png}}; % Background image
+\draw[anchor=north] (midpoint) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Rapid Release!\\[15pt] % Book title
+{\Large Game Design Document}\\[20pt] % Subtitle
+{\huge Kyle Salitrik}}}; % Author name
+\end{tikzpicture}};
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+%\noindent Copyright \copyright\ 2017 Kyle Salitrik\\ % Copyright notice
+
+%\noindent \textsc{Published by Publisher}\\ % Publisher
+
+%\noindent \textsc{book-website.com}\\ % URL
+
+\noindent Licensed under the Creative Commons Attribution-NonCommercial 3.0 Unported License (the ``License''). You may not use this file except in compliance with the License. You may obtain a copy of the License at \url{http://creativecommons.org/licenses/by-nc/3.0}. Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \textsc{``as is'' basis, without warranties or conditions of any kind}, either express or implied. See the License for the specific language governing permissions and limitations under the License.\\ % License information
+
+%\noindent \textit{First printing, March 2013} % Printing/edition date
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+%\usechapterimagefalse % If you don't want to include a chapter image, use this to toggle images off - it can be enabled later with \usechapterimagetrue
+
+\chapterimage{gears_borderless.png} % Table of contents heading image
+
+\pagestyle{empty} % No headers
+
+\tableofcontents % Print the table of contents itself
+
+\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	PART
+%----------------------------------------------------------------------------------------
+
+\part{Game Information}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 1
+%----------------------------------------------------------------------------------------
+
+\chapterimage{gears_borderless.png} % Chapter heading image
+
+\chapter{Game Overview}\index{GameOverview}
+
+\section{Introduction}\index{Introduction}
+
+Rapid Release! is a side-scrolling shooter and satirical game that reflects the greed of modern AAA developers that simply want to release as many games as possible in order to make as much money as possible, rather than provide quality and contribute to the advancement of the video gaming medium.
+\vspace{-\baselineskip}
+
+%------------------------------------------------
+\section{Game Summary}\index{GameSummary}
+
+\quad When players start the game, the 'chapter' they pick to play is displayed as a new game release with it's own cover-art. As players progress, each release starts to come after fewer and fewer levels until the releases are only a single level differentiated by a new number and randomized color scheme. The levels in each game will be fairly short in order to be completed in a reasonable time-frame. The purpose of the game is to shed light on the downsides of quickly releasing sequels to popular titles and the lack of innovation that comes from it.
+\vspace{-\baselineskip}
+
+%------------------------------------------------
+\section{Game Genre}\index{GameGenre}
+
+The gameplay can be classified as a side-scrolling shooter and the 'story' is satire.la
+%------------------------------------------------
+\section{Game Features / Mechanics Summary}\index{GameFeatures}
+\begin{flushleft}
+	\begin{outline}
+		\1 \textbf{First Release}
+			\2 The first release will have simple move left, move right, jump and shoot controls and consists of two levels and a black and white color scheme.
+			\2 The first level contains only patrolling enemies that shoot towards the player.
+			\2 The second level contains the patrolling enemies and a new bomber style enemy.
+		\1 \textbf{Second Release}
+			\2 The second release introduces weapon powerups that have limited shots and modify the actual way the weapon fires.
+				\3 Shotgun spread, rapid fire, etc.
+			\2 The color scheme changes to a 16-bit color scheme and there is new, significantly different cover art.
+			\2 The second release consists of 3 levels.
+				\3 A third type of enemy is introduced: disguised. They appear as a piece of the environment and start to attack after the player has passed.
+		\1 \textbf{Third release Release}
+			\2 The third release adds in the ability to carry two weapons and changes to a 32-bit color scheme with new cover art.
+			\2 In this release, four levels are included.
+			\2 Players can also now pick up power-ups such as double jump, temporary invulnerability and others.
+		\1 \textbf{Fourth+ Release}
+			\2 The fourth release and further on have exactly the same gameplay, levels, and mechanics  as the third release
+			\2 Differences for the fourth release and beyond:
+				\3 Each subsequent release has one less level (until the 6th release and beyond having one level).
+				\3 The only difference with the cover art is that the colors are randomized and the number increases.
+				\3 Each release has a color-shift overlay that is randomized for each release.
+		\1 Random colors are generated based on the username of the player and all color changes for sprites are created using color-shifting overlays on the graphics instead of recoloring each sprite.
+		\1 Title Music between each release changes until the 4th release.
+	\end{outline}
+\end{flushleft}
+
+\vspace{-\baselineskip}
+
+%------------------------------------------------
+\section{Game Flow}\index{GameFlow}
+\begin{center}
+		\includegraphics[width=.9\textwidth]{RapidRelease.png}
+\end{center}
+\vspace{-\baselineskip}
+
+%------------------------------------------------
+\section{Intended Platforms}\index{IntendedPlatforms}
+
+Target platforms are Steam and itch.io.
+
+%------------------------------------------------
+\section{Artistic Style}\index{ArtisticStyle}
+
+The art in the game will consist of pixel-art.
+
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 2
+%----------------------------------------------------------------------------------------
+
+%\chapter{Gameplay}\index{Gameplay}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	PART
+%----------------------------------------------------------------------------------------
+
+\part{Assets}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 3
+%----------------------------------------------------------------------------------------
+
+\chapterimage{gears_borderless.png} % Chapter heading image
+
+\chapter{Art Assets}\index{ArtAssets}
+\section{Concept Art}
+	\subsection{Stage Concept}
+		\includegraphics[width=\textwidth]{EnvironmentConcept.png}
+%------------------------------------------------
+
+\section{Cover Art}
+	\includegraphics[width=\textwidth]{CoverArt.png}
+%------------------------------------------------
+\newpage
+\section{Character Art Asset List}\index{CharacterArt}
+	\begin{longtabu} to \textwidth {X[ 1 , c ] |[1.5pt]  X[ 3 , l ]}
+		\rowfont[c]\bfseries
+		Character  & Asset Description  \\ \tabucline[2pt] -
+		\multirow{6}{*}{Player Character}  & Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Walking Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Running Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Shooting Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Jumping Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Jumping and Shooting Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{3}{*}{Bomber Enemy}  & Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Flying Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Bomb Drop Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{4}{*}{Patrolling Enemy}  & Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Walking Animation 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Running Animation 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Shooting Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{4}{*}{Disguised Enemy}  & Environment Sprite 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Walking Animation 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Running Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Shooting Animation
+			\\ \tabucline[2pt]-
+	\end{longtabu}
+\newpage
+%------------------------------------------------
+\section{Environment Art Asset List}\index{Environments}
+	\begin{longtabu} to \textwidth {X[ 1 , c ] |[1.5pt]  X[ 2 , l ]}
+		\rowfont[c]\bfseries
+		Environment  & Model Description  \\ \tabucline[2pt] -
+		\multirow{7}{*}{Universal}  & Metal Platform Tile
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Tree 1
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Tree 2
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Grass Platform Tile 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Animated Water Tile 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Oil Drum 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Map Overview
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{3}{*}{Release 1 Additions}  & Release 1 Background
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Release 1 Cover Art
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Stacked Tires
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Release 2 Additions}  & Release 2 Background
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Release 2 Cover Art
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Rusted Metal Platform
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Shotgun Powerup
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Rapid Fire Powerup 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Grenade Launcher Powerup 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Flamethrower Powerup 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Map Overview
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Release 3 Additions}  & Release 3 Background
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Release 3 Cover Art
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Double Jump Powerup
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Invulnerability Powerup 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Infinite Ammo Powerup 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& All Guns Rapid Fire Powerup 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Map Overview
+			\\ \tabucline[2pt]-
+	\end{longtabu}
+
+
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 4
+%----------------------------------------------------------------------------------------
+\chapter{Audio Assets}\index{Audio Assets}
+
+\section{Sound Effect List}\index{Sound Effects}
+\begin{flushleft}
+	\begin{outline}
+		\1 Rifle Firing
+		\1 Grenade Launcher Firing
+		\1 Shotgun Firing
+		\1 Flamethrower Firing
+		\1 Gun Pickup
+		\1 Enemy Hit
+		\1 Enemy Dies
+		\1 Player Hit
+		\1 Player Dies
+		\1 Walking Sound
+		\1 Running Sound
+		\1 Jumping Sound
+	\end{outline}
+\end{flushleft}
+%------------------------------------------------
+
+\section{Music Asset List}\index{Music}
+\begin{flushleft}
+	\begin{outline}
+		\1 Release 1 Title Music
+		\1 Release 2 Title Music
+		\1 Release 3 Title Music
+		\1 Release 4+ Title Music
+	\end{outline}
+\end{flushleft}
+%------------------------------------------------
+
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+%
+%\chapter*{Bibliography}
+%\addcontentsline{toc}{chapter}{\textcolor{ocre}{Bibliography}}
+%\section*{Books}
+%\addcontentsline{toc}{section}{Books}
+%\printbibliography[heading=bibempty,type=book]
+%\section*{Articles}
+%\addcontentsline{toc}{section}{Articles}
+%\printbibliography[heading=bibempty,type=article]
+
+%----------------------------------------------------------------------------------------
+%	INDEX
+%----------------------------------------------------------------------------------------
+
+%\cleardoublepage
+%\phantomsection
+%\setlength{\columnsep}{0.75cm}
+%\addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+%\printindex
+%
+%----------------------------------------------------------------------------------------
+
+\end{document}

@@ -1,0 +1,161 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% baposter Portrait Poster
+% LaTeX Template
+% Version 1.0 (15/5/13)
+%
+% Created by:
+% Brian Amberg (baposter@brian-amberg.de)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\title{GAME220 - Assignment 4 - Letters}
+\documentclass[archE1,portrait]{baposter}
+
+%841mm x 1189mm
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{relsize} % Used for making text smaller in some places
+\usepackage[urlcolor  = blue]{hyperref}
+\usepackage{outlines}
+\usepackage{tabularx}
+
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\definecolor{bordercol}{RGB}{5,2,82} % Border color of content boxes
+\definecolor{headercol1}{RGB}{5,2,82} % Background color for the header in the content boxes (left side)
+\definecolor{headercol2}{RGB}{5,2,82} % Background color for the header in the content boxes (right side)
+\definecolor{headerfontcol}{RGB}{255,255,255} % Text color for the header text in the content boxes
+\definecolor{boxcolor}{RGB}{255,255,255} % Background color for the content in the content boxes
+
+\begin{document}
+\newgeometry{top=.4in, bottom=.4in, left=.55in,right=.55in}
+\background{ % Set the background to an image (background.pdf)
+
+}
+
+\begin{poster}
+{
+	grid=false,
+	borderColor=bordercol, % Border color of content boxes
+	headerColorOne=headercol1, % Background color for the header in the content boxes (left side)
+	headerColorTwo=headercol1, % Background color for the header in the content boxes (right side)
+	headerFontColor=headerfontcol, % Text color for the header text in the content boxes
+	boxColorOne=boxcolor, % Background color for the content in the content boxes
+	headershape=roundedright, % Specify the rounded corner in the content box headers
+	headerfont=\Large\sf\bf, % Font modifiers for the text in the content box headers
+	textborder=rectangle,
+	background=user,
+	headerborder=open, % Change to closed for a line under the content box headers
+	boxshade=plain,
+	columns=4
+}
+{}
+%
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR NAME
+%----------------------------------------------------------------------------------------
+%
+%\vspace{2em}
+{
+%\newline
+\sf\bf Letter} % Poster title
+{\vspace{.5em} Kyle Salitrik\\ % Author names
+% {\smaller kps168@psu.edu}\\
+% %\vspace{1em}
+% \underline{\url{http://moca.usc.edu}}
+%\vspace{1em}
+} % Author email addresses
+%
+
+
+
+%----------------------------------------------------------------------------------------
+%	GENRES
+%----------------------------------------------------------------------------------------
+
+\headerbox{Genres}{name=game_genre,span=4,column=0}
+{ 
+	\begin{tabularx}{\textwidth}{ X | X }
+	\underline{\textbf{Story:}} Mystery, Investigation & \underline{\textbf{Gameplay:}} First person Puzzle Solving
+	\end{tabularx}
+	\vspace*{-.6\baselineskip}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	Intended Audience
+%----------------------------------------------------------------------------------------
+\headerbox{Intended Audience}{name=intended_audience,span=3,column=0, below=game_genre}
+{ 
+	Fans of mystery/puzzle games, 16+ due to complexity/patience.
+}
+
+%----------------------------------------------------------------------------------------
+%	Intended Platform
+%----------------------------------------------------------------------------------------
+\headerbox{Platforms:}{name=intended_platform,span=1,column=3, below=game_genre}
+{ 
+	Mobile (iOS/Android)
+}
+
+%----------------------------------------------------------------------------------------
+%	Summary
+%----------------------------------------------------------------------------------------
+
+\headerbox{Game Summary}{name=summary,column=0,row=0, span=4, below=intended_audience}
+{
+	\quad  Players enter the world and in front of them is a desk cluttered with objects, however one stands out in particular. Centered on the desktop with a slight buffer from the mess is a single letter covered in cryptic writing and symbols. The protagonist rambles on for a few moments about his obsession with the letter and trying to find the "ultimate truth" that the letter supposedly holds by solving its mysteries.
+}
+
+%----------------------------------------------------------------------------------------
+%	Game Outline
+%----------------------------------------------------------------------------------------
+
+\headerbox{Gameplay Outline}{name=outline,column=0,row=0, span=4, below=summary}
+{
+	\quad During this game the player is confined to a single room. While the protagonist is in the confines of the room, the player is in control of their actions. However, the protagonist is free to get up and leave at any time and will do so during certain events or after a prolonged period of playtime. During these events, the protagonist will 'detach' from the player and freely roam the world for various reasons, leaving the player with the opportunity to look around the room and observe the environment. 
+	
+	\quad Because the target is a mobile-gaming audience, the amounts of time that the protagonist is detached can vary from seconds to hours. This mechanic adds a bit of spontaneity and prolongs gameplay. It also helps to give players a feeling that they are there helping the protagonist along and not just constantly solving puzzles.
+	
+	\quad The letter that the game centers around is full of hints for the player to explore the room and find solutions to the riddles/challenges. As the player solves the riddles and puzzles the room layout, letter's contents, and available tools can change, providing new obstacles to overcome.
+	
+}
+
+%----------------------------------------------------------------------------------------
+%	USP
+%----------------------------------------------------------------------------------------
+
+\headerbox{Mechanics Breakdown}{name=USPs,span=4,column=0,below=outline}
+{ 
+	\begin{outline}
+		\1 The Letter's importance
+			\2 The letter is the only way to progress the story by solving the riddles it provides.
+				\3 Puzzles/riddles will be solved by different simple interactions, such as rearranging books on the bookshelf, activating hidden buttons, solving number puzzles, etc.
+			\2 When a puzzle is solved, the letter's contents will change, providing a new challenge for the player.
+			\2 Certain solutions will cause the room to change.
+				\3 Trap doors will open for the protagonist to investigate, hidden compartments will be found, etc.
+		\1 While in control of the protagonist, players can:
+			\2 Use a set of tools that are provided on the desk to examine the letter and try to solve the riddles.
+			\2 Freely move around the room, gain clues, and progress the story.
+			\2 Coax the protagonist to investigate areas within the room opened by story progression.
+		\1 Protagonist Mechanics
+			\2 When not in control of the protagonist, players are only able to observe the room and the outside world through the windows/doors.
+			\2 Sometimes when the protagonist returns to the room he will bring back new investigation tools that the player can use.
+			\2 The protagonist may leave for various reasons:
+				\3 Solution of some riddles or mini-puzzles will send him out.
+				\3 Playing for an extended period will cause him to need rest.
+				\3 Various daily tasks such as eating, etc.
+	\end{outline}
+}
+
+\end{poster}
+\end{document}

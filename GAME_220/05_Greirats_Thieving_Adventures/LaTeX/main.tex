@@ -1,0 +1,488 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The Legrand Orange Book
+% LaTeX Template
+% Version 2.1.1 (14/2/16)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Mathias Legrand (legrand.mathias@gmail.com) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% Compiling this template:
+% This template uses biber for its bibliography and makeindex for its index.
+% When you first open the template, compile it from the command line with the 
+% commands below to make sure your LaTeX distribution is configured correctly:
+%
+% 1) pdflatex main
+% 2) makeindex main.idx -s StyleInd.ist
+% 3) biber main
+% 4) pdflatex main x 2
+%
+% After this, when you wish to update the bibliography/index use the appropriate
+% command above and make sure to compile with pdflatex several times 
+% afterwards to propagate your changes to the document.
+%
+% This template also uses a number of packages which may need to be
+% updated to the newest versions for the template to compile. It is strongly
+% recommended you update your LaTeX distribution if you have any
+% compilation errors.
+%
+% Important note:
+% Chapter heading images should have a 2:1 width:height ratio,
+% e.g. 920px width and 460px height.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,fleqn]{book} % Default font size and left-justified equations
+
+%----------------------------------------------------------------------------------------
+
+\input{structure} % Insert the commands.tex file which contains the majority of the structure behind the template
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\coordinate [below=12cm] (midpoint) at (current page.north);
+\node at (current page.north west)
+{\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north west,inner sep=0pt] at (0,0) {\includegraphics[width=\paperwidth]{background3.png}}; % Background image
+\draw[anchor=north] (midpoint) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Greirat's Theiving Adventures: A Dark Souls Story\\[15pt] % Book title
+{\Large Game Design Document}\\[20pt] % Subtitle
+{\huge Kyle Salitrik}}}; % Author name
+\end{tikzpicture}};
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+%\noindent Copyright \copyright\ 2017 Kyle Salitrik\\ % Copyright notice
+
+%\noindent \textsc{Published by Publisher}\\ % Publisher
+
+%\noindent \textsc{book-website.com}\\ % URL
+
+\noindent Licensed under the Creative Commons Attribution-NonCommercial 3.0 Unported License (the ``License''). You may not use this file except in compliance with the License. You may obtain a copy of the License at \url{http://creativecommons.org/licenses/by-nc/3.0}. Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \textsc{``as is'' basis, without warranties or conditions of any kind}, either express or implied. See the License for the specific language governing permissions and limitations under the License.\\ % License information
+
+%\noindent \textit{First printing, March 2013} % Printing/edition date
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+%\usechapterimagefalse % If you don't want to include a chapter image, use this to toggle images off - it can be enabled later with \usechapterimagetrue
+
+\chapterimage{gears_borderless.png} % Table of contents heading image
+
+\pagestyle{empty} % No headers
+
+\tableofcontents % Print the table of contents itself
+
+\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	PART
+%----------------------------------------------------------------------------------------
+
+\part{Game Information}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 1
+%----------------------------------------------------------------------------------------
+
+\chapterimage{gears_borderless.png} % Chapter heading image
+
+\chapter{Game Overview}\index{GameOverview}
+
+\section{Introduction}\index{Introduction}
+
+Greirat's Theiving Adventures is a rogue-like stealth platforming game set in the world of the Souls series and follows an the exploits of an undying thief, Greirat, as he scours the world for treasures that will soon be his, set before the events of Dark Souls III. It is not for the weak of heart. Going Hollow has dire consequences!
+
+%------------------------------------------------
+\section{Game Summary}\index{GameSummary}
+
+\quad You take the role of Greirat, the Thief as he goes on quests to aid the Undead Settlement by stealing resources from those more fortunate. From scaling the Great Wall of Lothric, to spelunking in the Cathedral of the Deep, take a new look at the world of Dark Souls III before the Unkindled arrive. Using your wits and the shadows, navigate through the mazes of the world and avoid being caught. Remember, you're a thief, not a knight! Combat is not your forte so you should avoid it at all costs.
+
+\quad Every time you return to the Settlement and bring back new treasures for everyone, your bond with Loretta grows stronger.  The stronger your bond, the longer you can stay out and pillage, but of you are gone for too long, she will go Hollow.  However, if you fail to bring back enough for the village, you will start to Hollow. You must work quickly to prevent that from happening, but being too hasty will get you into some serious trouble!
+	
+\quad Various enemies litter the land from Hollowed soldiers to the elite Lothric Knights with one common goal: to get rid of you. The Blue Tearstone ring you wear can only do so much to protect you, though. You can keep running around after a few scratches, but it won't stop you from losing your head! Luckily for you, being one of the undead has it's perks: being stabbed in the heart is a minor setback. You'll rise to tackle the challenge again. What you really have to watch out for are the Jailers. You can only get caught once before it's all over, and Loretta will never see you again!
+
+%------------------------------------------------
+\section{Game Genre}\index{GameGenre}
+
+The gameplay takes inspiration from Metroidvania style progression and platforming where players must obtain new skills or equipment and revisit areas in order to continue progression. It combines this gameplay with stealth platforming elements with minimal combat in order to give players a sense of perspective and helplessness that the character they are playing isn't made for fighting.
+
+%------------------------------------------------
+\section{Game Features / Mechanics Summary}\index{GameFeatures}
+
+\begin{outline}
+	\1 \textbf{Quests}
+		\2 Players will be presented with an option of three (out of 6 total) locations with the following goals:
+			\3 Total item worth (in number of Souls) that will be tracked in the UI. Each item stolen is worth a set amount.
+			\3 Time limit to complete the task. Time will also be tracked in the UI.
+		\2 After a set number of generated quests, players will be required to complete a story quest that has no time limit or thieving goal, but requires them to steal a single object that is heavily guarded.
+	\1 \textbf{Rogue-Like Aspects}
+		\2 Although the game is rogue-like as long as no failure conditions are met, players may save their progress.
+		\2 The game will end and the save will be deleted under the following conditions:
+			\3 Greirat or Loretta go Hollow.
+			\3 Greirat is detained by a Jailer
+	\1 \textbf{Stealth}
+		\2 Players use shadows to stop from being seen by enemies, indicated by Greirat turning from a colored sprite into a black silhouette with white glowing eyes.
+		\2 Greirat can create timed diversions to lure enemies away.
+		\2 Greirat can also set traps in order to imprison or slow enemies.
+	\1 \textbf{Hollowing}
+		\2 Failing to meet the thievery goal causes Greirat to gain Hollowing points proportional to the amount of souls missed.
+		\2 Going over the time limit causes Loretta to gain Hollowing points. If players successfully return under the time limit, the bond between Loretta and Greirat increases, allowing players to have more time on other quests.
+	\1 Upgrades / Abilities
+		\2 Abilities will be discovered through Gameplay and picked up on quests. Quests will note if certain abilities or required to complete them.
+		\2 Players will be able to upgrade Greirat's abilities using souls gained from completing quests.
+\end{outline}
+\vspace{-\baselineskip}
+
+%------------------------------------------------
+\section{Game Flow}\index{GameFlow}
+	\subsection{Story}
+		\includegraphics[width=\textwidth]{StoryQuests.png}
+	\subsection{Locations}
+		\includegraphics[width=\textwidth]{Locations.png}
+	\subsection{Abilities}
+		\includegraphics[width=\textwidth]{Abilities.png}
+
+%------------------------------------------------
+\section{Intended Platforms}\index{IntendedPlatforms}
+
+Target platforms are Steam, PlayStation 4 Stores, and the Xbox One Store.
+\newpage
+%------------------------------------------------
+\section{Characters and Enemies}\index{CharactersEnemies}
+
+\begin{center}
+	\begin{longtabu} to \textwidth {X[ 1 , c ] |[1.5pt]  X[ 3 , l ]}
+		\rowfont[c]\bfseries
+		Character  & Description  \\ \tabucline[2pt] -
+		Greirat of the Undead Settlement & The main character. One of the Undying. He is a well known, but humble, thief who steals for the less fortunate. Once a slave of Lothric Kingdom, he learned the ins-and-outs of the Castle and other territories he now pillages. He carries with him a Blue Tearstone Ring that is capable of protecting its wearer from certain death, although combat is not his strong suit. Stealing for the less fortunate helps Greirat from going Hollow.
+			\\ \tabucline[1pt on 1.5pt off 2pt] -
+		Loretta &  The love of Greirat and villager of the Undead Settlement. Her love for Greirat and his presence keeps her from going Hollow and dying.
+			\\ \tabucline[1pt on 1.5pt off 2pt] -
+		Lothric Knights & Elite enemies that will aggressively attempt kill Greirat on-sight and will pursue him up and down platforms unless he is able to hide in shadows. They pursue Greirat quickly and are impervious to damage from him.
+			\\ \tabucline[1pt on 1.5pt off 2pt] -
+		Hollow Soldiers & Undead soldiers who have gone hollow. They will pursue Greirat if spotted, but will stop pursuit if he moves out of their sight range or escapes vertically. They move at a medium speed, and if there is no escape possible, Greirat can kill them.
+			\\ \tabucline[1pt on 1.5pt off 2pt] -
+		Lothric Jailers & Jailers will impose status effects on Greirat, such as slowing him down, and if they catch up to him will imprison him.
+			\\ \tabucline[2pt]-
+	\end{longtabu}
+\end{center}
+
+%------------------------------------------------
+\section{Artistic Style}\index{ArtisticStyle}
+
+The artistic style will ideally be dark, Gothic, vector art. Monotonic color palates should be used for characters and settings in order to provide a feel similar to that of Souls games. Any use of bright color should be restricted to highlight story quest items. Cutscenes will be text-based in JRPG-style with characters in static poses flipping between foreground and background to signify who is speaking.
+
+\quad The UI during gameplay will be minimalistic, where the only elements are the timer and soul counter on regular quests and nothing on story quests in order to provide an immersive feel.  Damage to Greirat will be represented by him moving slower, breathing louder, and damage appearing on his person. While in the Undead Settlement, the UI will consist of menus in order to navigate the Upgrade store, Quest selection, dialogue with Loretta, Save the game or Quit.
+
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 2
+%----------------------------------------------------------------------------------------
+
+%\chapter{Gameplay}\index{Gameplay}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	PART
+%----------------------------------------------------------------------------------------
+
+\part{Assets}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 3
+%----------------------------------------------------------------------------------------
+
+\chapterimage{gears_borderless.png} % Chapter heading image
+
+\chapter{Art Assets}\index{ArtAssets}
+%------------------------------------------------
+\section{Character Art Asset List}\index{CharacterArt}
+	\begin{longtabu} to \textwidth {X[ 1 , c ] |[1.5pt]  X[ 3 , l ]}
+		\rowfont[c]\bfseries
+		Character  & Asset Description  \\ \tabucline[2pt] -
+		\multirow{20}{*}{Greirat}  & Cutscene Standing
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Talking
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Crouching
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Threatening 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Arms Crossed
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Hollowed
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Walking Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Running Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Sprinting Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Jumping Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Crouching Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Set Trap Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Idle Animation (Stealthed)
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Walking Animation (Stealthed)
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Running Animation (Stealthed)
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Sprinting Animation (Stealthed)
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Jumping Animation (Stealthed)
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Crouching Animation (Stealthed)
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Loretta}  & Cutscene Standing
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Talking
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Crying
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Hunched Over
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Sitting
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Sleeping
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Cutscene Hollowed
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{5}{*}{Hollow Soldier}  & Sprite - Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Walking Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Running Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack 1 Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack 2 Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{6}{*}{Lothric Knight}  & Sprite - Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Walking Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Running Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Sprinting Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack 1 Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack 2 Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Lothric Jailer}  & Sprite - Idle Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Walking Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Running Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack 1 Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Attack 2 Animation
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Jail Spell  Channel
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Sprite - Jail Spell  Cast
+			\\ \tabucline[2pt]-
+	\end{longtabu}
+
+%------------------------------------------------
+\section{Environment Art Asset List}\index{Environments}
+	\begin{longtabu} to \textwidth {X[ 1 , c ] |[1.5pt]  X[ 2 , l ]}
+		\rowfont[c]\bfseries
+		Environment  & Asset Description  \\ \tabucline[2pt] -
+		\multirow{7}{*}{High Wall of Lothric}  & Background Texture
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Textures
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Layout
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Patrols 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Thieving Item Textures 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Item Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Lothric Castle}  & Background Texture
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Textures
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Layout
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Patrols 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Thieving Item Textures 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Item Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Farron Keep}  & Background Texture
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Textures
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Layout
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Patrols 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Thieving Item Textures 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Item Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Cathdral of the Deep}  & Background Texture
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Textures
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Layout
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Patrols 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Thieving Item Textures 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Item Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Irithyll of the Boreal Valley}  & Background Texture
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Textures
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Layout
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Patrols 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Thieving Item Textures 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Item Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{-}
+		\multirow{7}{*}{Irithyll Dungeon}  & Background Texture
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Textures
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Platform Layout
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Placement 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Enemy Patrols 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Thieving Item Textures 
+			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+		& Item Placement 
+			\\ \tabucline[2pt]-
+	\end{longtabu}
+
+
+%------------------------------------------------
+%\section{Cutscenes}\index{Cutscenes}
+%	\begin{longtabu} to \textwidth {X[ 1 , c ] |[1.5pt]  X[ 3 , l ]}
+%		\rowfont[c]\bfseries
+%		Art Asset  & Description  \\ \tabucline[2pt] -
+%		\multirow{7}{*}{Lothric Castle}  & Background Texture
+%			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+%		& Platform Textures
+%			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+%		& Platform Layout
+%			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+%		& Enemy Placement 
+%			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+%		& Enemy Patrols 
+%			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+%		& Thieving Item Textures 
+%			\\ \tabucline[1pt off 2pt on 3pt ]{2-}
+%		& Item Placement 
+%		\\ \tabucline[2pt]-
+%	\end{longtabu}
+
+
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 4
+%----------------------------------------------------------------------------------------
+\chapter{Audio Assets}\index{AudioAssets}
+
+%------------------------------------------------
+\section{Music Asset List}\index{Music}
+\begin{outline}
+	\1 Title Music
+	\1 Undead Settlement Theme
+	\1 High Wall Theme
+	\1 Lotheric Castle Theme
+	\1 Boreal Valley Overture
+	\1 Irithyll Dungeon Theme
+	\1 Loretta's Dirge
+\end{outline}
+
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+%
+%\chapter*{Bibliography}
+%\addcontentsline{toc}{chapter}{\textcolor{ocre}{Bibliography}}
+%\section*{Books}
+%\addcontentsline{toc}{section}{Books}
+%\printbibliography[heading=bibempty,type=book]
+%\section*{Articles}
+%\addcontentsline{toc}{section}{Articles}
+%\printbibliography[heading=bibempty,type=article]
+
+%----------------------------------------------------------------------------------------
+%	INDEX
+%----------------------------------------------------------------------------------------
+
+%\cleardoublepage
+%\phantomsection
+%\setlength{\columnsep}{0.75cm}
+%\addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+%\printindex
+%
+%----------------------------------------------------------------------------------------
+
+\end{document}

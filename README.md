@@ -30,4 +30,8 @@ This repository contains code for projects for classes during my attendance at P
     * Studies on the effects of fill density, size and print orientation on PLA and ABS 3D printed objects
 * __GAME  251:__ _(HTML, JavaScript, Construct2)_ 2D Game Programming
     * Simple browser-based games made in JavaScript and Construct2
-
+* __GAME  250:__ _(LaTeX, Game Design)_ Technical Game Development
+    * Includes one-pagers and other game design documentation. Document context is explained by directory readme
+    * Actual game design/programming was done through Unreal Tutorials for class
+* __GAME  220:__ _(LaTeX, Game Design)_ Introduction to Game Design
+    * Focus on Game Design Documents and design elements. All projects were completed in LaTeX, more information on each project is included within the directory's readme

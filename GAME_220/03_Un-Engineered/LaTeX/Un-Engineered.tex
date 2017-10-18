@@ -1,0 +1,213 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% baposter Portrait Poster
+% LaTeX Template
+% Version 1.0 (15/5/13)
+%
+% Created by:
+% Brian Amberg (baposter@brian-amberg.de)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\title{GAME220 - Assignment X}
+\documentclass[archE1,portrait]{baposter}
+
+%841mm x 1189mm
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{relsize} % Used for making text smaller in some places
+\usepackage[urlcolor  = blue]{hyperref}
+\usepackage{outlines}
+\usepackage{tabularx}
+
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\definecolor{bordercol}{RGB}{5,2,82} % Border color of content boxes
+\definecolor{headercol1}{RGB}{5,2,82} % Background color for the header in the content boxes (left side)
+\definecolor{headercol2}{RGB}{5,2,82} % Background color for the header in the content boxes (right side)
+\definecolor{headerfontcol}{RGB}{255,255,255} % Text color for the header text in the content boxes
+\definecolor{boxcolor}{RGB}{255,255,255} % Background color for the content in the content boxes
+
+\begin{document}
+\newgeometry{top=.4in, bottom=.4in, left=.55in,right=.55in}
+\background{ % Set the background to an image (background.pdf)
+
+}
+
+\begin{poster}
+{
+	grid=false,
+	borderColor=bordercol, % Border color of content boxes
+	headerColorOne=headercol1, % Background color for the header in the content boxes (left side)
+	headerColorTwo=headercol1, % Background color for the header in the content boxes (right side)
+	headerFontColor=headerfontcol, % Text color for the header text in the content boxes
+	boxColorOne=boxcolor, % Background color for the content in the content boxes
+	headershape=roundedright, % Specify the rounded corner in the content box headers
+	headerfont=\Large\sf\bf, % Font modifiers for the text in the content box headers
+	textborder=rectangle,
+	background=user,
+	headerborder=open, % Change to closed for a line under the content box headers
+	boxshade=plain,
+	columns=4
+}
+{}
+%
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR NAME
+%----------------------------------------------------------------------------------------
+%
+%\vspace{2em}
+{
+%\newline
+\sf\bf UN-Engineered!} % Poster title
+{\vspace{.5em} Kyle Salitrik\\ % Author names
+% {\smaller kps168@psu.edu}\\
+% %\vspace{1em}
+% \underline{\url{http://moca.usc.edu}}
+%\vspace{1em}
+} % Author email addresses
+%
+
+
+
+%----------------------------------------------------------------------------------------
+%	GENRES
+%----------------------------------------------------------------------------------------
+
+\headerbox{Genres}{name=game_genre,span=4,column=0}
+{ 
+	\begin{tabularx}{\textwidth}{ X | X }
+	\underline{\textbf{Story:}} Comedic & \underline{\textbf{Gameplay:}} Tycoon Builder, Educational
+	\end{tabularx}
+	\vspace*{-.6\baselineskip}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	Intended Audience
+%----------------------------------------------------------------------------------------
+\headerbox{Intended Audience}{name=intended_audience,span=3,column=0, below=game_genre}
+{ 
+	Fans of tycoon-style and managerial games.
+}
+
+%----------------------------------------------------------------------------------------
+%	Intended Platform
+%----------------------------------------------------------------------------------------
+\headerbox{Platforms:}{name=intended_platform,span=1,column=3, below=game_genre}
+{ 
+	Mobile / PC
+}
+
+%----------------------------------------------------------------------------------------
+%	Summary
+%----------------------------------------------------------------------------------------
+
+\headerbox{Game Summary}{name=summary,column=0,row=0, span=4, below=intended_audience}
+{
+	\quad In this game, players are in charge of managing an engineering firm with the goal of reducing costs/increasing profits. They must achieve this goal by reducing costs, balancing work loads and managing employee happiness.
+}
+
+%----------------------------------------------------------------------------------------
+%	Narrative
+%----------------------------------------------------------------------------------------
+
+\headerbox{Narrative Summary}{name=narrative,column=0,row=0, span=4, below=summary}
+{
+	\quad As the new Moronager of \textit{NEXT Engineering}, you are the head honcho! In charge of everything! Your dream come true! But wait! Reality sets in and you realize that you have to answer to the higher-ups, which \textit{really} sucks. If you don't come in on budget, you're going to get fired, so you have to make cuts where you shouldn't: the engineering and safety of your products. Hopefully, you don't skimp out on too much... People could die, you know.
+}
+
+%----------------------------------------------------------------------------------------
+%	Game Outline
+%----------------------------------------------------------------------------------------
+
+\headerbox{Gameplay Outline}{name=outline,column=0,row=0, span=4, below=narrative}
+{
+	\quad Players must fulfill contracts by selecting part suppliers for major components of their products. They must also make decisions to keep their employees happy such as scheduling overtime, hiring and firing staff, and managing safety. Budget management is the main mechanic and is primarily done by selecting suppliers for components. Choosing cheap suppliers significantly lowers the budget, but also decreases the safety and reliability of your products. If the safety lowers too much, the products will fail and everything ends in catastrophic failure.
+	
+}
+
+%----------------------------------------------------------------------------------------
+%	USP
+%----------------------------------------------------------------------------------------
+
+\headerbox{Mechanics Breakdown}{name=USPs,span=4,column=0,below=outline}
+{ 
+	\begin{outline}
+		\1 Contract Selection
+			\2 Players are presented with three contracts. Each contract details a timeline, budget and difficulty fulfillment.
+		\1 Cost cutting
+			\2 Budgets are displayed constantly to the player. If the costs are above the provided budgets, then the player cannot release their products.
+			\2 Costs may be reduced by changing suppliers and/or number of employees.
+			\2 Each method of cost reduction comes with negative influences to employee happiness and safety.
+		\1 Employee happiness must be maintained, or else they will refuse to come in to work and make your products.
+		\1 Product safety is also constantly displayed to players. If the risk of failure is too low, the product may be released.
+		\1 Periodically, higher ups will come in to survey the engineering firm. If employee happiness or the budgets are too high, the player must lower their budgets or fire people in order to satisfy the big-wigs.
+	\end{outline}
+}
+\end{poster}
+\newpage
+
+\begin{poster}
+{
+	grid=false,
+	borderColor=bordercol, % Border color of content boxes
+	headerColorOne=headercol1, % Background color for the header in the content boxes (left side)
+	headerColorTwo=headercol1, % Background color for the header in the content boxes (right side)
+	headerFontColor=headerfontcol, % Text color for the header text in the content boxes
+	boxColorOne=boxcolor, % Background color for the content in the content boxes
+	headershape=roundedright, % Specify the rounded corner in the content box headers
+	headerfont=\Large\sf\bf, % Font modifiers for the text in the content box headers
+	textborder=rectangle,
+	background=user,
+	headerborder=open, % Change to closed for a line under the content box headers
+	boxshade=plain,
+	columns=4
+}
+{}
+%
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR NAME
+%----------------------------------------------------------------------------------------
+%
+%\vspace{2em}
+{
+%\newline
+\sf\bf UN-Engineered! Asset List} % Poster title
+{\vspace{.5em} Kyle Salitrik\\ % Author names
+% {\smaller kps168@psu.edu}\\
+% %\vspace{1em}
+% \underline{\url{http://moca.usc.edu}}
+%\vspace{1em}
+} % Author email addresses
+%
+
+%----------------------------------------------------------------------------------------
+%	ASSETS
+%----------------------------------------------------------------------------------------
+
+\headerbox{Asset List}{name=assets,span=4,column=0}
+{ 
+	\begin{outline}	
+		\1 Sprites
+			\2 Big-wigs
+			\2 Engineers
+			\2 Workers
+			\2 Moronager
+		\1 Music
+			\2 Title Music
+			\2 Project Failure
+			\2 Background Music - General Menu
+	\end{outline}
+}
+
+\end{poster}
+\end{document}

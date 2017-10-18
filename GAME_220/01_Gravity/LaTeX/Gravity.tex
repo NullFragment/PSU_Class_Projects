@@ -1,0 +1,128 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% baposter Portrait Poster
+% LaTeX Template
+% Version 1.0 (15/5/13)
+%
+% Created by:
+% Brian Amberg (baposter@brian-amberg.de)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\title{GAME220 - Assignment 2 - Gravity is Relative}
+\documentclass[archE1,portrait]{baposter}
+
+%841mm x 1189mm
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{relsize} % Used for making text smaller in some places
+\usepackage[urlcolor = blue]{hyperref}
+\usepackage{outlines}
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\definecolor{bordercol}{RGB}{5,2,82} % Border color of content boxes
+\definecolor{headercol1}{RGB}{5,2,82} % Background color for the header in the content boxes (left side)
+\definecolor{headercol2}{RGB}{5,2,82} % Background color for the header in the content boxes (right side)
+\definecolor{headerfontcol}{RGB}{255,255,255} % Text color for the header text in the content boxes
+\definecolor{boxcolor}{RGB}{255,255,255} % Background color for the content in the content boxes
+
+\begin{document}
+
+\background{ % Set the background to an image (background.pdf)
+
+}
+
+\begin{poster}{
+grid=false,
+borderColor=bordercol, % Border color of content boxes
+headerColorOne=headercol1, % Background color for the header in the content boxes (left side)
+headerColorTwo=headercol1, % Background color for the header in the content boxes (right side)
+headerFontColor=headerfontcol, % Text color for the header text in the content boxes
+boxColorOne=boxcolor, % Background color for the content in the content boxes
+headershape=roundedright, % Specify the rounded corner in the content box headers
+headerfont=\Large\sf\bf, % Font modifiers for the text in the content box headers
+textborder=rectangle,
+background=user,
+headerborder=open, % Change to closed for a line under the content box headers
+boxshade=plain
+}
+{}
+%
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR NAME
+%----------------------------------------------------------------------------------------
+%
+%\vspace{2em}
+{
+%\newline
+\sf\bf Gravity's Relative} % Poster title
+{\vspace{1em} Kyle Salitrik\\ % Author names
+% {\smaller kps168@psu.edu}\\
+% %\vspace{1em}
+% \underline{\url{http://moca.usc.edu}}
+%\vspace{1em}
+} % Author email addresses
+%
+
+%----------------------------------------------------------------------------------------
+%	DESCRIPTION
+%----------------------------------------------------------------------------------------
+
+\headerbox{Description}{name=description,column=0,row=0, span=3}
+{
+	\quad Players must navigate a ship through each map without being destroyed, running out of fuel or losing too much cargo (that's for some reason conveniently placed on the outside of the ship...damn engineers). The ship follows a path that is drawn free-form on the stage and at a speed set by the player. Because the ship navigates near light-speed, the gravitational pull on the ship is increased the faster it goes due to relativistic mass dilation, thus the player must find the right path and speed in order to get through the map.
+}
+
+%----------------------------------------------------------------------------------------
+%	RULES & FLOW
+%----------------------------------------------------------------------------------------
+
+\headerbox{Rules \& Gameplay}{name=rules,column=0,below=description, span=3}
+{
+	\underline{\textbf{Mechanics}}
+	\begin{outline}
+		\1 Mass is governed by: $M = m_0/\sqrt{1-\frac{v^2}{c^2}}$.
+			\2 Therefore $M\rightarrow\infty$ as $v\rightarrow c$.
+		\1 Obstacles appear in the forms of planets, stars, space stations, other ships, and black holes.
+			\2 All objects may be anchored or free-floating based on level design.
+		\1 Paths drawn by the player may intersect, aka. the player can set the ship to follow a loop over and over.
+		\1 If any nears a planet or star, the ship will be influenced inwards toward that planet.
+			\2 The ship will attempt to return to it's course but will burn more fuel in doing so.
+		\1 If any ship nears a black hole, the ship will also be influenced toward the center of the black hole. 
+			\2 Unlike planets and stars, the black hole will also pull cargo from the ship.
+		\1 If any ship nears a space station, depending on the hostility, people from that station will either help by repairing the ship or will fire upon the ship and/or steal cargo.
+		\1 If the player ship encounters another ship, again depending on hostility, the ship will either attack and try to destroy the player ship as long as it is in range or simply do nothing.
+			\2 AI ships will not alter their course to pursue the ship.
+			\2 If a player ship collides with another ship, both ships will take damage and be set off course.
+	\end{outline}
+
+	\underline{\textbf{Game Flow}}
+	\begin{outline}
+		\1 Players are shown an overview of the map and the initial trajectories of any moving obstacles.
+		\1 Before plotting a course, an initial ship speed must be set.
+			\2 The speed is set using a color coded slider.
+		\1 The player then must plot out the course for the ship to follow.
+			\2 Once a path is set, the player can go back over it and "paint" sections with different speeds.
+		\1 After everything is planned out, the player can start the ship and watch what happens. 
+	\end{outline}
+	
+	\underline{\textbf{Extra Game Modes}}
+	\begin{outline}
+		\1 Time Trials (Self Explanatory)
+		\1 Scenic Route - Players must end their run with less than 5\% fuel remaining.
+		\1 Unscathed Delivery - Players must deliver the cargo without losing any in their run.
+	\end{outline}
+}
+
+%----------------------------------------------------------------------------------------
+
+\end{poster}
+\end{document}
