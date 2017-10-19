@@ -15,7 +15,7 @@
 bool loadSchema(_table *table, char *buffer)
 {
     // Set file name and open schema file
-    char *file_name = calloc(1, MAXLENOFFIELDNAMES + 8); /** ALLOCATE: FILE NAME */
+    char *file_name = calloc(1, MAXINPUTLENGTH + 8); /** ALLOCATE: FILE NAME */
     strcat(file_name, buffer);
     strcat(file_name, ".schema");
 
@@ -39,23 +39,26 @@ bool loadSchema(_table *table, char *buffer)
     fread(str_in, MAXINPUTLENGTH, 1, schema);
 
     // Initialize table metadata
-    table->tableFileName = calloc(MAXLENOFFIELDNAMES, sizeof(char));
-    strncpy(table->tableFileName, buffer, MAXLENOFFIELDNAMES);
+    table->tableFileName = calloc(MAXINPUTLENGTH, sizeof(char));
+    strncpy(table->tableFileName, buffer, MAXINPUTLENGTH);
     strcat(table->tableFileName, ".bin");
     table->reclen = 0;
 
     // Start reading file string and read until end of file
     do
     {
-        char *current = strtok(str_in, " \n");
+        char *fieldName = calloc(MAXINPUTLENGTH, 1),
+                *fieldType = calloc(MAXINPUTLENGTH, 1),
+                *current = strtok(str_in, " \n");
+        int fieldLength;
         if (strncmp(current, "ADD", 3) == 0)
         {
-            _field *current_field = &table->fields[field_number];
+            fieldNode *current_field = table->fields.tail;
             table->fieldcount++;
-            strncpy(current_field->fieldName, strtok(NULL, " \n"), MAXLENOFFIELDNAMES);
-            strncpy(current_field->fieldType, strtok(NULL, " \n"), MAXLENOFFIELDTYPES);
-            current_field->fieldLength = atoi(strtok(NULL, " \n"));
-            table->reclen += current_field->fieldLength;
+            strncpy(fieldName, strtok(NULL, " \n"), MAXINPUTLENGTH);
+            strncpy(fieldType, strtok(NULL, " \n"), MAXINPUTLENGTH);
+            fieldLength = atoi(strtok(NULL, " \n"));
+            table->reclen += fieldLength;
             field_number++;
         }
         free(str_in);
@@ -77,7 +80,7 @@ bool loadSchema(_table *table, char *buffer)
 bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bool logging)
 {
     // Allocate memory for and create filename
-    char *file_name = calloc(1, MAXLENOFFIELDNAMES + 8); /** ALLOCATE: FILE NAME */
+    char *file_name = calloc(1, MAXINPUTLENGTH + 8); /** ALLOCATE: FILE NAME */
     strcat(file_name, schema_name);
     strcat(file_name, ".schema");
 
@@ -86,7 +89,8 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
     if (append == true && access(file_name, F_OK) == 0)
     {
         schema = fopen(file_name, "ab+"); /** OPEN FILE: SCHEMA */
-    } else
+    }
+    else
     {
         schema = fopen(file_name, "wb+"); /** OPEN FILE: SCHEMA */
     }
@@ -94,14 +98,15 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
     if (stream == stdin)
     {
         fgets(buffer, MAXINPUTLENGTH, stream);
-    } else
+    }
+    else
     {
         fread(buffer, sizeof(char), MAXINPUTLENGTH, stream);
     }
 
     // Start reading in schema structure and saving to file
     trimwhitespace(buffer);
-    if(logging) printf("===> %s\n", buffer);
+    if (logging) printf("===> %s\n", buffer);
     while (strncmp(buffer, "END", 3) != 0 && buffer != NULL && !feof(stream))
     {
         fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
@@ -110,31 +115,32 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
         if (stream == stdin)
         {
             fgets(buffer, MAXINPUTLENGTH, stream);
-        } else
+        }
+        else
         {
             fread(buffer, sizeof(char), MAXINPUTLENGTH, stream);
         }
         trimwhitespace(buffer);
-        if(logging) printf("===> %s\n", buffer);
+        if (logging) printf("===> %s\n", buffer);
     }
     fclose(schema); /** CLOSE FILE: SCHEMA */
     free(file_name); /** DEALLOCATE: FILE NAME */
 }
 
-/**
- * @brief - Parses through a given schema file and prints out records
- * @param schema - requires reference to loaded schema struct
- */
-void printSchema(_table *schema)
-{
-    printf("----------- SCHEMA --------------\n");
-    printf("TABLE NAME: %.*s\n", (int) strlen(schema->tableFileName) - 4, schema->tableFileName);
-    for (int i = 0; i < schema->fieldcount; i++)
-    {
-        printf("--- %s (%s-%d)\n", schema->fields[i].fieldName, schema->fields[i].fieldType,
-               schema->fields[i].fieldLength);
-    }
-}
+///**
+// * @brief - Parses through a given schema file and prints out records
+// * @param schema - requires reference to loaded schema struct
+// */
+//void printSchema(_table *schema)
+//{
+//    printf("----------- SCHEMA --------------\n");
+//    printf("TABLE NAME: %.*s\n", (int) strlen(schema->tableFileName) - 4, schema->tableFileName);
+//    for (int i = 0; i < schema->fieldcount; i++)
+//    {
+//        printf("--- %s (%s-%d)\n", schema->fields[i].fieldName, schema->fields[i].fieldType,
+//               schema->fields[i].fieldLength);
+//    }
+//}
 
 void createTempSchema(char *first, char *second, char *temp_name)
 {

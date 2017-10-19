@@ -7,25 +7,7 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#define MAXFIELDS 100 // for now
 #define MAXINPUTLENGTH 5000
-#define MAXLENOFFIELDNAMES 50
-#define MAXLENOFFIELDTYPES 50
-
-typedef struct
-{
-    char fieldName[MAXLENOFFIELDNAMES];
-    char fieldType[MAXLENOFFIELDTYPES];
-    int fieldLength;
-} _field;
-
-typedef struct
-{
-    char *tableFileName;
-    int reclen;
-    int fieldcount;
-    _field fields[MAXFIELDS];
-} _table;
 
 typedef enum
 {
@@ -47,18 +29,31 @@ typedef struct
     int count;
 } linkedList;
 
+typedef struct fieldNode
+{
+    char *fieldName;
+    char *fieldType;
+    int length;
+    struct fieldNode *next;
+} fieldNode;
 
+typedef struct
+{
+    fieldNode *head;
+    fieldNode *tail;
+    int count;
+} fieldList;
+
+typedef struct
+{
+    char *tableFileName;
+    int reclen;
+    int fieldcount;
+    fieldList fields;
+} _table;
 
 void trimwhitespace(char *to_trim);
 
 char *trimQuotes(char *to_trim);
-
-void fillNode(node *to_fill, char *field, char *condition, bool constant);
-
-linkedList *makeLinkedList(char *field, char *condition, bool constant);
-
-bool addNode(linkedList *list, bool at_head, char *field, char *condition, bool constant);
-
-void popNode(linkedList *list);
 
 #endif //ASSIGNMENT_4_UTILS_H
