@@ -48,7 +48,7 @@ bool loadSchema(_table *table, char *buffer)
     do
     {
         char *current = strtok(str_in, " \n");
-        if (strcmp(current, "ADD") == 0)
+        if (strncmp(current, "ADD", 3) == 0)
         {
             _field *current_field = &table->fields[field_number];
             table->fieldcount++;
@@ -61,7 +61,7 @@ bool loadSchema(_table *table, char *buffer)
         free(str_in);
         str_in = calloc(MAXINPUTLENGTH, sizeof(char));
         fread(str_in, MAXINPUTLENGTH, 1, schema);
-    } while (strncmp(str_in, "END", 3) != 0);
+    } while (!feof(schema));
     fclose(schema); /** CLOSE FILE: SCHEMA */
     free(file_name); /** DEALLOCATE: FILE NAME */
     free(str_in); /** DEALLOCATE: STR IN */
@@ -74,7 +74,7 @@ bool loadSchema(_table *table, char *buffer)
  * @param buffer - pointer to buffer for stdin
  * @return
  */
-bool createSchema(char *schema_name, char *buffer, FILE *stream)
+bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bool logging)
 {
     // Allocate memory for and create filename
     char *file_name = calloc(1, MAXLENOFFIELDNAMES + 8); /** ALLOCATE: FILE NAME */
@@ -82,23 +82,41 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream)
     strcat(file_name, ".schema");
 
 
-    FILE *schema = fopen(file_name, "wb+"); /** OPEN FILE: SCHEMA */
+    FILE *schema;
+    if (append == true && access(file_name, F_OK) == 0)
+    {
+        schema = fopen(file_name, "ab+"); /** OPEN FILE: SCHEMA */
+    } else
+    {
+        schema = fopen(file_name, "wb+"); /** OPEN FILE: SCHEMA */
+    }
     memset(buffer, 0, MAXINPUTLENGTH);
-    fgets(buffer, MAXINPUTLENGTH - 1, stream);
+    if (stream == stdin)
+    {
+        fgets(buffer, MAXINPUTLENGTH, stream);
+    } else
+    {
+        fread(buffer, sizeof(char), MAXINPUTLENGTH, stream);
+    }
 
     // Start reading in schema structure and saving to file
     trimwhitespace(buffer);
-    printf("===> %s\n", buffer);
-    while (strncmp(buffer, "END", 3) != 0 && buffer != NULL)
+    if(logging) printf("===> %s\n", buffer);
+    while (strncmp(buffer, "END", 3) != 0 && buffer != NULL && !feof(stream))
     {
         fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
         fwrite("\n", 1, 1, schema);
         memset(buffer, 0, MAXINPUTLENGTH);
-        fgets(buffer, MAXINPUTLENGTH - 1, stream);
+        if (stream == stdin)
+        {
+            fgets(buffer, MAXINPUTLENGTH, stream);
+        } else
+        {
+            fread(buffer, sizeof(char), MAXINPUTLENGTH, stream);
+        }
         trimwhitespace(buffer);
-        printf("===> %s\n", buffer);
+        if(logging) printf("===> %s\n", buffer);
     }
-    fwrite("END\n", 4, 1, schema);
     fclose(schema); /** CLOSE FILE: SCHEMA */
     free(file_name); /** DEALLOCATE: FILE NAME */
 }
@@ -115,5 +133,40 @@ void printSchema(_table *schema)
     {
         printf("--- %s (%s-%d)\n", schema->fields[i].fieldName, schema->fields[i].fieldType,
                schema->fields[i].fieldLength);
+    }
+}
+
+void createTempSchema(char *first, char *second, char *temp_name)
+{
+    FILE *table1, *table2;
+    char *name_t1 = calloc(strlen(first) + 8, 1),
+            *name_t2 = calloc(strlen(second) + 8, 1),
+            *buffer = calloc(MAXINPUTLENGTH, 1);
+
+    strncat(name_t1, first, strlen(first));
+    strncat(name_t1, ".schema", 7);
+    strncat(name_t2, second, strlen(second));
+    strncat(name_t2, ".schema", 7);
+    table1 = fopen(name_t1, "rb");
+    table2 = fopen(name_t2, "rb");
+    createSchema(temp_name, buffer, table1, false, false);
+    createSchema(temp_name, buffer, table2, true, false);
+}
+
+void joinTable(_table *first, _table *second, linkedList *clauses, char *temp_name)
+{
+    createTempSchema(first->tableFileName, second->tableFileName, temp_name);
+    _table *temp = calloc(sizeof(_table), 1);
+    loadSchema(temp, temp_name);
+    for (int i = 0; i < first->fieldcount; i++)
+    {
+        for (int j = 0; j < second->fieldcount; j++)
+        {
+            for (int k = 0; k < clauses->count; k++)
+            {
+
+            }
+        }
+
     }
 }

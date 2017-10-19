@@ -47,8 +47,7 @@ bool loadDatabase(_table *table, char *buffer)
         database = fopen(filename, "ab"); /** OPEN FILE: DATABASE */
     }
     record = calloc(1, (size_t) record_length); /** ALLOCATE: RECORD */
-    current = strtok(buffer, ",");
-    current = strtok(NULL, " ,");
+    current = strtok(buffer, " ,");
     current = strtok(NULL, " ,");
     current = strtok(NULL, " ,");
     current = strtok(NULL, " ,");

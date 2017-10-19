@@ -13,32 +13,38 @@
 
 void processCommand(char *buffer)
 {
-    char *cmd = strtok(buffer, " ");
-    if (strcmp(cmd, "CREATE") == 0)
+    char *cmd;
+    if (strncmp(buffer, "CREATE", 6) == 0)
     {
+        cmd = strtok(buffer, " ");
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, "\n");
-        createSchema(cmd, buffer, stdin);
+        createSchema(cmd, buffer, stdin, false, true);
     }
-    else if (strcmp(cmd, "INSERT") == 0)
+    else if (strncmp(buffer, "INSERT", 6) == 0)
     {
+        char *temp = calloc(MAXINPUTLENGTH, 1);
+        strncpy(temp, buffer, MAXINPUTLENGTH);
+        cmd = strtok(buffer, " ");
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, " \n");
         _table *table = (_table *) calloc(sizeof(_table), 1);
         if (loadSchema(table, cmd))
         {
             // printSchema(table);
-            loadDatabase(table, buffer);
+            loadDatabase(table, temp);
         }
         memset(table, 0, sizeof(_table));
         free(table);
+        free(temp);
     }
-    else if (strcmp(cmd, "SELECT") == 0)
+    else if (strncmp(buffer, "SELECT", 6) == 0)
     {
         selectRecord(buffer);
     }
-    else if (strcmp(cmd, "DROP") == 0)
+    else if (strncmp(buffer, "DROP", 4) == 0)
     {
+        cmd = strtok(buffer, " ");
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, "\n");
         dropTable(cmd);
@@ -47,6 +53,7 @@ void processCommand(char *buffer)
 
 int main()
 {
+    createTempSchema("people", "people2", "temp1");
     static char buffer[MAXINPUTLENGTH];
     memset(buffer, 0, MAXINPUTLENGTH);
     printf("Welcome!\n");
