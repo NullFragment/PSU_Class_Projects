@@ -1,0 +1,150 @@
+mysql> SHOW tables;
++--------------------+
+| Tables_in_cmpsc431 |
++--------------------+
+| address            |
+| certification      |
+| department         |
+| department_need    |
+| employee           |
+| role               |
+| shift              |
+| shift_status       |
+| shift_time         |
+| week               |
+| weekday            |
++--------------------+
+11 rows in set (0.00 sec)
+
+mysql> DESCRIBE address;
++------------+----------+------+-----+---------+----------------+
+| Field      | Type     | Null | Key | Default | Extra          |
++------------+----------+------+-----+---------+----------------+
+| address_ID | int(11)  | NO   | PRI | NULL    | auto_increment |
+| emp_ID     | int(11)  | YES  | MUL | NULL    |                |
+| street1    | char(50) | YES  |     | NULL    |                |
+| street2    | char(50) | YES  |     | NULL    |                |
+| city       | char(50) | YES  |     | NULL    |                |
+| state      | char(50) | YES  |     | NULL    |                |
+| zip        | char(50) | YES  |     | NULL    |                |
++------------+----------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> DESCRIBE certification;
++---------+---------+------+-----+---------+----------------+
+| Field   | Type    | Null | Key | Default | Extra          |
++---------+---------+------+-----+---------+----------------+
+| cert_ID | int(11) | NO   | PRI | NULL    | auto_increment |
+| emp_ID  | int(11) | YES  | UNI | NULL    |                |
+| role_ID | int(11) | YES  | MUL | NULL    |                |
++---------+---------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE department;
++-----------+----------+------+-----+---------+----------------+
+| Field     | Type     | Null | Key | Default | Extra          |
++-----------+----------+------+-----+---------+----------------+
+| dept_ID   | int(11)  | NO   | PRI | NULL    | auto_increment |
+| min_staff | int(11)  | NO   |     | 0       |                |
+| max_staff | int(11)  | NO   |     | 100     |                |
+| beds      | int(11)  | NO   |     | 0       |                |
+| dept_name | char(50) | NO   |     | NULL    |                |
++-----------+----------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> DESCRIBE department_need;
++---------+---------+------+-----+---------+----------------+
+| Field   | Type    | Null | Key | Default | Extra          |
++---------+---------+------+-----+---------+----------------+
+| need_ID | int(11) | NO   | PRI | NULL    | auto_increment |
+| week_ID | int(11) | YES  | MUL | NULL    |                |
+| day_ID  | int(11) | YES  | MUL | NULL    |                |
+| time_ID | int(11) | YES  | MUL | NULL    |                |
+| dept_ID | int(11) | YES  | MUL | NULL    |                |
+| role_ID | int(11) | YES  | MUL | NULL    |                |
+| need    | int(11) | YES  |     | NULL    |                |
++---------+---------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> DESCRIBE employee;
++------------+------------+------+-----+-------------------+----------------+
+| Field      | Type       | Null | Key | Default           | Extra          |
++------------+------------+------+-----+-------------------+----------------+
+| emp_ID     | int(11)    | NO   | PRI | NULL              | auto_increment |
+| home_dept  | int(11)    | YES  | MUL | NULL              |                |
+| fname      | char(50)   | NO   |     | NULL              |                |
+| mname      | char(50)   | YES  |     | NULL              |                |
+| lname      | char(50)   | YES  |     | NULL              |                |
+| ssn        | char(12)   | YES  |     | NULL              |                |
+| phone1     | char(13)   | YES  |     | NULL              |                |
+| phone2     | char(13)   | YES  |     | NULL              |                |
+| start_date | datetime   | NO   |     | CURRENT_TIMESTAMP |                |
+| end_date   | date       | YES  |     | NULL              |                |
+| full_time  | tinyint(1) | NO   |     | 0                 |                |
+| salaried   | tinyint(1) | NO   |     | 0                 |                |
+| pay_rate   | double     | NO   |     | 0                 |                |
++------------+------------+------+-----+-------------------+----------------+
+13 rows in set (0.00 sec)
+
+mysql> DESCRIBE role;
++---------+----------+------+-----+---------+----------------+
+| Field   | Type     | Null | Key | Default | Extra          |
++---------+----------+------+-----+---------+----------------+
+| role_ID | int(11)  | NO   | PRI | NULL    | auto_increment |
+| role    | char(50) | NO   |     | NULL    |                |
++---------+----------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> DESCRIBE shift;
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| shift_ID     | int(11) | NO   | PRI | NULL    | auto_increment |
+| emp_ID       | int(11) | NO   | MUL | NULL    |                |
+| dept_ID      | int(11) | NO   | MUL | NULL    |                |
+| time_ID      | int(11) | NO   | MUL | NULL    |                |
+| week_ID      | int(11) | NO   | MUL | NULL    |                |
+| day_ID       | int(11) | NO   | MUL | NULL    |                |
+| status_ID    | int(11) | YES  | MUL | NULL    |                |
+| pay_modifier | double  | YES  |     | NULL    |                |
++--------------+---------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> DESCRIBE shift_status;
++-----------+----------+------+-----+---------+----------------+
+| Field     | Type     | Null | Key | Default | Extra          |
++-----------+----------+------+-----+---------+----------------+
+| status_ID | int(11)  | NO   | PRI | NULL    | auto_increment |
+| status    | char(50) | YES  |     | NULL    |                |
++-----------+----------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> DESCRIBE shift_time;
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| time_ID      | int(11) | NO   | PRI | NULL    | auto_increment |
+| shift_start  | time    | NO   |     | NULL    |                |
+| shift_end    | time    | NO   |     | NULL    |                |
+| shift_length | int(11) | YES  |     | NULL    |                |
++--------------+---------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> DESCRIBE week;
++------------+---------+------+-----+---------+----------------+
+| Field      | Type    | Null | Key | Default | Extra          |
++------------+---------+------+-----+---------+----------------+
+| week_ID    | int(11) | NO   | PRI | NULL    | auto_increment |
+| start_date | date    | NO   |     | NULL    |                |
+| end_date   | date    | NO   |     | NULL    |                |
++------------+---------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE weekday;
++----------+----------+------+-----+---------+----------------+
+| Field    | Type     | Null | Key | Default | Extra          |
++----------+----------+------+-----+---------+----------------+
+| day_ID   | int(11)  | NO   | PRI | NULL    | auto_increment |
+| day_name | char(10) | YES  |     | NULL    |                |
++----------+----------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
