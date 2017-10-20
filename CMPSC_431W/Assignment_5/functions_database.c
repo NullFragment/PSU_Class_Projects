@@ -12,8 +12,8 @@
  */
 bool dropTable(char *schema_name)
 {
-    char *schema_file = calloc(MAXLENOFFIELDNAMES, sizeof(char) + 7),
-            *database_file = calloc(MAXLENOFFIELDNAMES, sizeof(char) + 4);
+    char *schema_file = calloc(MAXINPUTLENGTH, sizeof(char) + 7),
+            *database_file = calloc(MAXINPUTLENGTH, sizeof(char) + 4);
     strcat(schema_file, schema_name);
     strcat(schema_file, ".schema");
     strcat(database_file, schema_name);
@@ -51,16 +51,18 @@ bool loadDatabase(_table *table, char *buffer)
     current = strtok(NULL, " ,");
     current = strtok(NULL, " ,");
     current = strtok(NULL, " ,");
-    for (int i = 0; i < table->fieldcount; i++)
+    fieldNode *field = table->fields->head;
+    while(field != NULL)
     {
-        int f_length = table->fields[i].fieldLength;
+        int f_length = field->length;
         if (strlen(current) > f_length) // Check if field is larger than accepted value
         {
-            printf("*** WARNING: Data in field %s is being truncated ***\n", table->fields[i].fieldName);
+            printf("*** WARNING: Data in field %s is being truncated ***\n", field->fieldName);
         }
         strncat(&record[rec_loc], current, (size_t) (f_length - 1));
         rec_loc += f_length; // Ensure next field is written at proper location
         current = strtok(NULL, ",");
+        field = field->next;
     }
     fwrite(record, record_length - 1, 1, database);
     fwrite("\n", 1, 1, database);

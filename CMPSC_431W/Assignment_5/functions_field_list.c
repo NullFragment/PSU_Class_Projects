@@ -5,6 +5,8 @@ void fillFieldNode(fieldNode *to_fill, char *fieldName, char *fieldType, int len
     to_fill->length = length;
     to_fill->fieldName = calloc(MAXINPUTLENGTH, 1);
     strncpy(to_fill->fieldName, fieldName, MAXINPUTLENGTH - 1);
+    to_fill->fieldType = calloc(MAXINPUTLENGTH, 1);
+    strncpy(to_fill->fieldType, fieldType, MAXINPUTLENGTH - 1);
 }
 
 

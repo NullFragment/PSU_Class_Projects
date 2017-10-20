@@ -26,21 +26,21 @@ void trimwhitespace(char *to_trim)
 
 /**
  * @brief Trims quotes from a given character array
- * @param to_trim - pointer to array to trim whitespace from
+ * @param string - pointer to array to trim whitespace from
  */
-char *trimQuotes(char *to_trim)
+char *trimChars(char *string, char *to_trim)
 {
     char *j;
-    while (strncmp(to_trim, "\"", 1) == 0)
+    while (strncmp(string, to_trim, 1) == 0)
     {
-        to_trim++;
+        string++;
     }
-    size_t length = strlen(to_trim);
-    j = to_trim + length - 1;
-    while (strcmp(j, "\"") == 0)
+    size_t length = strlen(string);
+    j = string + length - 1;
+    while (strcmp(j, to_trim) == 0)
     {
         *j = 0;
         j--;
     }
-    return to_trim;
+    return string;
 }

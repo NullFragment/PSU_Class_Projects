@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-void getRecord(_table *schema, linkedList *fields, linkedList *clauses);
+void getRecord(_table *schema, linkedList *selects);
 
 bool selectRecord(char *buffer);
 

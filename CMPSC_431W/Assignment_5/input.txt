@@ -1,4 +1,3 @@
-INPUT 1:
 CREATE TABLE people
 ADD people_id char 50
 ADD lname char 50
@@ -41,12 +40,12 @@ INSERT INTO employees 101,14377701,$60000,RN
 INSERT INTO employees 202,14600091,$55000,LPN
 INSERT INTO employees 303,15058700,$65000,RN
 INSERT INTO employees 404,14593403,$25000,NA
+SELECT lname, city, zip, gender
+FROM people
+END
 
 
 INPUT 3:
-SELECT lname, city, zip, gender 
-FROM people
-END
 SELECT lname, city, zip, gender 
 FROM people
 WHERE city = "BRONX"

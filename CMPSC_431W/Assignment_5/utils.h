@@ -49,11 +49,11 @@ typedef struct
     char *tableFileName;
     int reclen;
     int fieldcount;
-    fieldList fields;
+    fieldList *fields;
 } _table;
 
 void trimwhitespace(char *to_trim);
 
-char *trimQuotes(char *to_trim);
+char *trimChars(char *string, char *to_trim);
 
 #endif //ASSIGNMENT_4_UTILS_H

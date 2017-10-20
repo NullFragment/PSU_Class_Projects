@@ -53,7 +53,6 @@ void processCommand(char *buffer)
 
 int main()
 {
-    createTempSchema("people", "people2", "temp1");
     static char buffer[MAXINPUTLENGTH];
     memset(buffer, 0, MAXINPUTLENGTH);
     printf("Welcome!\n");

@@ -1,5 +1,6 @@
-#include "utils.h"
 #include "functions_schema.h"
+#include "functions_field_list.h"
+#include "utils.h"
 
 // #############################################################################
 // ### SCHEMA FUNCTIONS
@@ -43,7 +44,7 @@ bool loadSchema(_table *table, char *buffer)
     strncpy(table->tableFileName, buffer, MAXINPUTLENGTH);
     strcat(table->tableFileName, ".bin");
     table->reclen = 0;
-
+    table->fields = calloc(sizeof(fieldList), 1);
     // Start reading file string and read until end of file
     do
     {
@@ -53,12 +54,12 @@ bool loadSchema(_table *table, char *buffer)
         int fieldLength;
         if (strncmp(current, "ADD", 3) == 0)
         {
-            fieldNode *current_field = table->fields.tail;
             table->fieldcount++;
             strncpy(fieldName, strtok(NULL, " \n"), MAXINPUTLENGTH);
             strncpy(fieldType, strtok(NULL, " \n"), MAXINPUTLENGTH);
             fieldLength = atoi(strtok(NULL, " \n"));
             table->reclen += fieldLength;
+            addfieldNode(table->fields, false, fieldName, fieldType, fieldLength);
             field_number++;
         }
         free(str_in);
