@@ -159,21 +159,3 @@ void createTempSchema(char *first, char *second, char *temp_name)
     createSchema(temp_name, buffer, table1, false, false);
     createSchema(temp_name, buffer, table2, true, false);
 }
-
-void joinTable(_table *first, _table *second, linkedList *clauses, char *temp_name)
-{
-    createTempSchema(first->tableFileName, second->tableFileName, temp_name);
-    _table *temp = calloc(sizeof(_table), 1);
-    loadSchema(temp, temp_name);
-    for (int i = 0; i < first->fieldcount; i++)
-    {
-        for (int j = 0; j < second->fieldcount; j++)
-        {
-            for (int k = 0; k < clauses->count; k++)
-            {
-
-            }
-        }
-
-    }
-}

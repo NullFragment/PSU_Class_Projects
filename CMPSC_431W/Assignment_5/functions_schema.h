@@ -7,10 +7,9 @@ bool loadSchema(_table *table, char *buffer);
 
 bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bool logging);
 
-void printSchema(_table *schema);
+// void printSchema(_table *schema);
 
 void createTempSchema(char *first, char *second, char *temp_name);
 
-void joinTable(_table *first, _table *second, linkedList *clauses, char *temp_name);
 
 #endif //ASSIGNMENT_4_SCHEMA_FUNCTIONS_H
