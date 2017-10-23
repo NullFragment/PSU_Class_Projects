@@ -141,34 +141,36 @@ bool selectRecord(char *buffer)
             cmd = strtok(buffer, " ");
         }
         // Read next line
-        memset(buffer, 0 ,MAXINPUTLENGTH);
+        memset(buffer, 0, MAXINPUTLENGTH);
         if (tables->count > 1 && clauses->count > 0)
         {
             int temp_count = 0;
             while (tables->count > 1)
             {
                 temp_count++;
-                char *temp_name = calloc(4,1);
+                char *temp_name = calloc(4, 1);
                 sprintf(temp_name, "tt_%d", temp_count);
                 _table *join1 = calloc(sizeof(_table), 1), /** ALLOCATE: JOIN1 */
-                        *join2=calloc(sizeof(_table), 1); /** ALLOCATE: JOIN2 */
+                        *join2 = calloc(sizeof(_table), 1); /** ALLOCATE: JOIN2 */
 
                 // Load both schemas in to join
                 strcpy(buffer, tables->head->field);
                 loadSchema(join1, buffer);
-                memset(buffer, 0 ,MAXINPUTLENGTH);
+                memset(buffer, 0, MAXINPUTLENGTH);
                 strcpy(buffer, tables->head->next->field);
                 loadSchema(join2, buffer);
 
                 // Eliminate unnecessary records from each database first
                 checkWhereLiteral(join1, tables->head, clauses);
-                checkWhereLiteral(join2, tables->head, clauses);
+                checkWhereLiteral(join2, tables->head->next, clauses);
 
                 // Create temp table with join
                 joinTable(join1, join2, clauses, temp_name);
 
+                // Update Linked List
                 popNode(tables);
                 popNode(tables);
+                addNode(tables, true, temp_name, "", false);
 
                 free(join1); /** DEALLOCATE: JOIN1 */
                 free(join2); /** DEALLOCATE: JOIN2 */

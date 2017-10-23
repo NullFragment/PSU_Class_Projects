@@ -53,7 +53,7 @@ bool loadDatabase(_table *table, char *buffer)
     current = strtok(NULL, " ,");
     current = strtok(NULL, " ,");
     fieldNode *field = table->fields->head;
-    while(field != NULL)
+    while (field != NULL)
     {
         int f_length = field->length;
         if (strlen(current) > f_length) // Check if field is larger than accepted value
@@ -112,7 +112,8 @@ bool checkWhereLiteral(_table *schema, node *table, linkedList *clauses)
             fread(buffer, (size_t) field->length, 1, database);
             while (where != NULL && failure == false)
             {
-                if (strcmp(field->fieldName, where->field) == 0 && strcmp(buffer, where->condition) != 0)
+                if (where->constant == true && strcmp(field->fieldName, where->field) == 0 &&
+                    strcmp(buffer, where->condition) != 0)
                 {
                     failure = true;
                     break;
@@ -160,18 +161,117 @@ bool checkWhereLiteral(_table *schema, node *table, linkedList *clauses)
  */
 bool joinTable(_table *first, _table *second, linkedList *clauses, char *temp_name)
 {
+    char *firstBuffer = calloc(MAXINPUTLENGTH, 1), /** ALLOCATE: FIRST BUFFER */
+            *secondBuffer = calloc(MAXINPUTLENGTH, 1); /** ALLOCATE: SECOND BUFFER */
+    _table *tempSchema = calloc(sizeof(_table), 1); /** ALLOCATE: TEMP */
+    fieldNode *firstField = first->fields->head,
+            *secondField = second->fields->head;
+    node *where = clauses->head;
+    FILE *firstDB, *secondDB, *tempDB;
+    bool failure = false;
+
+    // Create temporary names to check for temp tables
+    char *firstTempDB = calloc(1, strlen(first->tableFileName) + 5);
+    strcat(firstTempDB, "temp_");
+    strcat(firstTempDB, first->tableFileName);
+    char *secondTempDB = calloc(1, strlen(second->tableFileName) + 5);
+    strcat(secondTempDB, "temp_");
+    strcat(secondTempDB, second->tableFileName);
+
+
     createTempSchema(first->tableFileName, second->tableFileName, temp_name);
-    _table *temp = calloc(sizeof(_table), 1);
-    loadSchema(temp, temp_name);
-    for (int i = 0; i < first->fieldcount; i++)
+    strcat(firstBuffer, temp_name);
+    loadSchema(tempSchema, firstBuffer);
+    memset(firstBuffer, 0, MAXINPUTLENGTH);
+    strcat(firstBuffer, temp_name);
+    strcat(firstBuffer, ".bin");
+    // Open Files
+    if (access(firstTempDB, F_OK) != -1) firstDB = fopen(firstTempDB, "rb"); /** OPEN: FIRST DB */
+    else firstDB = fopen(first->tableFileName, "rb");
+    if (access(firstTempDB, F_OK) != -1) secondDB = fopen(secondTempDB, "rb"); /** OPEN: SECOND DB */
+    else secondDB = fopen(second->tableFileName, "rb");
+    tempDB = fopen(firstBuffer, "wb+");  /** OPEN: TEMP DB */
+
+
+    memset(firstBuffer, 0, MAXINPUTLENGTH);
+
+    size_t readFirst = fread(firstBuffer, 1, (size_t) firstField->length, firstDB),
+            readSecond = fread(secondBuffer, 1, (size_t) secondField->length, secondDB);
+    while (readFirst > 0)
     {
-        for (int j = 0; j < second->fieldcount; j++)
+        while (readSecond > 0)
         {
-            for (int k = 0; k < clauses->count; k++)
+            while (firstField != NULL)
             {
+                while (secondField != NULL)
+                {
+                    while (where != NULL && failure == false)
+                    {
+                        if (where->constant == false)
+                        {
+                            if (strcmp(where->field, firstField->fieldName) == 0 ||
+                                strcmp(where->field, secondField->fieldName) == 0)
+                            {
+                                if (strcmp(where->condition, secondField->fieldName) == 0 ||
+                                    strcmp(where->condition, firstField->fieldName) == 0)
+                                {
+                                    if (strcmp(firstBuffer, secondBuffer) != 0)
+                                    {
+                                        failure = true;
+                                    }
+                                }
+                            }
+                        }
+                        where = where->next;
+                    }
+                    where = clauses->head;
+                    secondField = secondField->next;
+                    if (secondField != NULL)
+                    {
+                        fread(secondBuffer, 1, (size_t) secondField->length, secondDB);
+                    }
+                } // End of record in DB2
+                secondField = second->fields->head;
+                firstField = firstField->next;
+                fseek(secondDB, -second->reclen, SEEK_CUR);
+                if (firstField != NULL)
+                {
+                    fread(firstBuffer, 1, (size_t) firstField->length, firstDB);
+                    fread(secondBuffer, 1, (size_t) secondField->length, secondDB);
+                }
+            } // End of record in DB1
 
+            if (failure == false)
+            {
+                fseek(firstDB, -first->reclen, SEEK_CUR);
+                fread(firstBuffer, 1, (size_t) first->reclen, firstDB);
+                fread(secondBuffer, 1, (size_t) second->reclen, secondDB);
+                fwrite(firstBuffer, 1, (size_t) first->reclen - 1, tempDB);
+                fwrite("\0", 1, 1, tempDB);
+                fwrite(secondBuffer, 1, (size_t) second->reclen, tempDB);
             }
-        }
+            else
+            {
+                fseek(secondDB, second->reclen, SEEK_CUR);
+            }
+            fseek(firstDB, -first->reclen, SEEK_CUR);
+            failure = false;
+            firstField = first->fields->head;
+            memset(firstBuffer, 0, MAXINPUTLENGTH);
+            memset(secondBuffer, 0, MAXINPUTLENGTH);
+            fread(firstBuffer, 1, (size_t) firstField->length, firstDB);
+            readSecond = fread(secondBuffer, 1, (size_t) secondField->length, secondDB);
+        } // End of Second DB file
+        fseek(firstDB, first->reclen - firstField->length, SEEK_CUR);
+        rewind(secondDB);
+        readSecond = fread(secondBuffer, 1, (size_t) secondField->length, secondDB);
+        readFirst = fread(firstBuffer, 1, (size_t) firstField->length, firstDB);
+    } // End of First DB file
+    fclose(firstDB);  /** CLOSE: FIRST DB */
+    fclose(secondDB);  /** CLOSE: SECOND DB */
+    fclose(tempDB);  /** CLOSE: TEMP DB */
+    free(firstBuffer); /** DEALLOCATE: FIRST BUFFER */
+    free(secondBuffer); /** DEALLOCATE: FIRST BUFFER */
+    free(tempSchema); /** DEALLOCATE: TEMP */
 
-    }
 }

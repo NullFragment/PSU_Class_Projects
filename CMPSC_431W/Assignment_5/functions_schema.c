@@ -150,9 +150,9 @@ void createTempSchema(char *first, char *second, char *temp_name)
             *name_t2 = calloc(strlen(second) + 8, 1),
             *buffer = calloc(MAXINPUTLENGTH, 1);
 
-    strncat(name_t1, first, strlen(first));
+    strncat(name_t1, first, strlen(first)-4);
     strncat(name_t1, ".schema", 7);
-    strncat(name_t2, second, strlen(second));
+    strncat(name_t2, second, strlen(second)-4);
     strncat(name_t2, ".schema", 7);
     table1 = fopen(name_t1, "rb");
     table2 = fopen(name_t2, "rb");

@@ -58,25 +58,10 @@ FROM people
 WHERE city = "BRONX"
 AND gender = "FEMALE"
 END
-
-
-INPUT 4:
-SELECT lname, fname, salary, emptype 
+SELECT lname, fname, salary, emptype
 FROM people, employees
 WHERE people_id = pid
 END
-OUTPUT 4:
-Welcome!
-===> SELECT lname, fname, salary, emptype
-===> FROM people, employees
-===> WHERE people_id = pid
-===> END
-THOMAS,JO,$65000,RN
-CHEVALIER,AULIO,$60000,RN
-PETERSEN,BOB,$25000,NA
-KOROTCHEN,AURORA,$55000,LPN
-Goodbye!
-
 
 INPUT 5:
 SELECT lname, fname, salary, emptype 
@@ -94,3 +79,14 @@ Welcome!
 THOMAS,JO,$65000,RN
 PETERSEN,BOB,$25000,NA
 Goodbye!
+
+
+
+
+
+
+
+
+
+
+
