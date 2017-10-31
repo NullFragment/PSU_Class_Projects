@@ -9,18 +9,19 @@ CREATE TABLE cmpsc431.week
     end_date date NOT NULL
 );
 
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-10-01', '2017-10-07');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-10-08', '2017-10-14');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-10-15', '2017-10-21');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-10-22', '2017-10-28');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-10-29', '2017-11-04');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-11-05', '2017-11-11');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-11-12', '2017-11-18');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-11-19', '2017-11-25');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-11-26', '2017-12-02');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-12-03', '2017-12-09');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-12-10', '2017-12-16');
-INSERT INTO cmpsc431.week (start_date, end_date) VALUES ('2017-12-17', '2017-12-23');
+INSERT INTO cmpsc431.week (start_date, end_date) VALUES 
+('2017-10-01', '2017-10-07'),
+('2017-10-08', '2017-10-14'),
+('2017-10-15', '2017-10-21'),
+('2017-10-22', '2017-10-28'),
+('2017-10-29', '2017-11-04'),
+('2017-11-05', '2017-11-11'),
+('2017-11-12', '2017-11-18'),
+('2017-11-19', '2017-11-25'),
+('2017-11-26', '2017-12-02'),
+('2017-12-03', '2017-12-09'),
+('2017-12-10', '2017-12-16'),
+('2017-12-17', '2017-12-23');
 
 CREATE TABLE cmpsc431.weekday
 (
@@ -28,13 +29,8 @@ CREATE TABLE cmpsc431.weekday
     day_name char(10)
 );
 
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Sunday');
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Monday');
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Tuesday');
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Wednesday');
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Thursday');
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Friday');
-INSERT INTO cmpsc431.weekday (day_name) VALUES ('Saturday');
+INSERT INTO cmpsc431.weekday (day_name) VALUES 
+('Sunday'),('Monday'),('Tuesday'),('Wednesday'),('Thursday'),('Friday'),('Saturday');
 
 CREATE TABLE cmpsc431.shift_status
 (
@@ -42,10 +38,7 @@ CREATE TABLE cmpsc431.shift_status
     status char(50)
 );
 
-INSERT INTO cmpsc431.shift_status (status) VALUES ('Called in');
-INSERT INTO cmpsc431.shift_status (status) VALUES ('Called off');
-INSERT INTO cmpsc431.shift_status (status) VALUES ('Requested shift');
-INSERT INTO cmpsc431.shift_status (status) VALUES ('Requested off');
+INSERT INTO cmpsc431.shift_status (status) VALUES ('Called in'),('Called off'),('Requested shift'),('Requested off');
 
 CREATE TABLE cmpsc431.shift_time
 (
@@ -54,11 +47,7 @@ CREATE TABLE cmpsc431.shift_time
     shift_end time NOT NULL
 );
 
-INSERT INTO cmpsc431.shift_time (shift_start, shift_end) VALUES ('07:00:00', '15:00:00');
-INSERT INTO cmpsc431.shift_time (shift_start, shift_end) VALUES ('15:00:00', '23:00:00');
-INSERT INTO cmpsc431.shift_time (shift_start, shift_end) VALUES ('23:00:00', '07:00:00');
-INSERT INTO cmpsc431.shift_time (shift_start, shift_end) VALUES ('07:00:00', '19:00:00');
-INSERT INTO cmpsc431.shift_time (shift_start, shift_end) VALUES ('19:00:00', '07:00:00');
+INSERT INTO cmpsc431.shift_time (shift_start, shift_end) VALUES ('07:00:00', '15:00:00'),('15:00:00', '23:00:00'),('23:00:00', '07:00:00'),('07:00:00', '19:00:00'),('19:00:00', '07:00:00');
 
 CREATE TABLE cmpsc431.role
 (
@@ -67,11 +56,9 @@ CREATE TABLE cmpsc431.role
 );
 
 CREATE UNIQUE INDEX roles_role_ID_uindex ON cmpsc431.role (role_ID);
-INSERT INTO cmpsc431.role (role) VALUES ('Registered Nurse');
-INSERT INTO cmpsc431.role (role) VALUES ('Licensed Practical Nurse');
-INSERT INTO cmpsc431.role (role) VALUES ('Nurse Practitioner');
-INSERT INTO cmpsc431.role (role) VALUES ('Clinical Nurse Specialist');
-INSERT INTO cmpsc431.role (role) VALUES ('Nurse Assistant');
+INSERT INTO cmpsc431.role (role) VALUES 
+('Registered Nurse'),('Licensed Practical Nurse'),('Nurse Practitioner'),
+('Clinical Nurse Specialist'),('Nurse Assistant');
 
 CREATE TABLE cmpsc431.department
 (
@@ -82,12 +69,13 @@ CREATE TABLE cmpsc431.department
     dept_name char(50) NOT NULL
 );
 
-INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES (1, 10, 26, 'Emergency Room');
-INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES (2, 6, 19, 'Intensive Care Unit');
-INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES (1, 10, 12, 'Maternity');
-INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES (1, 7, 25, 'Operating Room');
-INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES (1, 9, 26, 'Quarantine');
-INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES (2, 9, 25, 'Psychiatric Ward');
+INSERT INTO cmpsc431.department (min_staff, max_staff, beds, dept_name) VALUES 
+(1, 10, 26, 'Emergency Room'),
+(2, 6, 19, 'Intensive Care Unit'),
+(1, 10, 12, 'Maternity'),
+(1, 7, 25, 'Operating Room'),
+(1, 9, 26, 'Quarantine'),
+(2, 9, 25, 'Psychiatric Ward');
 
 CREATE TABLE cmpsc431.employee
 (
@@ -108,26 +96,27 @@ CREATE TABLE cmpsc431.employee
 );
 CREATE INDEX employee_department_DID_fk ON cmpsc431.employee (home_dept);
 
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Adam', 'Adam', 'Apple', '000-00-0001', '000-000-0001', '000-000-0001', '2017-10-11 01:00:46', null, 1, 1, 22.5);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Brad', 'Brad', 'Baker', '000-00-0002', '000-000-0002', '000-000-0002', '2017-10-11 01:00:46', null, 0, 0, 15);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Charles', 'Charles', 'Chaplan', '000-00-0003', '000-000-0003', '000-000-0003', '2017-10-11 01:00:46', null, 0, 1, 37);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Derek', 'Derek', 'Davis', '000-00-0004', '000-000-0004', '000-000-0004', '2017-10-11 01:00:46', null, 1, 1, 40);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Evan', 'Evan', 'Elliott', '000-00-0005', '000-000-0005', '000-000-0005', '2017-10-11 01:00:46', null, 1, 1, 21);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Frank', 'Frank', 'Farris', '000-00-0006', '000-000-0006', '000-000-0006', '2017-10-11 01:00:46', null, 1, 1, 32);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'George', 'George', 'Grant', '000-00-0007', '000-000-0007', '000-000-0007', '2017-10-11 01:00:46', null, 0, 0, 19);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Hank', 'Hank', 'Hamill', '000-00-0008', '000-000-0008', '000-000-0008', '2017-10-11 01:00:46', null, 0, 0, 21);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Ivan', 'Ivan', 'Ikarov', '000-00-0009', '000-000-0009', '000-000-0009', '2017-10-11 01:00:46', null, 1, 0, 24);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Jack', 'Jack', 'Joplin', '000-00-0010', '000-000-0010', '000-000-0010', '2017-10-11 01:00:46', null, 1, 1, 21);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Kevin', 'Kevin', 'Keller', '000-00-0011', '000-000-0011', '000-000-0011', '2017-10-11 01:00:46', null, 1, 1, 20);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Lenny', 'Lenny', 'Landman', '000-00-0012', '000-000-0012', '000-000-0012', '2017-10-11 01:00:46', null, 1, 1, 17);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Mark', 'Mark', 'Morris', '000-00-0013', '000-000-0013', '000-000-0013', '2017-10-11 01:00:46', null, 1, 1, 32);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Nick', 'Nick', 'Norton', '000-00-0014', '000-000-0014', '000-000-0014', '2017-10-11 01:00:46', null, 0, 1, 23);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Orval', 'Orval', 'Obrian', '000-00-0015', '000-000-0015', '000-000-0015', '2017-10-11 01:00:46', null, 0, 0, 30);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Peter', 'Peter', 'Parker', '000-00-0016', '000-000-0016', '000-000-0016', '2017-10-11 01:00:46', null, 0, 1, 39);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Quinn', 'Quinn', 'Quarrick', '000-00-0017', '000-000-0017', '000-000-0017', '2017-10-11 01:00:46', null, 1, 0, 15);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Robert', 'Robert', 'Rodgers', '000-00-0018', '000-000-0018', '000-000-0018', '2017-10-11 01:00:46', null, 1, 1, 17);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Sam', 'Sam', 'Saville', '000-00-0019', '000-000-0019', '000-000-0019', '2017-10-11 01:00:46', null, 0, 1, 38);
-INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES (null, 'Tom', 'Tom', 'Tarantino', '000-00-0020', '000-000-0020', '000-000-0020', '2017-10-11 01:00:46', null, 0, 0, 27);
+INSERT INTO cmpsc431.employee (home_dept, fname, mname, lname, ssn, phone1, phone2, start_date, end_date, full_time, salaried, pay_rate) VALUES 
+(null, 'Adam', 'Adam', 'Apple', '000-00-0001', '000-000-0001', '000-000-0001', '2017-10-11 01:00:46', null, 1, 1, 22.5),
+(null, 'Brad', 'Brad', 'Baker', '000-00-0002', '000-000-0002', '000-000-0002', '2017-10-11 01:00:46', null, 0, 0, 15),
+(null, 'Charles', 'Charles', 'Chaplan', '000-00-0003', '000-000-0003', '000-000-0003', '2017-10-11 01:00:46', null, 0, 1, 37),
+(null, 'Derek', 'Derek', 'Davis', '000-00-0004', '000-000-0004', '000-000-0004', '2017-10-11 01:00:46', null, 1, 1, 40),
+(null, 'Evan', 'Evan', 'Elliott', '000-00-0005', '000-000-0005', '000-000-0005', '2017-10-11 01:00:46', null, 1, 1, 21),
+(null, 'Frank', 'Frank', 'Farris', '000-00-0006', '000-000-0006', '000-000-0006', '2017-10-11 01:00:46', null, 1, 1, 32),
+(null, 'George', 'George', 'Grant', '000-00-0007', '000-000-0007', '000-000-0007', '2017-10-11 01:00:46', null, 0, 0, 19),
+(null, 'Hank', 'Hank', 'Hamill', '000-00-0008', '000-000-0008', '000-000-0008', '2017-10-11 01:00:46', null, 0, 0, 21),
+(null, 'Ivan', 'Ivan', 'Ikarov', '000-00-0009', '000-000-0009', '000-000-0009', '2017-10-11 01:00:46', null, 1, 0, 24),
+(null, 'Jack', 'Jack', 'Joplin', '000-00-0010', '000-000-0010', '000-000-0010', '2017-10-11 01:00:46', null, 1, 1, 21),
+(null, 'Kevin', 'Kevin', 'Keller', '000-00-0011', '000-000-0011', '000-000-0011', '2017-10-11 01:00:46', null, 1, 1, 20),
+(null, 'Lenny', 'Lenny', 'Landman', '000-00-0012', '000-000-0012', '000-000-0012', '2017-10-11 01:00:46', null, 1, 1, 17),
+(null, 'Mark', 'Mark', 'Morris', '000-00-0013', '000-000-0013', '000-000-0013', '2017-10-11 01:00:46', null, 1, 1, 32),
+(null, 'Nick', 'Nick', 'Norton', '000-00-0014', '000-000-0014', '000-000-0014', '2017-10-11 01:00:46', null, 0, 1, 23),
+(null, 'Orval', 'Orval', 'Obrian', '000-00-0015', '000-000-0015', '000-000-0015', '2017-10-11 01:00:46', null, 0, 0, 30),
+(null, 'Peter', 'Peter', 'Parker', '000-00-0016', '000-000-0016', '000-000-0016', '2017-10-11 01:00:46', null, 0, 1, 39),
+(null, 'Quinn', 'Quinn', 'Quarrick', '000-00-0017', '000-000-0017', '000-000-0017', '2017-10-11 01:00:46', null, 1, 0, 15),
+(null, 'Robert', 'Robert', 'Rodgers', '000-00-0018', '000-000-0018', '000-000-0018', '2017-10-11 01:00:46', null, 1, 1, 17),
+(null, 'Sam', 'Sam', 'Saville', '000-00-0019', '000-000-0019', '000-000-0019', '2017-10-11 01:00:46', null, 0, 1, 38),
+(null, 'Tom', 'Tom', 'Tarantino', '000-00-0020', '000-000-0020', '000-000-0020', '2017-10-11 01:00:46', null, 0, 0, 27);
 
 CREATE TABLE cmpsc431.address
 (
@@ -143,26 +132,27 @@ CREATE TABLE cmpsc431.address
 CREATE UNIQUE INDEX address_AID_uindex ON cmpsc431.address (address_ID);
 CREATE INDEX address_employee_EID_fk ON cmpsc431.address (emp_ID);
 
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (1, '123 Easy Street', 'Apt. A', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (2, '124 Easy Street', 'Apt. B', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (3, '125 Easy Street', 'Apt. C', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (4, '126 Easy Street', 'Apt. D', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (5, '127 Easy Street', 'Apt. E', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (6, '128 Easy Street', 'Apt. F', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (7, '129 Easy Street', 'Apt. G', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (8, '130 Easy Street', 'Apt. H', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (9, '131 Easy Street', 'Apt. I', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (10, '132 Easy Street', 'Apt. J', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (11, '133 Easy Street', 'Apt. K', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (12, '134 Easy Street', 'Apt. L', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (13, '135 Easy Street', 'Apt. M', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (14, '136 Easy Street', 'Apt. N', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (15, '137 Easy Street', 'Apt. O', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (16, '138 Easy Street', 'Apt. P', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (17, '139 Easy Street', 'Apt. Q', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (18, '140 Easy Street', 'Apt. R', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (19, '141 Easy Street', 'Apt. S', 'State College', 'Pennsylvania', '16801');
-INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES (20, '142 Easy Street', 'Apt. T', 'State College', 'Pennsylvania', '16801');
+INSERT INTO cmpsc431.address (emp_ID, street1, street2, city, state, zip) VALUES 
+(1, '123 Easy Street', 'Apt. A', 'State College', 'Pennsylvania', '16801'),
+(2, '124 Easy Street', 'Apt. B', 'State College', 'Pennsylvania', '16801'),
+(3, '125 Easy Street', 'Apt. C', 'State College', 'Pennsylvania', '16801'),
+(4, '126 Easy Street', 'Apt. D', 'State College', 'Pennsylvania', '16801'),
+(5, '127 Easy Street', 'Apt. E', 'State College', 'Pennsylvania', '16801'),
+(6, '128 Easy Street', 'Apt. F', 'State College', 'Pennsylvania', '16801'),
+(7, '129 Easy Street', 'Apt. G', 'State College', 'Pennsylvania', '16801'),
+(8, '130 Easy Street', 'Apt. H', 'State College', 'Pennsylvania', '16801'),
+(9, '131 Easy Street', 'Apt. I', 'State College', 'Pennsylvania', '16801'),
+(10, '132 Easy Street', 'Apt. J', 'State College', 'Pennsylvania', '16801'),
+(11, '133 Easy Street', 'Apt. K', 'State College', 'Pennsylvania', '16801'),
+(12, '134 Easy Street', 'Apt. L', 'State College', 'Pennsylvania', '16801'),
+(13, '135 Easy Street', 'Apt. M', 'State College', 'Pennsylvania', '16801'),
+(14, '136 Easy Street', 'Apt. N', 'State College', 'Pennsylvania', '16801'),
+(15, '137 Easy Street', 'Apt. O', 'State College', 'Pennsylvania', '16801'),
+(16, '138 Easy Street', 'Apt. P', 'State College', 'Pennsylvania', '16801'),
+(17, '139 Easy Street', 'Apt. Q', 'State College', 'Pennsylvania', '16801'),
+(18, '140 Easy Street', 'Apt. R', 'State College', 'Pennsylvania', '16801'),
+(19, '141 Easy Street', 'Apt. S', 'State College', 'Pennsylvania', '16801'),
+(20, '142 Easy Street', 'Apt. T', 'State College', 'Pennsylvania', '16801');
 
 CREATE TABLE cmpsc431.certification
 (
@@ -176,26 +166,8 @@ CREATE UNIQUE INDEX certifications_cert_ID_uindex ON cmpsc431.certification (cer
 CREATE UNIQUE INDEX certifications_employee_EID_fk ON cmpsc431.certification (emp_ID);
 CREATE INDEX certifications_role_role_ID_fk ON cmpsc431.certification (role_ID);
 
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (1, 3);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (2, 2);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (3, 5);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (4, 1);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (5, 1);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (6, 4);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (7, 5);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (8, 1);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (9, 5);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (10, 2);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (11, 4);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (12, 3);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (13, 4);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (14, 2);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (15, 4);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (16, 1);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (17, 4);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (18, 5);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (19, 2);
-INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (20, 4);
+INSERT INTO cmpsc431.certification (emp_ID, role_ID) VALUES (1, 3),(2, 2),(3, 5),(4, 1),(5, 1),(6, 4),(7, 5),
+(8, 1),(9, 5),(10, 2),(11, 4),(12, 3),(13, 4),(14, 2),(15, 4),(16, 1),(17, 4),(18, 5),(19, 2),(20, 4);
 
 CREATE TABLE cmpsc431.shift
 (
