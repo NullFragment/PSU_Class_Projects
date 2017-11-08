@@ -95,10 +95,10 @@ invisible(gc())
 ####################################################################
 ## Use LEAPS for Model Selection Exploration
 select_obp = regsubsets(OBP ~ Hits + Doubles + Triples + HomeRuns + Walks,method = "exhaustive",nbest = 1,data = baseball)
-summary(select_obp)$which
-
 select_salary_expanded = regsubsets(Salary ~ OBP + Runs + StrikeOuts + StolenBases,method = "exhaustive",nbest = 1,data = baseball)
-summary(select_salary_expanded)$which
-
 select_salary_full = regsubsets(Salary ~ . - Name,method = "exhaustive",nbest = 1,data = baseball)
+
+## Display Data
+summary(select_obp)$which
+summary(select_salary_expanded)$which
 summary(select_salary_full)$which
