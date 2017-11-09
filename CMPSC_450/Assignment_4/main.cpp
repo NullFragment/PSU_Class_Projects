@@ -30,6 +30,9 @@ int main(int argc, char **argv)
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &num_tasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Status topsendrcv, botsendrcv;
+    int max_thread = num_tasks - 1;
+
     // printf("Hello world from rank %3d of %3d\n", rank, num_tasks);
     #else
     rank = 0;
@@ -82,12 +85,20 @@ int main(int argc, char **argv)
     /* grid[i][j] would be grid[i*n+j] */
     int *grid_current;
     int *grid_next;
+    int *boundary_top;
+    int *boundary_bottom;
 
     grid_current = (int *) calloc((size_t) m_p * m, sizeof(int));
     assert(grid_current != 0);
 
     grid_next = (int *) calloc((size_t) m_p * m, sizeof(int));
     assert(grid_next != 0);
+
+    boundary_bottom = (int *) calloc((size_t) m, sizeof(int));
+    assert(boundary_bottom != 0);
+
+    boundary_top = (int *) calloc((size_t) m, sizeof(int));
+    assert(boundary_top != 0);
 
     int i, j, t;
 
@@ -101,7 +112,7 @@ int main(int argc, char **argv)
     {
         for (j = 0; j < m; j++)
         {
-            grid_current[i * m + j] = 0;
+            grid_current[i * m + j] = 0; // CHANGE BACK TO ZERO
             grid_next[i * m + j] = 0;
         }
     }
@@ -128,23 +139,67 @@ int main(int argc, char **argv)
         full_grid = (int *) calloc(m_p * m * num_tasks, sizeof(int));
         full_grid_next = (int *) calloc(m_p * m * num_tasks, sizeof(int));
     }
-    for (int t = 0; t < k; t++)
+    for (t = 0; t < k; t++)
     {
-        for (i = 1; i < m_p - 1; i++)
+        if (rank > 0)
+        {
+            MPI_Sendrecv(&grid_current[0], m, MPI_INT, rank - 1, 0,
+                         &boundary_top[0], m, MPI_INT, rank - 1, 0,
+                         MPI_COMM_WORLD, &topsendrcv);
+        } // Exchange Top
+        if (rank < max_thread)
+        {
+            MPI_Sendrecv(&grid_current[m* m_p+1], m, MPI_INT, rank + 1, 0,
+                         &boundary_bottom[0], m, MPI_INT, rank + 1, 0,
+                         MPI_COMM_WORLD, &botsendrcv);
+        } // Exchange Bottom
+
+        MPI_Barrier(MPI_COMM_WORLD);
+
+        for (i = 1; i < m_p; i++)
         {
             for (j = 1; j < m - 1; j++)
             {
                 /* avoiding conditionals inside inner loop */
                 int prev_state = grid_current[i * m + j];
-                int num_alive =
-                        grid_current[(i  )*m+j-1] +
-                        grid_current[(i  )*m+j+1] +
-                        grid_current[(i-1)*m+j-1] +
-                        grid_current[(i-1)*m+j  ] +
-                        grid_current[(i-1)*m+j+1] +
-                        grid_current[(i+1)*m+j-1] +
-                        grid_current[(i+1)*m+j  ] +
-                        grid_current[(i+1)*m+j+1];
+                int num_alive = 0;
+                if (rank != 0 & i == 0)
+                {
+                    num_alive =
+                            grid_current[(i) * m + j - 1] +
+                            grid_current[(i) * m + j + 1] +
+                            grid_current[(i - 1) * m + j - 1] +
+                            grid_current[(i - 1) * m + j] +
+                            grid_current[(i - 1) * m + j + 1] +
+                            boundary_top[j - 1] +
+                            boundary_top[j] +
+                            boundary_top[j + 1];
+
+                } else if (rank != max_thread & i == m_p)
+                {
+                    num_alive =
+                            grid_current[(i) * m + j - 1] +
+                            grid_current[(i) * m + j + 1] +
+                            boundary_bottom[j - 1] +
+                            boundary_bottom[j] +
+                            boundary_bottom[j + 1] +
+                            grid_current[(i + 1) * m + j - 1] +
+                            grid_current[(i + 1) * m + j] +
+                            grid_current[(i + 1) * m + j + 1];
+
+                } else if (i != 0 && i != m_p)
+                {
+                    num_alive =
+                            grid_current[(i) * m + j - 1] +
+                            grid_current[(i) * m + j + 1] +
+                            grid_current[(i - 1) * m + j - 1] +
+                            grid_current[(i - 1) * m + j] +
+                            grid_current[(i - 1) * m + j + 1] +
+                            grid_current[(i + 1) * m + j - 1] +
+                            grid_current[(i + 1) * m + j] +
+                            grid_current[(i + 1) * m + j + 1];
+                }
+
 
                 grid_next[i * m + j] =
                         prev_state * ((num_alive == 2) + (num_alive == 3)) + (1 - prev_state) * (num_alive == 3);
@@ -157,9 +212,9 @@ int main(int argc, char **argv)
         MPI_Barrier(MPI_COMM_WORLD);
         MPI_Gather(grid_next, m_p * m, MPI_INT, full_grid_next, m_p * m, MPI_INT, 0, MPI_COMM_WORLD);
         MPI_Barrier(MPI_COMM_WORLD);
-        int *swap = grid_next;
+        int *grid_tmp = grid_next;
         grid_next = grid_current;
-        grid_current = swap;
+        grid_current = grid_tmp;
         if (rank == 0)
         {
             std::cout << "Grid at Step: " << t << std::endl;
@@ -167,7 +222,7 @@ int main(int argc, char **argv)
             {
                 for (int q = 0; q < m; q++)
                 {
-                    std::cout << full_grid_next[q + p * m] << " ";
+                    std::cout << full_grid[q + p * m] << " ";
                 }
                 std::cout << std::endl;
 
