@@ -1,11 +1,15 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
-#include <sys/time.h>
 #include <ctime>
 #include <iostream>
+#include <cmath>
+#include <random>
+#include <sys/time.h>
+#include <fstream>
 
-#define USE_MPI 1
+#define USE_MPI 0
+#define COMM_TIMER 0
 
 #if USE_MPI
 
@@ -33,7 +37,6 @@ int main(int argc, char **argv)
     MPI_Status topsendrcv, botsendrcv;
     int max_thread = num_tasks - 1;
 
-    // printf("Hello world from rank %3d of %3d\n", rank, num_tasks);
     #else
     rank = 0;
     num_tasks = 1;
@@ -74,8 +77,13 @@ int main(int argc, char **argv)
     int m_p = (m / num_tasks);
 
     /* print new m to let user know n has been modified */
+    char std_filename[11];
+    std::ofstream stdLog;
+
     if (rank == 0)
     {
+        sprintf(std_filename, "std_times.txt");
+        stdLog.open(std_filename, std::ofstream::out | std::ofstream::app); // Open file
         fprintf(stderr, "Using m: %d, m_p: %d, k: %d\n", m, m_p, k);
         fprintf(stderr, "Requires %3.6lf MB of memory per task\n",
                 ((2 * 4.0 * m_p) * m / 1e6));
@@ -132,6 +140,16 @@ int main(int argc, char **argv)
     if (rank == 0)
         elt = timer();
 
+    double comm_start = 0.0, comm_time = 0.0;
+    char time_filename[11];
+    std::ofstream timerLog;
+
+    if(COMM_TIMER == 1)
+    {
+        sprintf(time_filename, "rank_%02d_comm_times.txt", rank);
+        timerLog.open(time_filename, std::ofstream::out | std::ofstream::app); // Open file
+    }
+
     #if USE_MPI
     int *full_grid, *full_grid_next;
     if (rank == 0)
@@ -139,8 +157,10 @@ int main(int argc, char **argv)
         full_grid = (int *) calloc(m_p * m * num_tasks, sizeof(int));
         full_grid_next = (int *) calloc(m_p * m * num_tasks, sizeof(int));
     }
+
     for (t = 0; t < k; t++)
     {
+        if(COMM_TIMER == 1) comm_start = timer();
         if (rank > 0)
         {
             MPI_Sendrecv(&grid_current[0], m, MPI_INT, rank - 1, 0,
@@ -149,10 +169,12 @@ int main(int argc, char **argv)
         } // Exchange Top
         if (rank < max_thread)
         {
-            MPI_Sendrecv(&grid_current[m* m_p+1], m, MPI_INT, rank + 1, 0,
+            MPI_Sendrecv(&grid_current[m * m_p + 1], m, MPI_INT, rank + 1, 0,
                          &boundary_bottom[0], m, MPI_INT, rank + 1, 0,
                          MPI_COMM_WORLD, &botsendrcv);
         } // Exchange Bottom
+        if(COMM_TIMER == 1) comm_time += timer() - comm_start;
+
 
         MPI_Barrier(MPI_COMM_WORLD);
 
@@ -203,31 +225,32 @@ int main(int argc, char **argv)
 
                 grid_next[i * m + j] =
                         prev_state * ((num_alive == 2) + (num_alive == 3)) + (1 - prev_state) * (num_alive == 3);
-                //std::cout << "Grid: " << p + q * m << " Alive: " << num_alive << std::endl;
 
             }
         }
+        if(COMM_TIMER == 1) comm_start = timer();
         MPI_Barrier(MPI_COMM_WORLD);
         MPI_Gather(grid_current, m_p * m, MPI_INT, full_grid, m_p * m, MPI_INT, 0, MPI_COMM_WORLD);
         MPI_Barrier(MPI_COMM_WORLD);
         MPI_Gather(grid_next, m_p * m, MPI_INT, full_grid_next, m_p * m, MPI_INT, 0, MPI_COMM_WORLD);
         MPI_Barrier(MPI_COMM_WORLD);
+        if(COMM_TIMER == 1) comm_time += timer() - comm_start;
         int *grid_tmp = grid_next;
         grid_next = grid_current;
         grid_current = grid_tmp;
-        if (rank == 0)
-        {
-            std::cout << "Grid at Step: " << t << std::endl;
-            for (int p = 0; p < m; p++)
-            {
-                for (int q = 0; q < m; q++)
-                {
-                    std::cout << full_grid[q + p * m] << " ";
-                }
-                std::cout << std::endl;
-
-            }
-        }
+//        if (rank == 0)
+//        {
+//            std::cout << "Grid at Step: " << t << std::endl;
+//            for (int p = 0; p < m; p++)
+//            {
+//                for (int q = 0; q < m; q++)
+//                {
+//                    std::cout << full_grid[q + p * m] << " ";
+//                }
+//                std::cout << std::endl;
+//
+//            }
+//        }
     }
 
 
@@ -236,16 +259,6 @@ int main(int argc, char **argv)
     /* considering only internal cells */
     for (t = 0; t < k; t++)
     {
-        std::cout << "Grid at Step: " << t << std::endl;
-        for (int p = 0; p < m; p++)
-        {
-            for (int q = 0; q < m; q++)
-            {
-                std::cout << grid_current[p * m + q] << " ";
-            }
-            std::cout << std::endl;
-
-        }
         for (i = 1; i < m - 1; i++)
         {
             for (j = 1; j < m - 1; j++)
@@ -276,34 +289,17 @@ int main(int argc, char **argv)
     if (rank == 0)
         elt = timer() - elt;
 
-//    /* Verify */
-//    int verify_failed = 0;
-//    for (i = 0; i < m_p; i++)
-//    {
-//        for (j = 0; j < m; j++)
-//        {
-//            /* Add verification code here */
-//        }
-//    }
-//
-//    if (verify_failed)
-//    {
-//        fprintf(stderr, "ERROR: rank %d, verification failed, exiting!\n", rank);
-//        #if USE_MPI
-//        MPI_Abort(MPI_COMM_WORLD, 2);
-//        #else
-//        exit(2);
-//        #endif
-//    }
-//
-//    if (rank == 0)
-//    {
-//        fprintf(stderr, "Time taken: %3.3lf s.\n", elt);
-//        fprintf(stderr, "Performance: %3.3lf billion cell updates/s\n",
-//                (1.0 * m * m) * k / (elt * 1e9));
-//    }
+    if (rank == 0)
+    {
+        stdLog << "p\t" << num_tasks <<"\tm\t" << m << "\tm_p\t" << m_p << "\tk\t" << k << "\ttime\t" << elt << "\tupdates\t"
+                  << ((1.0 * m * m) * k / (elt * 1e9)) << std::endl;
+    }
+    if(COMM_TIMER == 1)
+    {
+        timerLog << "rank_" <<rank << "comm_time\t" << comm_time << std::endl;
+    }
 
-/* free memory */
+    /* free memory */
     free(grid_current);
     free(grid_next);
 
@@ -314,6 +310,8 @@ int main(int argc, char **argv)
 
 #endif
 
+    timerLog.close();
+    stdLog.close();
 
     return 0;
 }
