@@ -1,0 +1,27 @@
+     Salary     BattingAverage        OBP             Runs            Hits           Doubles         Triples      
+ Min.   : 109   Min.   :0.0630   Min.   :0.063   Min.   :  0.0   Min.   :-12.00   Min.   : 0.00   Min.   : 0.000  
+ 1st Qu.: 230   1st Qu.:0.2380   1st Qu.:0.297   1st Qu.: 22.0   1st Qu.: 35.00   1st Qu.: 9.00   1st Qu.: 0.000  
+ Median : 740   Median :0.2600   Median :0.323   Median : 41.0   Median : 62.00   Median :15.00   Median : 2.000  
+ Mean   :1249   Mean   :0.2578   Mean   :0.324   Mean   : 46.7   Mean   : 64.72   Mean   :16.67   Mean   : 2.338  
+ 3rd Qu.:2150   3rd Qu.:0.2810   3rd Qu.:0.354   3rd Qu.: 69.0   3rd Qu.: 92.00   3rd Qu.:23.00   3rd Qu.: 3.000  
+ Max.   :6100   Max.   :0.4570   Max.   :0.486   Max.   :133.0   Max.   :162.00   Max.   :49.00   Max.   :15.000  
+ 
+    HomeRuns           RBI             Walks          StrikeOuts      StolenBases         Errors      
+ Min.   : 0.000   Min.   :  0.00   Min.   :  0.00   Min.   :  1.00   Min.   : 0.000   Min.   : 0.000  
+ 1st Qu.: 2.000   1st Qu.: 21.00   1st Qu.: 15.00   1st Qu.: 31.00   1st Qu.: 1.000   1st Qu.: 3.000  
+ Median : 6.000   Median : 39.00   Median : 30.00   Median : 49.00   Median : 4.000   Median : 5.000  
+ Mean   : 9.098   Mean   : 44.02   Mean   : 35.02   Mean   : 56.71   Mean   : 8.246   Mean   : 6.772  
+ 3rd Qu.:15.000   3rd Qu.: 66.00   3rd Qu.: 49.00   3rd Qu.: 78.00   3rd Qu.:11.000   3rd Qu.: 9.000  
+ Max.   :44.000   Max.   :133.00   Max.   :138.00   Max.   :175.00   Max.   :76.000   Max.   :31.000  
+ 
+ FreeAgencyEligibility   FreeAgent      ArbitrationEligibility  Arbitration     
+ Min.   :0.0000        Min.   :0.0000   Min.   :0.0000         Min.   :0.00000  
+ 1st Qu.:0.0000        1st Qu.:0.0000   1st Qu.:0.0000         1st Qu.:0.00000  
+ Median :0.0000        Median :0.0000   Median :0.0000         Median :0.00000  
+ Mean   :0.3976        Mean   :0.1157   Mean   :0.1929         Mean   :0.02967  
+ 3rd Qu.:1.0000        3rd Qu.:0.0000   3rd Qu.:0.0000         3rd Qu.:0.00000  
+ Max.   :1.0000        Max.   :1.0000   Max.   :1.0000         Max.   :1.00000 
+ 
+ 
+ 
+ 

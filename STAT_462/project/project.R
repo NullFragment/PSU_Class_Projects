@@ -36,19 +36,21 @@ names(baseball) <-
   'Arbitration',
   'Name'
   )
+summary(baseball)
 
 ## Remove double-counted data
 baseball$Hits = baseball$Hits - baseball$Doubles - baseball$Triples - baseball$HomeRuns
 
+## Compute Correlation Matrix
+corr_mat <- cor(baseball[,-18])
 
 ####################################################################
 #### Initial Linear Model Exploration
 ####################################################################
 ## Fit inital linear models
-lm_obp = lm(OBP ~ Hits + Doubles + Triples + HomeRuns + Walks, data = baseball)
-lm_salary = lm(Salary ~ OBP, data = baseball)
-lm_salary_expanded = lm(Salary ~ OBP + Runs + StrikeOuts + StolenBases, data =
-                          baseball)
+lm_salary = lm(Salary ~ Runs + StrikeOuts + StolenBases + OBP, data = baseball)
+lm_salary_expanded = lm(Salary ~ Runs + StrikeOuts + StolenBases + Hits + Doubles + Triples + HomeRuns + Walks
+                        , data =baseball)
 lm_salary_full = lm(Salary ~ . - Name, data = baseball)
 
 ## Create Scatter Plots
@@ -56,18 +58,23 @@ lm_salary_full = lm(Salary ~ . - Name, data = baseball)
 subset_obp = baseball[, c('OBP', 'Hits', 'Doubles', 'Triples', 'HomeRuns', 'Walks')]
 subset_salary_expanded = baseball[, c('Salary', 'OBP', 'Runs', 'StrikeOuts', 'StolenBases')]
 
-p1 <- ggplot(baseball, aes(x = Hits, y = OBP)) + geom_point(size = 1)
-p2 <- ggplot(baseball, aes(x = Doubles, y = OBP)) + geom_point(size = 1)
-p3 <- ggplot(baseball, aes(x = Triples, y = OBP)) + geom_point(size = 1)
-p4 <- ggplot(baseball, aes(x = HomeRuns, y = OBP)) + geom_point(size = 1)
-p5 <- ggplot(baseball, aes(x = Walks, y = OBP)) + geom_point(size = 1)
-grid.arrange(p1, p2, p3, p4, p5, ncol = 3)
-
+// Salary Model
 p1 <- ggplot(baseball, aes(x = OBP, y = Salary)) + geom_point(size = 1)
 p2 <- ggplot(baseball, aes(x = Runs, y = Salary)) + geom_point(size = 1)
 p3 <- ggplot(baseball, aes(x = StrikeOuts, y = Salary)) + geom_point(size = 1)
 p4 <- ggplot(baseball, aes(x = StolenBases, y = Salary)) + geom_point(size = 1)
 grid.arrange(p1, p2, p3, p4, ncol = 2)
+
+
+p1 <- ggplot(baseball, aes(x = Hits, y = Salary)) + geom_point(size = 1)
+p2 <- ggplot(baseball, aes(x = Doubles, y = Salary)) + geom_point(size = 1)
+p3 <- ggplot(baseball, aes(x = Triples, y = Salary)) + geom_point(size = 1)
+p4 <- ggplot(baseball, aes(x = HomeRuns, y = Salary)) + geom_point(size = 1)
+p5 <- ggplot(baseball, aes(x = Walks, y = Salary)) + geom_point(size = 1)
+grid.arrange(p1, p2, p3, p4, p5, ncol = 3)
+
+## Generate Histograms of data
+ggplot(data=melt(baseball[,-18]),aes(x = value)) + facet_wrap(~variable,scales = "free_x") + geom_histogram()
 
 
 ## VIF on OBP Model
@@ -102,3 +109,4 @@ select_salary_full = regsubsets(Salary ~ . - Name,method = "exhaustive",nbest = 
 summary(select_obp)$which
 summary(select_salary_expanded)$which
 summary(select_salary_full)$which
+
