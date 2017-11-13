@@ -1,0 +1,18 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=15:00
+#PBS -A open
+
+echo "Job started on 'hostname' at 'date'"
+
+cd $PBS_O_WORKDIR
+
+./assignment3-1p
+./assignment3-2p
+./assignment3-4p
+./assignment3-8p
+./assignment3-16p
+./assignment3-20p
+./assignment3-24p
+
+echo "Job finished at 'date'"
