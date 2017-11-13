@@ -1,0 +1,11 @@
++------------+----------+------+-----+---------+----------------+
+| Field      | Type     | Null | Key | Default | Extra          |
++------------+----------+------+-----+---------+----------------+
+| address_ID | int(11)  | NO   | PRI | NULL    | auto_increment |
+| emp_ID     | int(11)  | YES  | MUL | NULL    |                |
+| street1    | char(50) | YES  |     | NULL    |                |
+| street2    | char(50) | YES  |     | NULL    |                |
+| city       | char(50) | YES  |     | NULL    |                |
+| state      | char(50) | YES  |     | NULL    |                |
+| zip        | char(50) | YES  |     | NULL    |                |
++------------+----------+------+-----+---------+----------------+

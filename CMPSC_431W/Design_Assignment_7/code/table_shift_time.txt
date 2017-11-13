@@ -1,0 +1,8 @@
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| time_ID      | int(11) | NO   | PRI | NULL    | auto_increment |
+| shift_start  | time    | NO   |     | NULL    |                |
+| shift_end    | time    | NO   |     | NULL    |                |
+| shift_length | int(11) | YES  |     | NULL    |                |
++--------------+---------+------+-----+---------+----------------+

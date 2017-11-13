@@ -1,0 +1,18 @@
+SELECT
+  department.dept_name   AS 'department',
+  employee.fname         AS 'firstName',
+  employee.lname         AS 'lastName',
+  week.start_date        AS 'weekStart',
+  shift_time.shift_start AS 'start',
+  shift_time.shift_end   AS 'end',
+  employee.pay_rate      AS 'pay',
+  shift_status.status    AS 'status'
+FROM department, employee, shift, shift_time, week, shift_status
+WHERE DATE_ADD(week.start_date, INTERVAL shift.day_ID - 1 DAY) >= '2017-10-01'
+      AND DATE_ADD(week.start_date, INTERVAL shift.day_ID - 1 DAY) <= '2017-10-10'
+      AND shift.emp_ID = employee.emp_ID
+      AND shift.dept_ID = department.dept_ID
+      AND shift.time_ID = shift_time.time_ID
+      AND shift.week_ID = week.week_ID
+      AND shift.status_ID = shift_status.status_ID
+ORDER BY shiftDate, department, lastName, firstName;

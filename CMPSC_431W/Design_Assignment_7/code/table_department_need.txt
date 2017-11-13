@@ -1,0 +1,11 @@
++---------+---------+------+-----+---------+----------------+
+| Field   | Type    | Null | Key | Default | Extra          |
++---------+---------+------+-----+---------+----------------+
+| need_ID | int(11) | NO   | PRI | NULL    | auto_increment |
+| week_ID | int(11) | YES  | MUL | NULL    |                |
+| day_ID  | int(11) | YES  | MUL | NULL    |                |
+| time_ID | int(11) | YES  | MUL | NULL    |                |
+| dept_ID | int(11) | YES  | MUL | NULL    |                |
+| role_ID | int(11) | YES  | MUL | NULL    |                |
+| need    | int(11) | YES  |     | NULL    |                |
++---------+---------+------+-----+---------+----------------+

@@ -1,0 +1,12 @@
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| shift_ID     | int(11) | NO   | PRI | NULL    | auto_increment |
+| emp_ID       | int(11) | NO   | MUL | NULL    |                |
+| dept_ID      | int(11) | NO   | MUL | NULL    |                |
+| time_ID      | int(11) | NO   | MUL | NULL    |                |
+| week_ID      | int(11) | NO   | MUL | NULL    |                |
+| day_ID       | int(11) | NO   | MUL | NULL    |                |
+| status_ID    | int(11) | YES  | MUL | NULL    |                |
+| pay_modifier | double  | YES  |     | NULL    |                |
++--------------+---------+------+-----+---------+----------------+

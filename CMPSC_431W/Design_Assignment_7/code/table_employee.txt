@@ -1,0 +1,17 @@
++------------+------------+------+-----+-------------------+----------------+
+| Field      | Type       | Null | Key | Default           | Extra          |
++------------+------------+------+-----+-------------------+----------------+
+| emp_ID     | int(11)    | NO   | PRI | NULL              | auto_increment |
+| home_dept  | int(11)    | YES  | MUL | NULL              |                |
+| fname      | char(50)   | NO   |     | NULL              |                |
+| mname      | char(50)   | YES  |     | NULL              |                |
+| lname      | char(50)   | YES  |     | NULL              |                |
+| ssn        | char(12)   | YES  |     | NULL              |                |
+| phone1     | char(13)   | YES  |     | NULL              |                |
+| phone2     | char(13)   | YES  |     | NULL              |                |
+| start_date | datetime   | NO   |     | CURRENT_TIMESTAMP |                |
+| end_date   | date       | YES  |     | NULL              |                |
+| full_time  | tinyint(1) | NO   |     | 0                 |                |
+| salaried   | tinyint(1) | NO   |     | 0                 |                |
+| pay_rate   | double     | NO   |     | 0                 |                |
++------------+------------+------+-----+-------------------+----------------+
