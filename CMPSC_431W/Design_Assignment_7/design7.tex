@@ -3,7 +3,7 @@
 \documentclass[letter,12pt]{texMemo}
 \usepackage[english]{babel}
 \usepackage{color, listings, graphicx, float, booktabs, multirow, outlines}
-\usepackage{changepage}
+\usepackage{changepage, fancybox}
 \pagenumbering{gobble}
 
 %% Edit the header section here. To include your
@@ -39,6 +39,14 @@
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
 \let\endchangemargin=\endlist 
+
+\makeatletter
+\newenvironment{CenteredBox}{% 
+\begin{Sbox}}{% Save the content in a box
+\end{Sbox}\centerline{\parbox{\wd\@Sbox}{\TheSbox}}}% And output it centered
+\makeatother
+
+
 
 \begin{document}
 \maketitle
@@ -92,7 +100,12 @@ On the first query the tables indexed are the shift table on the shift\_id and t
 For the first query, indexing employees and shifts tables the access time for each search goes to O(1), instead of the iterative approach of looking at each row and making it O(n), where n is the rows in each table. Indexing in such case is much better because we speedup the process from O(n*m) to O(n) when employees and shifts are combined, where n is the number of employees and m is the number of shifts. Such optimization then has to get added the join of the other tables, but such other tables don't have as many rows and so they won't affect the performance as much as if employees or shifts will not be indexed.
 \vspace{1em}
 \subsubsection*{Example Data}
-	\lstinputlisting[language=SQL]{./code/query1_data.txt}
+
+\begin{changemargin}{-1.25cm}{-1.25cm}
+	\begin{center}
+		\lstinputlisting[language=SQL]{./code/query1_data.txt}
+	\end{center}
+\end{changemargin}
 
 
 %---------------------------------------------
@@ -113,7 +126,11 @@ For the second query the process is much similar to query one. The difference is
 Creating the indexing described above yields O(1) access for both shifts and department tables and only giving O(n) for the tables with the least elements and won't affect much the performance.
 \vspace{1em}
 \subsubsection*{Example Data}
-	\lstinputlisting[language=SQL]{./code/query2_data_truncated.txt}
+\begin{changemargin}{-1.25cm}{-1.25cm}
+	\begin{center}
+		\lstinputlisting[language=SQL]{./code/query2_data_truncated.txt}
+	\end{center}
+\end{changemargin}
 
 %---------------------------------------------
 \subsection*{Query 3}
