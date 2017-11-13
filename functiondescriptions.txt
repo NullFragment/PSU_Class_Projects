@@ -1,0 +1,68 @@
+Functions to write:
+
+FunctionName:
+	Input: (variable) description
+	Output: (variable) description
+	Description:
+
+
+Z-matrix:
+	Input: (a) activation vector of previous layer, (W) weight matrix in between layers
+	Output: (Z) Z-matrix
+	Description: Compute X * Theta matrix multiplication
+
+Sigmoid:
+	Input: (Z) Z-matrix
+	Output: (a) activation vector of next layer
+	Description: compute 1.0 ./ (1.0 + exp(-z)) for each element in Z
+
+SigmoidGradient:
+	Input: (Z) Z-matrix
+	Output: (grad_a) gradient of activation matrix
+	Description: compute sigmoid(Z)*(1-(Z)) for each element in Z
+
+CostFunction:
+	Input: (m) number of samples, (Y) one-hot vector of known result, (a) activation vector
+	Output: (J) cost vector
+	Description: Compute 
+		pos = Y*log(a3)
+		neg = (1-Y)*log(1-a3)
+		J = sum(sum(-1/m * (pos + neg),2)) for each element in Y and a3 with equal indexes
+
+DifferenceFunction:
+	Input: (a2) activation of next layer, (W1) weights between current and next layer, (z1) z matrix of layer
+	Output: (del) difference in activations and gradient
+	Description: calculate (a2*W1).*SigmoidGradient(z1) where .* is elementwise multiplication
+
+DelFunction:
+	Input: (del) difference function for next layer, (a) activation of current layer
+	Output: (Del) curl of layer
+	Description: Calculate transpose(del) * (a)
+
+WeightGradient:
+	Input: (m) number of elements, (Del) curl of layer, (alpha) the step size adjustment
+	Output: (grad) gradient of layer
+	Description: Calculate (alpha/m)*Del for each element in del
+
+
+	
+GradientDescent:
+	Input: (W) weight of layer, (grad) gradient of layer
+	Output: (W_new) updated weights
+	Description: calculate W - grad
+	
+	
+	
+	
+	
+HadamardProduct:
+	Input: (F) matrix, (b) scalar value
+	Output: (G) matrix
+	Description: Multiply every element in F by b and return
+
+OR
+Use the identity matrix in the cuda matrix multiplication sgemm function as matrix B.
+
+CreateIdentity:
+	Input: (n) the dimension of the matrix
+	Output: (I) an identity matrix of size n x n
