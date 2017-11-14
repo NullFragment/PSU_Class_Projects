@@ -50,19 +50,13 @@ GradientDescent:
 	Input: (W) weight of layer, (grad) gradient of layer
 	Output: (W_new) updated weights
 	Description: calculate W - grad
-	
-	
-	
-	
-	
-HadamardProduct:
-	Input: (F) matrix, (b) scalar value
-	Output: (G) matrix
-	Description: Multiply every element in F by b and return
 
-OR
-Use the identity matrix in the cuda matrix multiplication sgemm function as matrix B.
 
 CreateIdentity:
 	Input: (n) the dimension of the matrix
 	Output: (I) an identity matrix of size n x n
+	
+HadamardProduct:
+    Input: (s) scalar value, (M) matrix to multiply
+    Output: (M_new) element-wise multiplication of matrix
+    Description: Matrix multiply M*(sI)
