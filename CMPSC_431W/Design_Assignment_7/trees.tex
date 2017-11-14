@@ -1,0 +1,77 @@
+\documentclass[letter,12pt]{article}
+\usepackage{qtree, amsmath}
+\usepackage[left=0in,right=0in]{geometry}
+\begin{document}
+%---------------------------------------------------------------------
+% QUERY 1
+%---------------------------------------------------------------------
+
+\Tree
+	[.$\Pi_{\text{date, day, shift, department, role, name}}$
+	[.$\underset{role\_id = role\_id}{\bowtie}$ 
+		[.$\underset{day\_id = day\_id}{\bowtie}$ 
+			[.$\underset{time\_id = time\_id}{\bowtie}$ 
+				[.$\underset{dept\_id = dept\_id}{\bowtie}$ 
+					[.$\underset{emp\_id = emp\_id}{\bowtie}$ 
+						[.$\underset{week\_id = week\_id}{\bowtie}$ 
+							shift week ] 
+						[.$\sigma_{\text{emp\_id = n}}$
+							employee ] ] 
+					department ]
+				shift\_time ] 
+			weekday ] 
+		[.$\underset{role\_id = role\_id}{\bowtie}$ 
+			role 
+			[.$\underset{emp\_id = emp\_id}{\bowtie}$ 
+				certification employee ] ] ] ]
+				
+\newpage
+%---------------------------------------------------------------------
+% QUERY 2
+%---------------------------------------------------------------------
+\Tree
+	[.$\Pi_{\text{date, day, shift, need, role}}$
+	[.$\underset{role\_id = role\_id}{\bowtie}$  
+		[.$\underset{dept\_id = dept\_id}{\bowtie}$ 
+			[.$\underset{shift\_id = shift\_id}{\bowtie}$ 
+				[.$\underset{day\_id = day\_id}{\bowtie}$ 
+					[.$\underset{week\_id = week\_id}{\bowtie}$ 
+						department\_need week ]
+					weekday ]
+				shift ]
+			department ]
+		role ] ]
+		
+\newpage
+%---------------------------------------------------------------------
+% QUERY 3
+%---------------------------------------------------------------------
+\Tree
+	[.$\Pi_{\text{date, day, shift, lname, fname, phone}}$
+	[.$\underset{day\_id = day\_id}{\bowtie}$  
+		[.$\underset{time\_id = time\_id}{\bowtie}$  
+			[.$\underset{emp\_id = emp\_id}{\bowtie}$  
+				[.$\underset{dept\_id = dept\_id}{\bowtie}$  
+					[.$\underset{week\_id = week\_id}{\bowtie}$  
+						[.$\sigma_{\text{week\_id = n}}$ week ]
+						 shift ]
+					department ]
+				employee ]
+			shift\_time ]
+		weekday ] ]
+
+\newpage
+%---------------------------------------------------------------------
+% QUERY 4
+%---------------------------------------------------------------------
+\Tree
+	[.$\Pi_{\text{day, shift, salary}}$
+	[.$\underset{time\_id = time\_id}{\bowtie}$ 
+		[.$\underset{emp\_id = emp\_id}{\bowtie}$ 
+			[.$\underset{dept\_id = dept\_id}{\bowtie}$ 
+				[.$\underset{week\_id = week\_id}{\bowtie}$ 
+					shift week ]
+				department ]
+			employee ]
+		shift\_time ] ]
+\end{document}
