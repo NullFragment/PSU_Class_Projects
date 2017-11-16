@@ -107,3 +107,17 @@ plot(p,bic_p,xlab="Number of betas",ylab="BIC")
 ## Create Summary
 cbind(select_sum$which,R2_adj,C_p_diff,aic_p,bic_p)
 lm_rss = lm(SiriBFperc ~ AbdomenC + Height + NeckC + WristC, data=bfp_data)
+
+####################################################################
+#### Part D - Model Evaluation
+####################################################################
+vif(lm_backward)
+vif(lm_forward)
+vif(lm_rss)
+lm_forward = update(lm_forward, . ~ . - Weight) 
+
+means = data.frame(rbind(colMeans(bfp_data)))
+predict(lm_forward,means, interval="predict")
+predict(lm_backward,means, interval="predict")
+predict(lm_rss,means, interval="predict")
+
