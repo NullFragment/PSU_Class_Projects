@@ -1,0 +1,23 @@
+Call:
+lm(formula = SiriBFperc ~ Height + NeckC + ChestC + HipC + ForearmC + 
+    WristC, data = bfp_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12.1730  -3.5077  -0.3026   3.6437  13.9548 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -6.41317   10.27039  -0.624   0.5329    
+Height      -0.75418    0.16020  -4.708 4.26e-06 ***
+NeckC       -0.14103    0.28007  -0.504   0.6151    
+ChestC       0.56168    0.08823   6.366 9.87e-10 ***
+HipC         0.49824    0.10645   4.681 4.80e-06 ***
+ForearmC    -0.14285    0.23766  -0.601   0.5483    
+WristC      -0.99646    0.59819  -1.666   0.0971 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 5.397 on 238 degrees of freedom
+Multiple R-squared:  0.5469,	Adjusted R-squared:  0.5354 
+F-statistic: 47.87 on 6 and 238 DF,  p-value: < 2.2e-16

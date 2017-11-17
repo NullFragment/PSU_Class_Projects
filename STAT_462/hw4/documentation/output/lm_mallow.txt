@@ -1,0 +1,19 @@
+Call:
+lm(formula = SiriBFperc ~ AbdomenC + Weight + WristC, data = bfp_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.8982 -3.2070 -0.2774  3.1967  9.9032 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -27.61880    6.82524  -4.047    7e-05 ***
+AbdomenC      0.94856    0.05632  16.841  < 2e-16 ***
+Weight       -0.09408    0.02410  -3.904 0.000123 ***
+WristC       -1.32004    0.43701  -3.021 0.002794 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.257 on 241 degrees of freedom
+Multiple R-squared:  0.7145,	Adjusted R-squared:  0.711 
+F-statistic: 201.1 on 3 and 241 DF,  p-value: < 2.2e-16
