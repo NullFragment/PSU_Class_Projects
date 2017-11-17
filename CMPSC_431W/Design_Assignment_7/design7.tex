@@ -57,30 +57,44 @@ The database model and the select examples give an overview of the relationship 
 \section*{Table Specifications}
 This section contains the specifications for each table used in the relational model.
 	\subsection*{Address}
+		The address table contains the information for an address, with each address being linked to an employee by their employee ID. This allows the database to handle employees with multiple addresses without wasting space by having multiple address fields per employee.
 		\lstinputlisting[language=SQL]{./code/table_address.txt}
-	\subsection*{Certification}
-		\lstinputlisting[language=SQL]{./code/table_certification.txt}
 	\newpage
+	\subsection*{Certification}
+		Each certification is linked to a role by the role ID and an employee by their employee ID. This implementation allows an employee to have multiple registered certifications.
+		\lstinputlisting[language=SQL]{./code/table_certification.txt}
+	\subsection*{Role}
+		The role table contains the description of each role (RN, LPN, etc) in order to save storage space by preventing repeated copies of the data.
+		\lstinputlisting[language=SQL]{./code/table_role.txt}
 	\subsection*{Department}
+		The department table contains the department name and number of beds as well as the maximum and minimum amount of staff necessary.
 		\lstinputlisting[language=SQL]{./code/table_department.txt}
+	\newpage
 	\subsection*{Department Need}
+		The department need table is linked to the week, day, shift time, department, and roles by their respective IDs. A single department need record contains the role and number of personnel needed for a particular shift on a particular day.
 		\lstinputlisting[language=SQL]{./code/table_department_need.txt}
 	\subsection*{Employee}
+		The employee table contains personal and financial information for each employee. The home department of the employee may be filled out, if applicable, via a foreign key to the department table.
 		\lstinputlisting[language=SQL]{./code/table_employee.txt}
-	\subsection*{Role}
-		\lstinputlisting[language=SQL]{./code/table_role.txt}
-	\newpage
+	\newpage	
 	\subsection*{Shift}
+		The shift table contains entries for a specific shift for a specific employee on a specific day. The table is linked to the employee, department, shift time, week, day, and shift status tables by their respective foreign keys. The pay modifier may be adjusted to increase the employee's shift pay if they are called in or work a special shift such as a holiday.
 		\lstinputlisting[language=SQL]{./code/table_shift.txt}
 	\subsection*{Shift Status}
+		The shift status table contains information with common notes for a shift, such as someone calling off, requesting the shift off, requesting to be staffed for the shift or being called in.
 		\lstinputlisting[language=SQL]{./code/table_shift_status.txt}
 	\subsection*{Shift Time}
+		The shift times table contains the hospital's current shift schedules.
 		\lstinputlisting[language=SQL]{./code/table_shift_time.txt}
+	\newpage	
 	\subsection*{Week}
+		The week table was created to easily access shifts by week, as it serves only to be used in the shift as a foreign key for this purpose.
 		\lstinputlisting[language=SQL]{./code/table_week.txt}
 	\subsection*{Weekday}
+		The weekday table contains the days of the week as text in order to save on data storage and time costs of re-writing the names of each day repeatedly.
 		\lstinputlisting[language=SQL]{./code/table_weekday.txt}
 
+\newpage
 \section*{Desired Queries}
 Within this section all queries are explained, the MySQL query itself is given, indexing is discussed and one weeks worth of sample data is provided. If the sample data exceeded 100 lines, the result was truncated to 100 lines for brevity.
 %---------------------------------------------
