@@ -12,4 +12,3 @@ __global__ void initIdentityGPU(int **devMatrix, int numR, int numC) {
 dim3 blockDim(BLOCK_DIM_X, BLOCK_DIM_Y);  
 dim3 gridDim((numC + BLOCK_DIM_X - 1) / BLOCK_DIM_X, (numR + BLOCK_DIM_Y - 1) / BLOCK_DIM_Y);
 initIdentityGPU<<<gridDim, blockDim>>>(matrix, numR, numC);
-
