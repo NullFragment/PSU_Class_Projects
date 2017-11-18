@@ -16,8 +16,8 @@ double myDiffTime(struct timeval &start, struct timeval &end)
 __global__ void
 matrixAdd(const float *A, const float *B, float *C, int numElements)
 {
+	//referred to matrix multiplication code from NVDIA
     int i = blockDim.x * blockIdx.x + threadIdx.x;
-
     if (i < numElements)
     {
      	C[i] = A[i] + B[i];
@@ -26,6 +26,7 @@ matrixAdd(const float *A, const float *B, float *C, int numElements)
 
 int main() 
 {
+	//declaration
 	size_t size = N * N * sizeof(float);
 
 	float *a = (float *)malloc(size);
@@ -37,6 +38,7 @@ int main()
 	float *dev_c = NULL;
 	timeval start, end;
 
+	//allocating space
 	cudaMalloc((void**)&dev_a, size);
 	cudaMalloc((void**)&dev_b, size);
 	cudaMalloc((void**)&dev_c, size);
@@ -44,7 +46,7 @@ int main()
 	cudaMemcpy(dev_a, a, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_b, b, size, cudaMemcpyHostToDevice);
 
-
+	//preparing parameter for CUDA
 	dim3 threads(BLOCK_DIM, BLOCK_DIM);
 	dim3 grid((int)ceil(N/threads.x),(int)ceil(N/threads.y));
 
@@ -52,32 +54,17 @@ int main()
 	//////////////////////////GPU/////////////////////////////////////////
 	gettimeofday(&start, NULL);
 
-	matrixAdd<<<grid,threads>>>(dev_a,dev_b,dev_c);
+	matrixAdd<<<grid,threads>>>(dev_a,dev_b,dev_c,N*N);
 	cudaDeviceSynchronize();
 
 	gettimeofday(&end, NULL);
+
 	cudaMemcpy(c, dev_c, size, cudaMemcpyDeviceToHost);
 
-	//gettimeofday(&end, NULL);
 	printf("GPU Time for %i additions: %f\n", N, myDiffTime(start, end));
-	cudaFree(dev_a); cudaFree(dev_b); cudaFree(dev_c);
-}
 
-
-__global__ void matrixAdd (int *a, int *b, int *c) 
-{
-	int col = blockIdx.x * blockDim.x + threadIdx.x;
-	int row = blockIdx.y * blockDim.y + threadIdx.y;
-	int index = col + row * N;
-	if (col < N && row < N) 
-	{
-		c[index] = a[index] + b[index];
-	}
-}
-
-void matrixAddCPU(int *a, int *b, int *c)
-{
-	for (int i = 0; i < N; i++)
-		for (int j = 0; j < N; j++)
-			c[i*N + j] = a[i*N + j] + b[i*N + j];
+	//free the space
+	cudaFree(dev_a); 
+	cudaFree(dev_b); 
+	cudaFree(dev_c);
 }
