@@ -4,15 +4,6 @@
 #define	N 1024
 #define BLOCK_DIM 1024
 
-double myDiffTime(struct timeval &start, struct timeval &end)
-{
-	double d_start, d_end;
-	d_start = (double)(start.tv_sec + start.tv_usec/1000000.0);
-	d_end = (double)(end.tv_sec + end.tv_usec/1000000.0);
-	return (d_end - d_start);
-}
-
-
 __global__ void
 matrixAdd(const float *A, const float *B, float *C, int numElements)
 {
@@ -60,8 +51,6 @@ int main()
 	gettimeofday(&end, NULL);
 
 	cudaMemcpy(c, dev_c, size, cudaMemcpyDeviceToHost);
-
-	printf("GPU Time for %i additions: %f\n", N, myDiffTime(start, end));
 
 	//free the space
 	cudaFree(dev_a); 
