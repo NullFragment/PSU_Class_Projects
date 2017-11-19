@@ -522,7 +522,9 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
 
     // Copy data from GPU to host PC
     err = cudaMemcpy(host_vectorC, dev_vectorC, vectorC_size, cudaMemcpyDeviceToHost);
-    if (err != cudaSuccess) printf("Copy vector C to Host: %s\n", cudaGetErrorString(err));
+    if (err != cudaSuccess) 
+        printf("Copy vector C to Host: %s\n", cudaGetErrorString(err));
+
 
     // Free GPU memory
     err = cudaFree(dev_vectorA);
@@ -634,8 +636,8 @@ int main(int argc, char **argv)
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, 1.0);
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_C, 1.0, 1.0, false, false);
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 2.0, 1.0, false, false);
-    RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_A, host_B, host_C, 1.0, 1.0);
-    RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_A, host_B, host_C, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_vA, host_vB, host_vC, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_vA, host_vB, host_vD, 1.0, 1.0);
 
     printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
