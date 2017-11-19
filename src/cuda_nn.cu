@@ -36,7 +36,7 @@ typedef struct _vSize // Optional Command-line multiplier for matrix sizes
  * @param vector_size - pointer to vector size struct
  * @param len - length of all vectors
  */
-void SetVectorSize(VectorSize *vector_size, unsigned int &len)
+void SetVectorSize(VectorSize *vector_size, unsigned int len)
 {
     vector_size->len_A = len;
     vector_size->len_B = len;
@@ -461,6 +461,79 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
 
 }
 
+
+void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, int operation,
+                     float *host_vectorA, float *host_vectorB, float *host_vectorC, float alpha, float beta)
+{
+    // Assign CUDA variables
+    cudaError_t err;
+    dim3 threads(NUM_THREADS, NUM_THREADS);
+    int gridX = (int) ceil((float) vectorSize->len_C / (float) threads.x);
+    int gridY = (int) ceil((float) vectorSize->len_C / (float) threads.y);
+    dim3 grid((unsigned int) gridX, (unsigned int) gridY);
+
+    // Assign computation variables
+    float *dev_vectorA = NULL;
+    float *dev_vectorB = NULL;
+    float *dev_vectorC = NULL;
+
+
+    size_t vectorC_size = vectorSize->len_C * sizeof(float);
+
+    // Initialize memory on GPU
+    VectorInitCUDA(argc, argv, devID, vectorSize, host_vectorA, host_vectorB, dev_vectorA, dev_vectorB, dev_vectorC);
+
+    switch (operation)
+    {
+        case 1:
+        {
+            // Compute vector Addition
+            VectorAdditionKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
+                    vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Vector Add Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+        case 2:
+        {
+            // Compute Hadamard Product
+            VectorHadamardKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
+                    vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+        case 3:
+        {
+            VectorDotProduct<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Vector Dot product Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+
+        default:
+            printf("ERROR: No vector kernel selected. Operation Aborted");
+
+    }
+
+    // Make sure device is finished
+    err = cudaDeviceSynchronize();
+    if (err != cudaSuccess) printf("Device synchronize: %s\n", cudaGetErrorString(err));
+
+    // Copy data from GPU to host PC
+    err = cudaMemcpy(host_vectorC, dev_vectorC, vectorC_size, cudaMemcpyDeviceToHost);
+    if (err != cudaSuccess) printf("Copy vector C to Host: %s\n", cudaGetErrorString(err));
+
+    // Free GPU memory
+    err = cudaFree(dev_vectorA);
+    if (err != cudaSuccess) printf("Free vector A on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaFree(dev_vectorB);
+    if (err != cudaSuccess) printf("Free vector B on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaFree(dev_vectorC);
+    if (err != cudaSuccess) printf("Free vector C on GPU: %s\n", cudaGetErrorString(err));
+
+}
+
 //======================================================================================================================
 //=== Main Function
 //======================================================================================================================
@@ -485,6 +558,8 @@ int main(int argc, char **argv)
 
     // Testing hadamard product, init function, and set matrix size function
     float *host_A, *host_B, *host_C, *host_D;
+    float *host_vA, *host_vB, *host_vC, *host_vD;
+
     MatrixSize *testMatrixSize = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
     size_t calcSize = N * N * sizeof(float);
     host_A = (float *) calloc(calcSize, 1);
@@ -494,11 +569,29 @@ int main(int argc, char **argv)
     SetMatrixSize(testMatrixSize, N, N, N, N, N, N);
 
 
+    VectorSize *testVectorSize = (VectorSize *) calloc (sizeof(VectorSize), 1);
+    size_t calcSize_V = N * sizeof(float);
+    host_vA = (float *) calloc(calcSize_V, 1);
+    host_vB = (float *) calloc(calcSize_V, 1);
+    host_vC = (float *) calloc(calcSize_V, 1);
+    host_vD = (float *) calloc(calcSize_V, 1);
+    SetVectorSize(testVectorSize, N);
+
+
+
     for (int i = 0; i < N * N; i++)
     {
         host_A[i] = (float)i;
         host_B[i] = (float)i;
     }
+
+
+    for (int i = 0; i < N; i++)
+    {
+        host_vA[i] = (float)i;
+        host_vB[i] = (float)i;
+    }
+
 
     printf("Matrix A:\n");
     for (int i = 0; i < N; i++)
@@ -520,10 +613,29 @@ int main(int argc, char **argv)
         printf("\n");
     }
 
+    printf("Vector A:\n");
+    for (int i = 0; i < N; i++)
+    {
+        printf("%6.0f ", host_vA[i]);
+    }
+    printf("\n");
+
+    printf("\nVector B:\n");
+
+    for (int i = 0; i < N; i++)
+    {
+        printf("%6.0f ", host_vB[i]);
+    }
+    printf("\n");
+
+
+
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 1, host_A, host_B, host_C, 1.0, 1.0);
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, 1.0);
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_C, 1.0, 1.0, false, false);
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 2.0, 1.0, false, false);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_A, host_B, host_C, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_A, host_B, host_C, 1.0, 1.0);
 
     printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
@@ -543,6 +655,21 @@ int main(int argc, char **argv)
         }
         printf("\n");
     }
+
+    printf("Vector C:\n");
+    for (int i = 0; i < N; i++)
+    {
+        printf("%6.0f ", host_vC[i]);
+    }
+    printf("\n");
+
+    printf("\nVector D:\n");
+
+    for (int i = 0; i < N; i++)
+    {
+        printf("%6.0f ", host_vD[i]);
+    }
+    printf("\n");
 
     return 0;
 }
