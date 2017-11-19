@@ -42,10 +42,10 @@ void SetVectorSize(VectorSize *vector_size, unsigned int &len)
     vector_size->len_B = len;
     vector_size->len_C = len;
 
-    printf("Vecotor A(%u), Vecotor B(%u), Vecotor (%u)\n",
+    printf("Vector A(%u), Vector B(%u), Vector (%u)\n",
            vector_size->len_A,
            vector_size->len_B,
-           vector_size->len_C);///////////////////////////
+           vector_size->len_C);
 
     if (vector_size->len_A != vector_size->len_B ||
         vector_size->len_B != vector_size->len_C ||
@@ -231,7 +231,7 @@ __global__ void VectorHadamardKernel(float *dev_vecA, float *dev_vecB, float *de
  * @param beta - multiplier for values in vector B
  * @param vecLen - length of all vectors
  */
-__global__ float VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result,
+__global__ void VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result,
                                   float alpha, float beta, int vecLen)
 {
     extern __shared__ float temp[];
@@ -520,8 +520,8 @@ int main(int argc, char **argv)
         printf("\n");
     }
 
-    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_C, 1.0, 1.0);
-    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, -1.0);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 1, host_A, host_B, host_C, 1.0, 1.0);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, 1.0);
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_C, 1.0, 1.0, false, false);
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 2.0, 1.0, false, false);
 
