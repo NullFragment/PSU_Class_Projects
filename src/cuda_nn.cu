@@ -174,9 +174,88 @@ void MatrixInitCUDA(int argc, char **argv, int &devID, MatrixSize *matrixSize,
     if (err != cudaSuccess) printf("Copy matrix C to GPU: %s\n", cudaGetErrorString(err));
 }
 
+
+
+
 //======================================================================================================================
-//=== CUDA Vector Functions
+//=== CUDA Vector Kernels
 //======================================================================================================================
+/**
+ * @required ALL VECTORS MUST BE THE SAME LENGTH
+ * @brief - kernel for GPU computation of a vector addition
+ * @param dev_vecA - pointer to device memory for vector A
+ * @param dev_vecB - pointer to device memory for vector B
+ * @param dev_vecC - pointer to device memory for vector C
+ * @param alpha - multiplier for values in vector A
+ * @param beta - multiplier for values in vector B
+ * @param vecLen - length of all vectors
+ */
+__global__ void VectorAdditionKernel(float *dev_vecA, float *dev_vecB, float *dev_vecC,
+                                     float alpha, float beta, int vecLen)
+{
+    int i = blockDim.x * blockIdx.x + threadIdx.x;
+    if (i < vecLen)
+    {
+        dev_vecC[i] = alpha*dev_vecA[i] + beta*dev_vecB[i];
+    }
+}
+
+/**
+ * @required ALL VECTORS MUST BE THE SAME LENGTH
+ * @brief - kernel for GPU computation of a vector hadamard product
+ * @param dev_vecA - pointer to device memory for vector A
+ * @param dev_vecB - pointer to device memory for vector B
+ * @param dev_vecC - pointer to device memory for vector C
+ * @param alpha - multiplier for values in vector A
+ * @param beta - multiplier for values in vector B
+ * @param vecLen - length of all vectors
+ */
+__global__ void VectorHadamardKernel(float *dev_vecA, float *dev_vecB, float *dev_vecC,
+                                     float alpha, float beta, int vecLen)
+{
+    int i = blockDim.x * blockIdx.x + threadIdx.x;
+    if (i < vecLen)
+    {
+        dev_vecC[i] = alpha*dev_vecA[i] * beta*dev_vecB[i];
+    }
+}
+
+/**
+ * @required ALL VECTORS MUST BE THE SAME LENGTH
+ *           REMEMBER: Call kernel using: <<<grid, threads, vecLen>>>
+ * @brief - kernel for GPU computation of a vector dot product
+ * @param dev_vecA - pointer to device memory for vector A
+ * @param dev_vecB - pointer to device memory for vector B
+ * @param result - pointer to a single float value where the result will be returned
+ * @param alpha - multiplier for values in vector A
+ * @param beta - multiplier for values in vector B
+ * @param vecLen - length of all vectors
+ */
+__global__ float VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result,
+                                  float alpha, float beta, int vecLen)
+{
+    extern __shared__ float temp[];
+    int i = blockDim.x * blockIdx.x + threadIdx.x;
+    if(i < vecLen)
+    {
+        temp[i] = alpha*dev_vecA[i] * beta*dev_vecB[i];
+    }
+    __syncthreads();
+    if(threadIdx.x == 0)
+    {
+        float sum = 0.0;
+        for(int j = 0; j < vecLen; j++)
+        {
+            sum += temp[j];
+        }
+        *result = sum;
+    }
+}
+
+//======================================================================================================================
+//=== CUDA Vector Kernel Drivers
+//======================================================================================================================
+
 
 //======================================================================================================================
 //=== CUDA Matrix Kernels
@@ -184,21 +263,24 @@ void MatrixInitCUDA(int argc, char **argv, int &devID, MatrixSize *matrixSize,
 
 /**
  * @required ALL MATRICES MUST BE THE SAME DIMENSIONS
+ * @brief - kernel for GPU computation of matrix additions
  * @param dev_matrixA - pointer to device memory for matrix A
  * @param dev_matrixB - pointer to device memory for matrix B
  * @param dev_matrixC - pointer to device memory for matrix C
+ * @param alpha - multiplier for values in matrix A
+ * @param beta - multiplier for values in matrix B
  * @param matrix_width - width of all matrices
  * @param matrix_height - height of all matrices
  */
 __global__ void MatrixAddKernel(float *dev_matrixA, float *dev_matrixB, float *dev_matrixC,
-                                int matrix_width, int matrix_height)
+                                float alpha, float beta, int matrix_width, int matrix_height)
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
-        dev_matrixC[index] = dev_matrixA[index] + dev_matrixB[index];
+        dev_matrixC[index] = alpha*dev_matrixA[index] + beta*dev_matrixB[index];
     }
 }
 
@@ -208,18 +290,20 @@ __global__ void MatrixAddKernel(float *dev_matrixA, float *dev_matrixB, float *d
  * @param dev_matrixA - pointer to device memory for matrix A
  * @param dev_matrixB - pointer to device memory for matrix B
  * @param dev_matrixC - pointer to device memory for matrix C
+ * @param alpha - multiplier for values in matrix A
+ * @param beta - multiplier for values in matrix B
  * @param matrix_width - width of all matrices
  * @param matrix_height - height of all matrices
  */
 __global__ void MatrixHadamardKernel(float *dev_matrixA, float *dev_matrixB, float *dev_matrixC,
-                                     int matrix_width, int matrix_height)
+                                     float alpha, float beta, int matrix_width, int matrix_height)
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
-        dev_matrixC[index] = dev_matrixA[index] * dev_matrixB[index];
+        dev_matrixC[index] = alpha*dev_matrixA[index] * beta*dev_matrixB[index];
     }
 }
 
@@ -311,9 +395,11 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
  * @param host_matrixA - pointer to host matrix A (with values)
  * @param host_matrixB - pointer to host matrix B (with values)
  * @param host_matrixC - pointer to host matrix C (with values)
+ * @param alpha - multiplier for values in matrix A
+ * @param beta - multiplier for values in matrix B
  */
 void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, int operation,
-                     float *host_matrixA, float *host_matrixB, float *host_matrixC)
+                     float *host_matrixA, float *host_matrixB, float *host_matrixC, float alpha, float beta)
 {
     // Assign CUDA variables
     cudaError_t err;
@@ -336,7 +422,7 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
         case 1:
         {
             // Compute Matrix Addition
-            MatrixAddKernel<<<grid, threads>>>(dev_matrixA, dev_matrixB, dev_matrixC,
+            MatrixAddKernel<<<grid, threads>>>(dev_matrixA, dev_matrixB, dev_matrixC, alpha, beta,
                     matrixSize->C_width, matrixSize->C_height);
             err = cudaGetLastError();
             if (err != cudaSuccess) printf("Matrix Add Computation: %s\n", cudaGetErrorString(err));
@@ -345,7 +431,7 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
         case 2:
         {
             // Compute Hadamard Product
-            MatrixHadamardKernel<<<grid, threads>>>(dev_matrixA, dev_matrixB, dev_matrixC,
+            MatrixHadamardKernel<<<grid, threads>>>(dev_matrixA, dev_matrixB, dev_matrixC, alpha, beta,
                     matrixSize->C_width, matrixSize->C_height);
             err = cudaGetLastError();
             if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
@@ -434,8 +520,10 @@ int main(int argc, char **argv)
         printf("\n");
     }
 
-    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_C);
-    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 1.0, 1.0, false, false);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_C, 1.0, 1.0);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, -1.0);
+//    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_C, 1.0, 1.0, false, false);
+//    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 2.0, 1.0, false, false);
 
     printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
