@@ -35,7 +35,7 @@ typedef struct _vSize // Optional Command-line multiplier for matrix sizes
  * @brief -  sets values of vector size structure
  *
  * @param vector_size - pointer to vector size struct
- * @param len - length of all vectors 
+ * @param len - length of all vectors
  */
 void SetVectorSize(VectorSize *vector_size, unsigned int &len)
 {
@@ -59,7 +59,7 @@ void SetVectorSize(VectorSize *vector_size, unsigned int &len)
 
 /**
  * @brief -  sets values of matrix size structure
- * 
+ *
  * @param matrixSize - reference to matrix size struct
  * @param widthA - width of matrix A
  * @param heightA - height of matrix A
@@ -87,9 +87,9 @@ void SetMatrixSize(MatrixSize *matrixSize,
 //======================================================================================================================
 
 /**
- * @brief - allocates memory on GPU for vectors A, B, and C then copies the values for vector A and B 
+ * @brief - allocates memory on GPU for vectors A, B, and C then copies the values for vector A and B
  *          from host PC onto the device
- * 
+ *
  * @param argc - from compiler
  * @param argv - from compiler
  * @param devID - device ID number
@@ -97,7 +97,7 @@ void SetMatrixSize(MatrixSize *matrixSize,
  * @param host_vA - pointer to host vector A (with values)
  * @param host_vB - pointer to host vector B (with values)
  * @param dev_A - pointer to vector A device memory reference
- * @param dev_B - pointer to vector B device memory reference 
+ * @param dev_B - pointer to vector B device memory reference
  * @param dev_C - pointer to vector C device memory reference
  */
 void VectorInitCUDA(int argc, char **argv, int devID, VectorSize *vector_size, float *host_vA, float *host_vB,
@@ -132,7 +132,7 @@ void VectorInitCUDA(int argc, char **argv, int devID, VectorSize *vector_size, f
 /**
  * @brief - allocates memory on GPU for matrices A, B, and C then copies the values for matrices A, B and C
  *          from host PC onto the device
- * 
+ *
  * @param argc - from compiler
  * @param argv - from compiler
  * @param devID - device ID number
@@ -155,11 +155,13 @@ void MatrixInitCUDA(int argc, char **argv, int &devID, MatrixSize *matrixSize,
 
     // Assign size variables
     size_t matrixA_size = matrixSize->A_height * matrixSize->A_width * sizeof(float);
+    printf("Allocation size: %d\tMatrix Size: %d\n", (int) matrixA_size, matrixSize->A_height * matrixSize->A_width);
     size_t matrixB_size = matrixSize->B_height * matrixSize->B_width * sizeof(float);
     size_t matrixC_size = matrixSize->C_height * matrixSize->C_width * sizeof(float);
 
     // Allocate memory on GPU
     err = cudaMalloc((void **) &dev_matrixA, matrixA_size);
+    printf("DEV A POST ALLOC: %p\n", dev_matrixA);
     if (err != cudaSuccess) printf("Allocate matrix A: %s\n", cudaGetErrorString(err));
     err = cudaMalloc((void **) &dev_matrixB, matrixB_size);
     if (err != cudaSuccess) printf("Allocate matrix B: %s\n", cudaGetErrorString(err));
@@ -169,9 +171,9 @@ void MatrixInitCUDA(int argc, char **argv, int &devID, MatrixSize *matrixSize,
     // Copy data from host PC to GPU
     err = cudaMemcpy(dev_matrixA, host_matrixA, matrixA_size, cudaMemcpyHostToDevice);
     if (err != cudaSuccess) printf("Copy matrix A to GPU: %s\n", cudaGetErrorString(err));
-    err =cudaMemcpy(dev_matrixA, host_matrixB, matrixB_size, cudaMemcpyHostToDevice);
+    err =cudaMemcpy(dev_matrixB, host_matrixB, matrixB_size, cudaMemcpyHostToDevice);
     if (err != cudaSuccess) printf("Copy matrix B to GPU: %s\n", cudaGetErrorString(err));
-    err =cudaMemcpy(dev_matrixA, host_matrixC, matrixC_size, cudaMemcpyHostToDevice);
+    err =cudaMemcpy(dev_matrixC, host_matrixC, matrixC_size, cudaMemcpyHostToDevice);
     if (err != cudaSuccess) printf("Copy matrix C to GPU: %s\n", cudaGetErrorString(err));
 }
 
@@ -208,6 +210,10 @@ void MatrixMultiply(int argc, char **argv, int &devID, MatrixSize *matrixSize,
     cudaError_t err;
     cudaGetDevice(&devID);
     cublasCreate(&handle);
+    cudaDeviceProp deviceProp;
+    cudaGetDeviceProperties(&deviceProp, devID);
+    dim3 threads(BLOCK_DIM, BLOCK_DIM);
+    dim3 grid(matrixSize->C_width / threads.x, matrixSize->C_height/ threads.y);
 
     // Assign computation variables
     float *dev_matrixA = NULL, *dev_matrixB = NULL, *dev_matrixC = NULL;
@@ -219,14 +225,17 @@ void MatrixMultiply(int argc, char **argv, int &devID, MatrixSize *matrixSize,
     if (transposeB) transB = CUBLAS_OP_T;
     size_t matrixC_size = matrixSize->C_height * matrixSize->C_width * sizeof(float);
 
+    printf("DEV A PRE ALLOC: %p\n", dev_matrixA);
+
     // Initialize memory on GPU
     MatrixInitCUDA(argc, argv, devID, matrixSize,
                    host_matrixA, host_matrixB, host_matrixC,
                    dev_matrixA, dev_matrixB, dev_matrixC);
 
+    printf("DEV A POST INIT: %p\n", dev_matrixA);
+
     // Perform matrix multiplication
-    // SGEMM PARAMS:
-    // (handle, transposeA, transposeB, m, n, k, alpha, matrix A, k, matrix B, n, beta, matrix C, n)
+    // SGEMM PARAMS: (handle, transposeA, transposeB, m, n, k, alpha, matrix A, k, matrix B, n, beta, matrix C, n)
 
     cublasSgemm(handle, transA, transB, m, n, k, &alpha, dev_matrixA, k,
                 dev_matrixB, n, &beta, dev_matrixC, n);
@@ -251,7 +260,7 @@ void MatrixMultiply(int argc, char **argv, int &devID, MatrixSize *matrixSize,
 }
 
 __global__ void MatrixHadamardKernel (float *dev_matrixA, float *dev_matrixB, float *dev_matrixC,
-                                       int C_width, int C_height)
+                                      int C_width, int C_height)
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     int row = blockIdx.y * blockDim.y + threadIdx.y;
@@ -262,8 +271,6 @@ __global__ void MatrixHadamardKernel (float *dev_matrixA, float *dev_matrixB, fl
     }
 }
 
-
-
 void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrixSize,
                            float *host_matrixA, float *host_matrixB, float *host_matrixC)
 {
@@ -272,7 +279,7 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
     dim3 threads(BLOCK_DIM, BLOCK_DIM);
     //unsigned int gridX = (unsigned int)ceil(matrixSize->C_width/threads.x);
     //unsigned int gridY = (unsigned int)ceil(matrixSize->C_height/threads.x);
-    dim3 grid((unsigned int)ceil(N/threads.x),(unsigned int)ceil(N/threads.y));
+    dim3 grid((int)ceil(N/threads.x),(int)ceil(N/threads.y));
 
     // Assign computation variables
     float *dev_matrixA = NULL, *dev_matrixB = NULL, *dev_matrixC = NULL;
@@ -285,8 +292,7 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
 
 
     // Compute Hadamard Product
-    MatrixHadamardKernel<<<grid,threads>>>(dev_matrixA,dev_matrixB,dev_matrixC,
-            N, N);
+    MatrixHadamardKernel<<<grid,threads>>>(dev_matrixA,dev_matrixB,dev_matrixC, N, N);
     err = cudaGetLastError();
     if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
 
@@ -297,7 +303,7 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
     // Copy data from GPU to host PC
     err = cudaMemcpy(host_matrixC, dev_matrixC, matrixC_size, cudaMemcpyDeviceToHost);
     if (err != cudaSuccess) printf("Copy matrix C to Host: %s\n", cudaGetErrorString(err));
-    
+
     // Free GPU memory
     err = cudaFree(dev_matrixA);
     if (err != cudaSuccess) printf("Free matrix A on GPU: %s\n", cudaGetErrorString(err));
@@ -307,8 +313,6 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
     if (err != cudaSuccess) printf("Free matrix C on GPU: %s\n", cudaGetErrorString(err));
 
 }
-
-
 
 //======================================================================================================================
 //=== Main Function
@@ -339,12 +343,15 @@ int main(int argc, char **argv)
     host_B = (float *)calloc(calcSize, 1);
     host_C = (float *)calloc(calcSize, 1);
     SetMatrixSize(hadamardTest, N, N, N, N, N, N);
+
+
     for(int i = 0; i < N*N; i ++)
     {
         host_A[i] = 2.0;
         host_B[i] = 7.0;
     }
 
+    printf("Matrix A:\n");
     for (int i = 0; i < N; i++)
     {
         for(int j = 0; j < N; j++)
@@ -353,6 +360,7 @@ int main(int argc, char **argv)
         }
         printf("\n");
     }
+    printf("\nMatrix B:\n");
 
     for (int i = 0; i < N; i++)
     {
@@ -362,10 +370,12 @@ int main(int argc, char **argv)
         }
         printf("\n");
     }
+    printf("\n");
+    //ComputeMatrixHadamard(argc, argv, devID, hadamardTest, host_A, host_B, host_C);
 
+    MatrixMultiply(argc, argv, devID, hadamardTest, host_A, host_B, host_C, 1, 1, false, false);
 
-    ComputeMatrixHadamard(argc, argv, devID, hadamardTest, host_A, host_B, host_C);
-
+    printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
     {
         for(int j = 0; j < N; j++)

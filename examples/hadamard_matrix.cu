@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-__global__ void matrixAdd (int *a, int *b, int *c, int N);
+__global__ void hadamardProduct (int *a, int *b, int *c, int N);
 
 
-int main() 
+int main()
 {
 	int N = 32;
 	int BLOCK_DIM = 32;
@@ -32,7 +32,7 @@ int main()
 
 	dim3 threads(BLOCK_DIM, BLOCK_DIM);
 	dim3 grid((int)ceil(N/threads.x),(int)ceil(N/threads.y));
-	
+
 	hadamardProduct<<<grid,threads>>>(dev_a,dev_b,dev_c, N);
 	cudaDeviceSynchronize();
 
@@ -54,12 +54,12 @@ int main()
 }
 
 
-__global__ void hadamardProduct (int *a, int *b, int *c, int N) 
+__global__ void hadamardProduct (int *a, int *b, int *c, int N)
 {
 	int col = blockIdx.x * blockDim.x + threadIdx.x;
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
 	int index = col + row * N;
-	if (col < N && row < N) 
+	if (col < N && row < N)
 	{
 		c[index] = a[index] * b[index];
 	}
