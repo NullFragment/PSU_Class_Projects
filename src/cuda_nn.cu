@@ -5,8 +5,7 @@
 #include <stdlib.h>
 
 // Define block size for thread allocation
-#define BLOCK_DIM 32
-#define N 10
+#define NUM_THREADS 32 // 32 is max for N^2 threads: 32*32 = 1024
 
 /**
  * Define structures used in functions.
@@ -210,7 +209,7 @@ void MatrixMultiply(int argc, char **argv, int &devID, MatrixSize *matrixSize,
     cublasCreate(&handle);
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, devID);
-    dim3 threads(BLOCK_DIM, BLOCK_DIM);
+    dim3 threads(NUM_THREADS, NUM_THREADS);
     dim3 grid(matrixSize->C_width / threads.x, matrixSize->C_height/ threads.y);
 
     // Assign computation variables
@@ -231,7 +230,6 @@ void MatrixMultiply(int argc, char **argv, int &devID, MatrixSize *matrixSize,
 
     // Perform matrix multiplication
     // SGEMM PARAMS: (handle, transposeA, transposeB, m, n, k, alpha, matrix A, k, matrix B, n, beta, matrix C, n)
-
     cublasSgemm(handle, transA, transB, m, n, k, &alpha, dev_matrixA, k,
                 dev_matrixB, n, &beta, dev_matrixC, n);
     err = cudaGetLastError();
@@ -259,8 +257,8 @@ __global__ void MatrixHadamardKernel (float *dev_matrixA, float *dev_matrixB, fl
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     int row = blockIdx.y * blockDim.y + threadIdx.y;
-    int index = col + row * N;
-    if (col < N && row < N)
+    int index = col + row * C_width;
+    if (col < C_width && row < C_width)
     {
         dev_matrixC[index] = dev_matrixA[index] * dev_matrixB[index];
     }
@@ -271,8 +269,10 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
 {
     // Assign CUDA variables
     cudaError_t err;
-    dim3 threads(BLOCK_DIM, BLOCK_DIM);
-    dim3 grid((int)ceil(N/threads.x),(int)ceil(N/threads.y));
+    dim3 threads(NUM_THREADS, NUM_THREADS);
+    int gridX = (int)ceil((float)matrixSize->C_width / (float)threads.x);
+    int gridY = (int)ceil((float)matrixSize->C_height/ (float)threads.y);
+    dim3 grid((unsigned int)gridX, (unsigned int)gridY);
 
     // Assign computation variables
     float *dev_matrixA = NULL, *dev_matrixB = NULL, *dev_matrixC = NULL;
@@ -284,7 +284,7 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
                    dev_matrixA, dev_matrixB, dev_matrixC);
 
     // Compute Hadamard Product
-    MatrixHadamardKernel<<<grid,threads>>>(dev_matrixA,dev_matrixB,dev_matrixC, N);
+    MatrixHadamardKernel<<<grid,threads>>>(dev_matrixA,dev_matrixB,dev_matrixC, matrixSize->C_width);
     err = cudaGetLastError();
     if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
 
@@ -318,6 +318,7 @@ void ComputeMatrixHadamard(int argc, char **argv, int &devID, MatrixSize *matrix
  */
 int main(int argc, char **argv)
 {
+    int N = 10;
     // Create memory for Layer 1, Layer 2, Layer 3 vectors
     // float *layer1 = malloc(784*sizeof(floats)))
     // Create memory for Weight 1->2, Weight 2->3 matrices
@@ -328,13 +329,14 @@ int main(int argc, char **argv)
     cudaGetDevice(&devID);
 
     // Testing hadamard product, init function, and set matrix size function
-    float *host_A, *host_B, *host_C;
-    MatrixSize *hadamardTest = (MatrixSize*) calloc(sizeof(MatrixSize), 1);
+    float *host_A, *host_B, *host_C, *host_D;
+    MatrixSize *testMatrixSize = (MatrixSize*) calloc(sizeof(MatrixSize), 1);
     size_t calcSize = N*N*sizeof(float);
     host_A = (float *)calloc(calcSize, 1);
     host_B = (float *)calloc(calcSize, 1);
     host_C = (float *)calloc(calcSize, 1);
-    SetMatrixSize(hadamardTest, N, N, N, N, N, N);
+    host_D = (float *)calloc(calcSize, 1);
+    SetMatrixSize(testMatrixSize, N, N, N, N, N, N);
 
 
     for(int i = 0; i < N*N; i ++)
@@ -362,16 +364,25 @@ int main(int argc, char **argv)
         }
         printf("\n");
     }
-    printf("\n");
-    ComputeMatrixHadamard(argc, argv, devID, hadamardTest, host_A, host_B, host_C);
 
-
+    ComputeMatrixHadamard(argc, argv, devID, testMatrixSize, host_A, host_B, host_C);
+    MatrixMultiply(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 1.0, 1.0, false, false);
+    
     printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
     {
         for(int j = 0; j < N; j++)
         {
             printf("%f ", host_C[i*j]);
+        }
+        printf("\n");
+    }
+    printf("\nMatrix D:\n");
+    for (int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < N; j++)
+        {
+            printf("%f ", host_D[i*j]);
         }
         printf("\n");
     }
