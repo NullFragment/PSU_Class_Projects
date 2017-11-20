@@ -248,7 +248,7 @@ __global__ void VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result
         {
             sum += temp[j];
         }
-        *result = sum;
+        result[0] = sum;
     }
 }
 
@@ -505,7 +505,7 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
         }
         case 3:
         {
-            VectorDotProduct<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
+            VectorDotProduct<<<grid, threads, vectorSize->len_C>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
             err = cudaGetLastError();
             if (err != cudaSuccess) printf("Vector Dot product Computation: %s\n", cudaGetErrorString(err));
             break;
@@ -560,7 +560,7 @@ int main(int argc, char **argv)
 
     // Testing hadamard product, init function, and set matrix size function
     float *host_A, *host_B, *host_C, *host_D;
-    float *host_vA, *host_vB, *host_vC, *host_vD;
+    float *host_vA, *host_vB, *host_vC, *host_vD, *host_vE;
 
     MatrixSize *testMatrixSize = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
     size_t calcSize = N * N * sizeof(float);
@@ -577,6 +577,7 @@ int main(int argc, char **argv)
     host_vB = (float *) calloc(calcSize_V, 1);
     host_vC = (float *) calloc(calcSize_V, 1);
     host_vD = (float *) calloc(calcSize_V, 1);
+    host_vE = (float *) calloc(calcSize_V, 1);
     SetVectorSize(testVectorSize, N);
 
 
@@ -638,6 +639,7 @@ int main(int argc, char **argv)
 //    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 2.0, 1.0, false, false);
     RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_vA, host_vB, host_vC, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_vA, host_vB, host_vD, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 3, host_vA, host_vB, host_vE, 1.0, 1.0);
 
     printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
@@ -673,5 +675,12 @@ int main(int argc, char **argv)
     }
     printf("\n");
 
+    printf("\nVector E:\n");
+
+    for (int i = 0; i < N; i++)
+    {
+        printf("%6.0f ", host_vE[0]);
+    }
+    printf("\n");
     return 0;
 }
