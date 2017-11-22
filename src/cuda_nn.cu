@@ -27,7 +27,6 @@ typedef struct _vSize // Optional Command-line multiplier for matrix sizes
     unsigned int len_A, len_B, len_C;
 } VectorSize;
 
-
 void runTest(int argc, char **argv, int devID);
 
 //======================================================================================================================
@@ -83,7 +82,6 @@ void SetMatrixSize(MatrixSize *matrixSize,
     matrixSize->C_height = heightC;
     matrixSize->C_width = widthC;
 }
-
 
 //======================================================================================================================
 //=== GPU memory initialization functions
@@ -177,9 +175,6 @@ void MatrixInitCUDA(int argc, char **argv, int &devID, MatrixSize *matrixSize,
     err = cudaMemcpy(dev_matrixC, host_matrixC, matrixC_size, cudaMemcpyHostToDevice);
     if (err != cudaSuccess) printf("Copy matrix C to GPU: %s\n", cudaGetErrorString(err));
 }
-
-
-
 
 //======================================================================================================================
 //=== CUDA Vector Kernels
@@ -289,7 +284,6 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
     float *dev_vectorA = NULL;
     float *dev_vectorB = NULL;
     float *dev_vectorC = NULL;
-
 
     size_t vectorC_size = vectorSize->len_C * sizeof(float);
 
@@ -447,7 +441,6 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
                    host_matrixA, host_matrixB, host_matrixC,
                    dev_matrixA, dev_matrixB, dev_matrixC);
 
-
     // Perform matrix multiplication
     // SGEMM PARAMS: (handle, transposeA, transposeB, m, n, k, alpha, matrix A, k, matrix B, n, beta, matrix C, n)
     cublasSgemm(handle, transA, transB, m, n, k, &alpha, dev_matrixA, k,
@@ -471,7 +464,6 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
     err = cudaFree(dev_matrixC);
     if (err != cudaSuccess) printf("Free matrix C on GPU: %s\n", cudaGetErrorString(err));
 }
-
 
 /**
  * @required ALL MATRICES MUST BE THE SAME DIMENSIONS
@@ -576,7 +568,6 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
 void runTest(int argc, char **argv, int devID)
 {
     int N = 10;
@@ -590,7 +581,6 @@ void runTest(int argc, char **argv, int devID)
     host_C = (float *) calloc(calcSize, 1);
     host_D = (float *) calloc(calcSize, 1);
     SetMatrixSize(testMatrixSize, N, N, N, N, N, N);
-
 
     VectorSize *testVectorSize = (VectorSize *) calloc (sizeof(VectorSize), 1);
     size_t calcSize_V = N * sizeof(float);
@@ -607,13 +597,11 @@ void runTest(int argc, char **argv, int devID)
         host_B[i] = (float)i;
     }
 
-
     for (int i = 0; i < N; i++)
     {
         host_vA[i] = (float)i;
         host_vB[i] = (float)i;
     }
-
 
     printf("Matrix A:\n");
     for (int i = 0; i < N; i++)
