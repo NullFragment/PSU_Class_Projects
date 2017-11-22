@@ -7,9 +7,10 @@
 // Define block size for thread allocation
 #define NUM_THREADS 32 // 32 is max for N^2 threads: 32*32 = 1024
 
-/**
- * Define structures used in functions.
- */
+//======================================================================================================================
+//=== Structure definitions
+//======================================================================================================================
+
 typedef struct _kernelParams
 {
     int block_size;
@@ -25,6 +26,9 @@ typedef struct _vSize // Optional Command-line multiplier for matrix sizes
 {
     unsigned int len_A, len_B, len_C;
 } VectorSize;
+
+
+void runTest(int argc, char **argv, int devID);
 
 //======================================================================================================================
 //=== Structure functions
@@ -256,6 +260,93 @@ __global__ void VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result
 //=== CUDA Vector Kernel Drivers
 //======================================================================================================================
 
+/**
+ * @brief driver function for computing vector operations
+ * @param argc - from compiler
+ * @param argv - from compiler
+ * @param devID - device ID number
+ * @param vectorSize - reference to vector size structure
+ * @param operation - switch-case value for which matrix operation to perform
+ *                    1: Matrix addition
+ *                    2: Matrix Hadamard product
+ * @param host_vectorA - pointer to host vector A (with values)
+ * @param host_vectorB - pointer to host vector B (with values)
+ * @param host_vectorC - pointer to host vector C (with values)
+ * @param alpha - multiplier for values in vector A
+ * @param beta - multiplier for values in vector B
+ */
+void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, int operation,
+                     float *host_vectorA, float *host_vectorB, float *host_vectorC, float alpha, float beta)
+{
+    // Assign CUDA variables
+    cudaError_t err;
+    dim3 threads(NUM_THREADS, NUM_THREADS);
+    int gridX = (int) ceil((float) vectorSize->len_C / (float) threads.x);
+    int gridY = (int) ceil((float) vectorSize->len_C / (float) threads.y);
+    dim3 grid((unsigned int) gridX, (unsigned int) gridY);
+
+    // Assign computation variables
+    float *dev_vectorA = NULL;
+    float *dev_vectorB = NULL;
+    float *dev_vectorC = NULL;
+
+
+    size_t vectorC_size = vectorSize->len_C * sizeof(float);
+
+    // Initialize memory on GPU
+    VectorInitCUDA(argc, argv, devID, vectorSize, host_vectorA, host_vectorB, dev_vectorA, dev_vectorB, dev_vectorC);
+
+    switch (operation)
+    {
+        case 1:
+        {
+            // Compute vector addition
+            VectorAdditionKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
+                    vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Vector Add Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+        case 2:
+        {
+            // Compute vector Hadamard Product
+            VectorHadamardKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
+                    vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+        case 3:
+        {
+            // Compute vector dot product
+            VectorDotProduct<<<grid, threads, vectorSize->len_C>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Vector Dot product Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+
+        default:
+            printf("ERROR: No vector kernel selected. Operation Aborted");
+
+    }
+
+    // Make sure device is finished
+    err = cudaDeviceSynchronize();
+    if (err != cudaSuccess) printf("Device synchronize: %s\n", cudaGetErrorString(err));
+
+    // Copy data from GPU to host PC
+    err = cudaMemcpy(host_vectorC, dev_vectorC, vectorC_size, cudaMemcpyDeviceToHost);
+    if (err != cudaSuccess)
+        printf("Copy vector C to Host: %s\n", cudaGetErrorString(err));
+
+    // Free GPU memory
+    err = cudaFree(dev_vectorA);
+    if (err != cudaSuccess) printf("Free vector A on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaFree(dev_vectorB);
+    if (err != cudaSuccess) printf("Free vector B on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaFree(dev_vectorC);
+    if (err != cudaSuccess) printf("Free vector C on GPU: %s\n", cudaGetErrorString(err));
+}
 
 //======================================================================================================================
 //=== CUDA Matrix Kernels
@@ -384,11 +475,11 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
 
 /**
  * @required ALL MATRICES MUST BE THE SAME DIMENSIONS
- * @brief driver function for computing the matrix-matrix hadamard product
+ * @brief driver function for computing the matrix operations
  * @param argc - from compiler
  * @param argv - from compiler
  * @param devID - device ID number
- * @param matrixSize - reference to vector size structure
+ * @param matrixSize - reference to matrix size structure
  * @param operation - switch-case value for which matrix operation to perform
  *                    1: Matrix addition
  *                    2: Matrix Hadamard product
@@ -461,94 +552,18 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
 
 }
 
-
-void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, int operation,
-                     float *host_vectorA, float *host_vectorB, float *host_vectorC, float alpha, float beta)
-{
-    // Assign CUDA variables
-    cudaError_t err;
-    dim3 threads(NUM_THREADS, NUM_THREADS);
-    int gridX = (int) ceil((float) vectorSize->len_C / (float) threads.x);
-    int gridY = (int) ceil((float) vectorSize->len_C / (float) threads.y);
-    dim3 grid((unsigned int) gridX, (unsigned int) gridY);
-
-    // Assign computation variables
-    float *dev_vectorA = NULL;
-    float *dev_vectorB = NULL;
-    float *dev_vectorC = NULL;
-
-
-    size_t vectorC_size = vectorSize->len_C * sizeof(float);
-
-    // Initialize memory on GPU
-    VectorInitCUDA(argc, argv, devID, vectorSize, host_vectorA, host_vectorB, dev_vectorA, dev_vectorB, dev_vectorC);
-
-    switch (operation)
-    {
-        case 1:
-        {
-            // Compute vector Addition
-            VectorAdditionKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
-                    vectorSize->len_C);
-            err = cudaGetLastError();
-            if (err != cudaSuccess) printf("Vector Add Computation: %s\n", cudaGetErrorString(err));
-            break;
-        }
-        case 2:
-        {
-            // Compute Hadamard Product
-            VectorHadamardKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
-                    vectorSize->len_C);
-            err = cudaGetLastError();
-            if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
-            break;
-        }
-        case 3:
-        {
-            VectorDotProduct<<<grid, threads, vectorSize->len_C>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
-            err = cudaGetLastError();
-            if (err != cudaSuccess) printf("Vector Dot product Computation: %s\n", cudaGetErrorString(err));
-            break;
-        }
-
-        default:
-            printf("ERROR: No vector kernel selected. Operation Aborted");
-
-    }
-
-    // Make sure device is finished
-    err = cudaDeviceSynchronize();
-    if (err != cudaSuccess) printf("Device synchronize: %s\n", cudaGetErrorString(err));
-
-    // Copy data from GPU to host PC
-    err = cudaMemcpy(host_vectorC, dev_vectorC, vectorC_size, cudaMemcpyDeviceToHost);
-    if (err != cudaSuccess) 
-        printf("Copy vector C to Host: %s\n", cudaGetErrorString(err));
-
-
-    // Free GPU memory
-    err = cudaFree(dev_vectorA);
-    if (err != cudaSuccess) printf("Free vector A on GPU: %s\n", cudaGetErrorString(err));
-    err = cudaFree(dev_vectorB);
-    if (err != cudaSuccess) printf("Free vector B on GPU: %s\n", cudaGetErrorString(err));
-    err = cudaFree(dev_vectorC);
-    if (err != cudaSuccess) printf("Free vector C on GPU: %s\n", cudaGetErrorString(err));
-
-}
-
 //======================================================================================================================
 //=== Main Function
 //======================================================================================================================
 
 /**
- * @brief - computes weight matrices for a shallow neural network
+ * @brief computes weight matrices for a shallow neural network
  * @param argc - from compiler
  * @param argv - from compiler
  * @return 0 if success
  */
 int main(int argc, char **argv)
 {
-    int N = 10;
     // Create memory for Layer 1, Layer 2, Layer 3 vectors
     // float *layer1 = malloc(784*sizeof(floats)))
     // Create memory for Weight 1->2, Weight 2->3 matrices
@@ -558,7 +573,13 @@ int main(int argc, char **argv)
     int devID = 0;
     cudaGetDevice(&devID);
 
-    // Testing hadamard product, init function, and set matrix size function
+    return 0;
+}
+
+
+void runTest(int argc, char **argv, int devID)
+{
+    int N = 10;
     float *host_A, *host_B, *host_C, *host_D;
     float *host_vA, *host_vB, *host_vC, *host_vD, *host_vE;
 
@@ -579,8 +600,6 @@ int main(int argc, char **argv)
     host_vD = (float *) calloc(calcSize_V, 1);
     host_vE = (float *) calloc(calcSize_V, 1);
     SetVectorSize(testVectorSize, N);
-
-
 
     for (int i = 0; i < N * N; i++)
     {
@@ -631,12 +650,8 @@ int main(int argc, char **argv)
     }
     printf("\n");
 
-
-
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 1, host_A, host_B, host_C, 1.0, 1.0);
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, 1.0);
-//    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_C, 1.0, 1.0, false, false);
-//    MatrixMultiplyCUBLAS(argc, argv, devID, testMatrixSize, host_A, host_B, host_D, 2.0, 1.0, false, false);
     RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_vA, host_vB, host_vC, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_vA, host_vB, host_vD, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 3, host_vA, host_vB, host_vE, 1.0, 1.0);
@@ -682,5 +697,4 @@ int main(int argc, char **argv)
         printf("%6.0f ", host_vE[0]);
     }
     printf("\n");
-    return 0;
 }
