@@ -27,8 +27,6 @@ typedef struct _vSize // Optional Command-line multiplier for matrix sizes
     unsigned int len_A, len_B, len_C;
 } VectorSize;
 
-void runTest(int argc, char **argv, int devID);
-
 //======================================================================================================================
 //=== Structure functions
 //======================================================================================================================
@@ -45,7 +43,7 @@ void SetVectorSize(VectorSize *vector_size, unsigned int len)
     vector_size->len_B = len;
     vector_size->len_C = len;
 
-    printf("Vector A(%u), Vector B(%u), Vector (%u)\n",
+    printf("Vector A(%u), Vector B(%u), Vector C(%u)\n",
            vector_size->len_A,
            vector_size->len_B,
            vector_size->len_C);
@@ -81,6 +79,15 @@ void SetMatrixSize(MatrixSize *matrixSize,
     matrixSize->B_width = widthB;
     matrixSize->C_height = heightC;
     matrixSize->C_width = widthC;
+
+    printf("Matrix A(%u x %u), Matrix B(%u x %u), Matrix C(%u x %u)\n",
+           matrixSize->A_width,
+           matrixSize->A_height,
+           matrixSize->B_width,
+           matrixSize->B_height,
+           matrixSize->C_width,
+           matrixSize->C_height);
+
 }
 
 //======================================================================================================================
@@ -105,8 +112,6 @@ void VectorInitCUDA(int argc, char **argv, int devID, VectorSize *vector_size, f
                     float *&dev_A, float *&dev_B, float *&dev_C)
 {
     // Assign CUDA variables
-    devID = 0;
-    cudaGetDevice(&devID);
     cudaError_t err;
 
     // Assign size variables
@@ -150,8 +155,6 @@ void MatrixInitCUDA(int argc, char **argv, int &devID, MatrixSize *matrixSize,
                     float *&dev_matrixA, float *&dev_matrixB, float *&dev_matrixC)
 {
     // Assign CUDA variables
-    devID = 0;
-    cudaGetDevice(&devID);
     cudaError_t err;
 
     // Assign size variables
@@ -382,7 +385,7 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
 
     // Make sure device is finished
     err = cudaDeviceSynchronize();
-    if (err != cudaSuccess) printf("Device synchronize: %s\n", cudaGetErrorString(err));
+    if (err != cudaSuccess) printf("Device synchronize vector kernel calc: %s\n", cudaGetErrorString(err));
 
     // Copy data from GPU to host PC
     err = cudaMemcpy(host_vectorC, dev_vectorC, vectorC_size, cudaMemcpyDeviceToHost);
@@ -396,6 +399,9 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
     if (err != cudaSuccess) printf("Free vector B on GPU: %s\n", cudaGetErrorString(err));
     err = cudaFree(dev_vectorC);
     if (err != cudaSuccess) printf("Free vector C on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaDeviceSynchronize();
+    if (err != cudaSuccess) printf("Device synchronize vector kernel end: %s\n", cudaGetErrorString(err));
+    printf("Vector Kernel finished.\n");
 }
 
 //======================================================================================================================
@@ -416,8 +422,8 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
 __global__ void MatrixAddKernel(float *dev_matrixA, float *dev_matrixB, float *dev_matrixC,
                                 float alpha, float beta, int matrix_width, int matrix_height)
 {
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    int col = blockIdx.y * blockDim.y + threadIdx.y;
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
@@ -439,8 +445,8 @@ __global__ void MatrixAddKernel(float *dev_matrixA, float *dev_matrixB, float *d
 __global__ void MatrixHadamardKernel(float *dev_matrixA, float *dev_matrixB, float *dev_matrixC,
                                      float alpha, float beta, int matrix_width, int matrix_height)
 {
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    int col = blockIdx.y * blockDim.y + threadIdx.y;
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
@@ -459,8 +465,8 @@ __global__ void MatrixHadamardKernel(float *dev_matrixA, float *dev_matrixB, flo
 __global__ void MatrixSigmoid(float *dev_matrixA, float *dev_matrixC,
                               int matrix_width, int matrix_height)
 {
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    int col = blockIdx.y * blockDim.y + threadIdx.y;
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
@@ -480,8 +486,8 @@ __global__ void MatrixSigmoid(float *dev_matrixA, float *dev_matrixC,
 __global__ void MatrixSigmoidDerivative(float *dev_matrixA, float *dev_matrixC,
                                         int matrix_width, int matrix_height)
 {
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    int col = blockIdx.y * blockDim.y + threadIdx.y;
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
@@ -515,10 +521,8 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
                           float alpha, float beta, bool transposeA, bool transposeB)
 {
     // Assign CUDA variables
-    devID = 0;
     cublasHandle_t handle;
     cudaError_t err;
-    cudaGetDevice(&devID);
     cublasCreate(&handle);
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, devID);
@@ -542,14 +546,14 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
 
     // Perform matrix multiplication
     // SGEMM PARAMS: (handle, transposeA, transposeB, m, n, k, alpha, matrix A, k, matrix B, n, beta, matrix C, n)
-    cublasSgemm(handle, transA, transB, m, n, k, &alpha, dev_matrixA, k,
-                dev_matrixB, n, &beta, dev_matrixC, n);
+    cublasSgemm(handle, transA, transB, m, n, k, &alpha, dev_matrixA, m,
+                dev_matrixB, n, &beta, dev_matrixC, m);
     err = cudaGetLastError();
     if (err != cudaSuccess) printf("SGEMM: %s\n", cudaGetErrorString(err));
 
     // Make sure device is finished
     err = cudaDeviceSynchronize();
-    if (err != cudaSuccess) printf("Device synchronize: %s\n", cudaGetErrorString(err));
+    if (err != cudaSuccess) printf("Device synchronize SGEMM calculation: %s\n", cudaGetErrorString(err));
 
     // Copy data from GPU to host PC
     err = cudaMemcpy(host_matrixC, dev_matrixC, matrixC_size, cudaMemcpyDeviceToHost);
@@ -562,6 +566,9 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
     if (err != cudaSuccess) printf("Free matrix B on GPU: %s\n", cudaGetErrorString(err));
     err = cudaFree(dev_matrixC);
     if (err != cudaSuccess) printf("Free matrix C on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaDeviceSynchronize();
+    if (err != cudaSuccess) printf("Device synchronize SGEMM end: %s\n", cudaGetErrorString(err));
+    printf("Matrix Kernel finished.\n");
 }
 
 /**
@@ -646,7 +653,7 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
 
     // Make sure device is finished
     err = cudaDeviceSynchronize();
-    if (err != cudaSuccess) printf("Device synchronize: %s\n", cudaGetErrorString(err));
+    if (err != cudaSuccess) printf("Device matrix kernel synchronize: %s\n", cudaGetErrorString(err));
 
     // Copy data from GPU to host PC
     err = cudaMemcpy(host_matrixC, dev_matrixC, matrixC_size, cudaMemcpyDeviceToHost);
@@ -659,36 +666,15 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
     if (err != cudaSuccess) printf("Free matrix B on GPU: %s\n", cudaGetErrorString(err));
     err = cudaFree(dev_matrixC);
     if (err != cudaSuccess) printf("Free matrix C on GPU: %s\n", cudaGetErrorString(err));
+    err = cudaDeviceSynchronize();
+    if (err != cudaSuccess) printf("Device synchronize matrix kernel end: %s\n", cudaGetErrorString(err));
+    printf("Matrix Kernel finished.\n");
 
 }
 
 //======================================================================================================================
-//=== Main Function
+//=== Test Function
 //======================================================================================================================
-
-/**
- * @brief computes weight matrices for a shallow neural network
- * @param argc - from compiler
- * @param argv - from compiler
- * @return 0 if success
- */
-int main(int argc, char **argv)
-{
-    float *a1, *a2, *a3;
-    float *W1, *W2;
-    float *z2, *z3;
-    float *y;
-    int devID = 0;
-    cudaGetDevice(&devID);
-    //runTest(argc, argv, devID);
-    MatrixSize *activation2 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
-    MatrixSize *activation3 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
-    SetMatrixSize(activation2, 1, 784, 128, 784, 1, 128);
-    SetMatrixSize(activation3, 1, 128, 10, 128, 10, 1);
-
-
-    return 0;
-}
 
 void runTest(int argc, char **argv, int devID)
 {
@@ -760,18 +746,18 @@ void runTest(int argc, char **argv, int devID)
     }
     printf("\n");
 
-    RunMatrixKernel(argc, argv, devID, testMatrixSize, 1, host_A, host_B, host_C, 1.0, 1.0);
-    RunMatrixKernel(argc, argv, devID, testMatrixSize, 3, host_A, host_B, host_D, 1.0, 1.0);
-    RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_vA, host_vB, host_vC, 1.0, 1.0);
-    RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_vA, host_vB, host_vD, 1.0, 1.0);
-    RunVectorKernel(argc, argv, devID, testVectorSize, 3, host_vA, host_vB, host_vE, 1.0, 1.0);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 3, host_A, host_B, host_C, 1.0, 1.0);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 4, host_A, host_B, host_D, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 3, host_vA, host_vB, host_vC, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 4, host_vA, host_vB, host_vD, 1.0, 1.0);
+    RunVectorKernel(argc, argv, devID, testVectorSize, 5, host_vA, host_vB, host_vE, 1.0, 1.0);
 
     printf("\nMatrix C:\n");
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            printf("%6.0f ", host_C[i * j]);
+            printf("%6.10f ", host_C[i * j]);
         }
         printf("\n");
     }
@@ -780,7 +766,7 @@ void runTest(int argc, char **argv, int devID)
     {
         for (int j = 0; j < N; j++)
         {
-            printf("%6.0f ", host_D[i * j]);
+            printf("%6.10f ", host_D[i * j]);
         }
         printf("\n");
     }
@@ -796,7 +782,7 @@ void runTest(int argc, char **argv, int devID)
 
     for (int i = 0; i < N; i++)
     {
-        printf("%6.0f ", host_vD[i]);
+        printf("%6.10f ", host_vD[i]);
     }
     printf("\n");
 
@@ -804,7 +790,137 @@ void runTest(int argc, char **argv, int devID)
 
     for (int i = 0; i < N; i++)
     {
-        printf("%6.0f ", host_vE[i]);
+        printf("%6.10f ", host_vE[i]);
     }
     printf("\n");
+}
+
+//======================================================================================================================
+//=== Main Function
+//======================================================================================================================
+
+/**
+ * @brief computes weight matrices for a shallow neural network
+ * @param argc - from compiler
+ * @param argv - from compiler
+ * @return 0 if success
+ */
+int main(int argc, char **argv)
+{
+    // Assign CUDA variables
+    int devID = 0;
+    cudaGetDevice(&devID);
+    cudaError_t mainErr;
+//    runTest(argc, argv, devID);
+
+    // Define NN layer lengths
+    unsigned int layer_1 = 785;
+    unsigned int layer_2 = 129;
+    unsigned int layer_3 =  10;
+
+    // Allocate memory for matrices and vectors
+    float *a1, *a2, *a3;    // Activation vectors
+    float *z2, *z3;         // Pre-sigmoid intermediary vectors
+    float *W1, *W2;         // Weight matrices
+    float *y;               // One-hot result vector
+    float *del3, *del2;     // Error vectors
+    float *Del2, *Del1;     // Error gradients
+
+    a1   = (float *) calloc((size_t) layer_1, sizeof(float));
+    a2   = (float *) calloc((size_t) layer_2, sizeof(float));
+    a3   = (float *) calloc((size_t) layer_3, sizeof(float));
+    z2   = (float *) calloc((size_t) layer_2, sizeof(float));
+    z3   = (float *) calloc((size_t) layer_3, sizeof(float));
+    y    = (float *) calloc((size_t) layer_3, sizeof(float));
+    W1   = (float *) calloc((size_t) layer_2*layer_1, sizeof(float));
+    W2   = (float *) calloc((size_t) layer_3*layer_2, sizeof(float));
+    del3 = (float *) calloc((size_t) layer_3, sizeof(float));
+    del2 = (float *) calloc((size_t) layer_2, sizeof(float));
+    Del2 = (float *) calloc((size_t) layer_3*layer_2, sizeof(float));
+    Del1 = (float *) calloc((size_t) layer_2*layer_1, sizeof(float));
+
+    // Initialize vector and matrix size structures for computation
+    MatrixSize *inter2 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    MatrixSize *inter3 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    MatrixSize *grad1 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    MatrixSize *grad2 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    MatrixSize *backprop1 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    MatrixSize *backprop2 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+
+    VectorSize *activation2 = (VectorSize *) calloc(sizeof(VectorSize),1);
+    VectorSize *activation3 = (VectorSize *) calloc(sizeof(VectorSize),1);
+    VectorSize *delta2 = (VectorSize *) calloc(sizeof(VectorSize),1);
+    VectorSize *delta3 = (VectorSize *) calloc(sizeof(VectorSize),1);
+
+    printf("Intermediate 2: ");
+    SetMatrixSize(inter2, 1, layer_1, layer_2, layer_1, 1, layer_2);
+    printf("Intermediate 3: ");
+    SetMatrixSize(inter3, 1, layer_2, layer_3, layer_2, 1, layer_3);
+    printf("Grad 1: ");
+    SetMatrixSize(grad1, 1, layer_2, 1, layer_1, layer_2, layer_1);
+    printf("Grad 2: ");
+    SetMatrixSize(grad2, 1, layer_3, 1, layer_2, layer_3, layer_2);
+    printf("Backprop 1: ");
+    SetMatrixSize(backprop1, layer_2, layer_1, layer_2, layer_1, layer_2, layer_1);
+    printf("Backprop 2: ");
+    SetMatrixSize(backprop2, layer_3, layer_2, layer_3, layer_2, layer_3, layer_2);
+
+    printf("Activation 2: ");
+    SetVectorSize(activation2, layer_2);
+    printf("Activation 3: ");
+    SetVectorSize(activation3, layer_3);
+    printf("Delta 2: ");
+    SetVectorSize(delta2, layer_2);
+    printf("Delta 3: ");
+    SetVectorSize(delta3, layer_3);
+
+    // Set number of epochs and samples
+    int epochs = 1; // Number of training epochs (iterations through data)
+    int m = 1;   // Number of samples;
+
+    // Perform neural network training
+    for(int epoch = 0; epoch < epochs; epoch++)
+    {
+        for(int sample = 0; sample < m; sample++)
+        {
+            // FORWARD PROPOGATION:
+            //read a1 from file
+            MatrixMultiplyCUBLAS(argc, argv, devID, inter2, a1, W1, z2, 1.0, 1.0, false, true); // Compute z2
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("z2 Computation: %s\n", cudaGetErrorString(mainErr));
+            RunVectorKernel(argc, argv, devID, activation2, 4, z2, z2, a2, 1.0, 1.0);           // Compute a2
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("a2 Computation: %s\n", cudaGetErrorString(mainErr));
+            MatrixMultiplyCUBLAS(argc, argv, devID, inter3, a2, W2, z3, 1.0, 1.0, false, true); // Compute z3
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("z3 Computation: %s\n", cudaGetErrorString(mainErr));
+            RunVectorKernel(argc, argv, devID, activation3, 4, z3, z3, a3, 1.0, 1.0);           // Compute a3
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("a3 Computation: %s\n", cudaGetErrorString(mainErr));
+
+            // BACKWARD PROPOGATION:
+            RunVectorKernel(argc, argv, devID, delta3, 1, z3, y, del3, 1.0, (float) -1.0);           // Compute del3
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("del3 Computation: %s\n", cudaGetErrorString(mainErr));
+            MatrixMultiplyCUBLAS(argc, argv, devID, inter3, del3, W2, del2, 1.0, 1.0, false, false); // Compute pre-del2
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("pre-del2 Computation: %s\n", cudaGetErrorString(mainErr));
+            RunVectorKernel(argc, argv, devID, delta2, 5, del2, y, del3, 1.0, (float) -1.0);         // Compute del2
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("del2 Computation: %s\n", cudaGetErrorString(mainErr));
+            MatrixMultiplyCUBLAS(argc, argv, devID, grad1, del2, a1, Del1, 1.0, 1.0, true, false);   // Compute Del1
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("Del1 Computation: %s\n", cudaGetErrorString(mainErr));
+            MatrixMultiplyCUBLAS(argc, argv, devID, grad2, del3, a2, Del2, 1.0, 1.0, true, false);   // Compute Del2
+            mainErr = cudaGetLastError();
+            if (mainErr != cudaSuccess) printf("Del2 Computation: %s\n", cudaGetErrorString(mainErr));
+
+            // Gradient descent
+            RunMatrixKernel(argc, argv, devID, backprop1, 1, W1, Del1, W1, 1.0, (float)-1.0/(float)m); // Compute new W1
+            RunMatrixKernel(argc, argv, devID, backprop2, 1, W2, Del2, W2, 1.0, (float)-1.0/(float)m); // Compute new W2
+        }
+    }
+
+
+    return 0;
 }
