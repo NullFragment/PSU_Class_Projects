@@ -195,7 +195,7 @@ __global__ void VectorAdditionKernel(float *dev_vecA, float *dev_vecB, float *de
     int i = blockDim.x * blockIdx.x + threadIdx.x;
     if (i < vecLen)
     {
-        dev_vecC[i] = alpha*dev_vecA[i] + beta*dev_vecB[i];
+        dev_vecC[i] = alpha * dev_vecA[i] + beta * dev_vecB[i];
     }
 }
 
@@ -215,7 +215,7 @@ __global__ void VectorHadamardKernel(float *dev_vecA, float *dev_vecB, float *de
     int i = blockDim.x * blockIdx.x + threadIdx.x;
     if (i < vecLen)
     {
-        dev_vecC[i] = alpha*dev_vecA[i] * beta*dev_vecB[i];
+        dev_vecC[i] = alpha * dev_vecA[i] * beta * dev_vecB[i];
     }
 }
 
@@ -231,23 +231,58 @@ __global__ void VectorHadamardKernel(float *dev_vecA, float *dev_vecB, float *de
  * @param vecLen - length of all vectors
  */
 __global__ void VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result,
-                                  float alpha, float beta, int vecLen)
+                                 float alpha, float beta, int vecLen)
 {
     extern __shared__ float temp[];
     int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if(i < vecLen)
+    if (i < vecLen)
     {
-        temp[i] = alpha*dev_vecA[i] * beta*dev_vecB[i];
+        temp[i] = alpha * dev_vecA[i] * beta * dev_vecB[i];
     }
     __syncthreads();
-    if(threadIdx.x == 0)
+    if (threadIdx.x == 0)
     {
         float sum = 0.0;
-        for(int j = 0; j < vecLen; j++)
+        for (int j = 0; j < vecLen; j++)
         {
             sum += temp[j];
         }
         result[0] = sum;
+    }
+}
+
+/**
+ * @required INPUT AND OUTPUT VECTORS MUST BE THE SAME LENGTH
+ * @brief - kernel for GPU computation of the vector sigmoid function
+ * @param dev_matrixA - pointer to device memory for vector A
+ * @param dev_matrixC - pointer to device memory for vector C
+ * @param vecLen - length of all vectors
+ */
+__global__ void VectorSigmoid(float *dev_vecA, float *dev_vecC, int vecLen)
+{
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    if (index < vecLen)
+    {
+        float exp = 1 + expf(-dev_vecA[index]);
+        dev_vecC[index] = 1 / exp;
+    }
+}
+
+/**
+ * @required INPUT AND OUTPUT VECTORS MUST BE THE SAME LENGTH
+ * @brief - kernel for GPU computation of the vector sigmoid derivative function
+ * @param dev_matrixA - pointer to device memory for vector A
+ * @param dev_matrixC - pointer to device memory for vector C
+ * @param vecLen - length of all vectors
+ */
+__global__ void VectorSigmoidDerivative(float *dev_vecA, float *dev_vecC, int vecLen)
+{
+    int index = blockDim.x * blockIdx.x + threadIdx.x;
+    if (index < vecLen)
+    {
+        float exp = 1 + expf(-dev_vecA[index]);
+        float sig = 1/exp;
+        dev_vecC[index] = sig*(1-sig);
     }
 }
 
@@ -262,8 +297,11 @@ __global__ void VectorDotProduct(float *dev_vecA, float *dev_vecB, float *result
  * @param devID - device ID number
  * @param vectorSize - reference to vector size structure
  * @param operation - switch-case value for which matrix operation to perform
- *                    1: Matrix addition
- *                    2: Matrix Hadamard product
+ *                    1: Vector addition
+ *                    2: Vector Hadamard product
+ *                    3: Vector dot product
+ *                    4: Vector sigmoid function
+ *                    5: Vector sigmoid derivative
  * @param host_vectorA - pointer to host vector A (with values)
  * @param host_vectorB - pointer to host vector B (with values)
  * @param host_vectorC - pointer to host vector C (with values)
@@ -307,21 +345,39 @@ void RunVectorKernel(int argc, char **argv, int &devID, VectorSize *vectorSize, 
             VectorHadamardKernel<<<grid, threads>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta,
                     vectorSize->len_C);
             err = cudaGetLastError();
-            if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
+            if (err != cudaSuccess) printf("Vector Hadamard Computation: %s\n", cudaGetErrorString(err));
             break;
         }
         case 3:
         {
             // Compute vector dot product
-            VectorDotProduct<<<grid, threads, vectorSize->len_C>>>(dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
+            VectorDotProduct<<<grid, threads, vectorSize->len_C>>>
+                                              (dev_vectorA, dev_vectorB, dev_vectorC, alpha, beta, vectorSize->len_C);
             err = cudaGetLastError();
             if (err != cudaSuccess) printf("Vector Dot product Computation: %s\n", cudaGetErrorString(err));
             break;
         }
-
+        case 4:
+        {
+            // Compute sigmoid function
+            VectorSigmoid<<<grid, threads>>>(dev_vectorA, dev_vectorC, vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Vector Sigmoid Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+        case 5:
+        {
+            // Compute sigmoid derivative
+            VectorSigmoidDerivative<<<grid, threads>>>(dev_vectorA, dev_vectorC, vectorSize->len_C);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Vector Sigmoid Derivative Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
         default:
+        {
             printf("ERROR: No vector kernel selected. Operation Aborted");
-
+            break;
+        }
     }
 
     // Make sure device is finished
@@ -365,7 +421,7 @@ __global__ void MatrixAddKernel(float *dev_matrixA, float *dev_matrixB, float *d
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
-        dev_matrixC[index] = alpha*dev_matrixA[index] + beta*dev_matrixB[index];
+        dev_matrixC[index] = alpha * dev_matrixA[index] + beta * dev_matrixB[index];
     }
 }
 
@@ -388,7 +444,50 @@ __global__ void MatrixHadamardKernel(float *dev_matrixA, float *dev_matrixB, flo
     int index = col + row * matrix_height;
     if (col < matrix_width && row < matrix_height)
     {
-        dev_matrixC[index] = alpha*dev_matrixA[index] * beta*dev_matrixB[index];
+        dev_matrixC[index] = alpha * dev_matrixA[index] * beta * dev_matrixB[index];
+    }
+}
+
+/**
+ * @required ALL MATRICES MUST BE THE SAME DIMENSIONS
+ * @brief - kernel for GPU computation of matrix sigmoid function
+ * @param dev_matrixA - pointer to device memory for matrix A
+ * @param dev_matrixC - pointer to device memory for matrix C
+ * @param matrix_width - width of all matrices
+ * @param matrix_height - height of all matrices
+ */
+__global__ void MatrixSigmoid(float *dev_matrixA, float *dev_matrixC,
+                              int matrix_width, int matrix_height)
+{
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int index = col + row * matrix_height;
+    if (col < matrix_width && row < matrix_height)
+    {
+        float exp = 1 + expf(-dev_matrixA[index]);
+        dev_matrixC[index] = 1 / exp;
+    }
+}
+
+/**
+ * @required ALL MATRICES MUST BE THE SAME DIMENSIONS
+ * @brief - kernel for GPU computation of the matrix sigmoid derivative function
+ * @param dev_matrixA - pointer to device memory for matrix A
+ * @param dev_matrixC - pointer to device memory for matrix C
+ * @param matrix_width - width of all matrices
+ * @param matrix_height - height of all matrices
+ */
+__global__ void MatrixSigmoidDerivative(float *dev_matrixA, float *dev_matrixC,
+                                        int matrix_width, int matrix_height)
+{
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int index = col + row * matrix_height;
+    if (col < matrix_width && row < matrix_height)
+    {
+        float exp = 1 + expf(-dev_matrixA[index]);
+        float sig = 1/exp;
+        dev_matrixC[index] = sig*(1-sig);
     }
 }
 
@@ -475,6 +574,8 @@ void MatrixMultiplyCUBLAS(int argc, char **argv, int &devID, MatrixSize *matrixS
  * @param operation - switch-case value for which matrix operation to perform
  *                    1: Matrix addition
  *                    2: Matrix Hadamard product
+ *                    3: Sigmoid function
+ *                    4: Sigmoid derivative
  * @param host_matrixA - pointer to host matrix A (with values)
  * @param host_matrixB - pointer to host matrix B (with values)
  * @param host_matrixC - pointer to host matrix C (with values)
@@ -517,13 +618,30 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
             MatrixHadamardKernel<<<grid, threads>>>(dev_matrixA, dev_matrixB, dev_matrixC, alpha, beta,
                     matrixSize->C_width, matrixSize->C_height);
             err = cudaGetLastError();
-            if (err != cudaSuccess) printf("Hadamard Computation: %s\n", cudaGetErrorString(err));
+            if (err != cudaSuccess) printf("Matrix Hadamard Computation: %s\n", cudaGetErrorString(err));
             break;
         }
-
+        case 3:
+        {
+            // Compute Sigmoid function
+            MatrixSigmoid<<<grid, threads>>>(dev_matrixA, dev_matrixC, matrixSize->C_width, matrixSize->C_height);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Matrix Sigmoid Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
+        case 4:
+        {
+            // Compute Sigmoid derivative function
+            MatrixSigmoidDerivative<<<grid, threads>>>(dev_matrixA, dev_matrixC, matrixSize->C_width, matrixSize->C_height);
+            err = cudaGetLastError();
+            if (err != cudaSuccess) printf("Matrix Sigmoid Derivative Computation: %s\n", cudaGetErrorString(err));
+            break;
+        }
         default:
+        {
             printf("ERROR: No matrix kernel selected. Operation Aborted");
-
+            break;
+        }
     }
 
     // Make sure device is finished
@@ -556,14 +674,18 @@ void RunMatrixKernel(int argc, char **argv, int &devID, MatrixSize *matrixSize, 
  */
 int main(int argc, char **argv)
 {
-    // Create memory for Layer 1, Layer 2, Layer 3 vectors
-    // float *layer1 = malloc(784*sizeof(floats)))
-    // Create memory for Weight 1->2, Weight 2->3 matrices
-
-    // Layer 1 will read from file for input (X) values
-    // Layer 2 and 3 will be calculated
+    float *a1, *a2, *a3;
+    float *W1, *W2;
+    float *z2, *z3;
+    float *y;
     int devID = 0;
     cudaGetDevice(&devID);
+    //runTest(argc, argv, devID);
+    MatrixSize *activation2 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    MatrixSize *activation3 = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
+    SetMatrixSize(activation2, 1, 784, 128, 784, 1, 128);
+    SetMatrixSize(activation3, 1, 128, 10, 128, 10, 1);
+
 
     return 0;
 }
@@ -582,7 +704,7 @@ void runTest(int argc, char **argv, int devID)
     host_D = (float *) calloc(calcSize, 1);
     SetMatrixSize(testMatrixSize, N, N, N, N, N, N);
 
-    VectorSize *testVectorSize = (VectorSize *) calloc (sizeof(VectorSize), 1);
+    VectorSize *testVectorSize = (VectorSize *) calloc(sizeof(VectorSize), 1);
     size_t calcSize_V = N * sizeof(float);
     host_vA = (float *) calloc(calcSize_V, 1);
     host_vB = (float *) calloc(calcSize_V, 1);
@@ -593,14 +715,14 @@ void runTest(int argc, char **argv, int devID)
 
     for (int i = 0; i < N * N; i++)
     {
-        host_A[i] = (float)i;
-        host_B[i] = (float)i;
+        host_A[i] = (float) i;
+        host_B[i] = (float) i;
     }
 
     for (int i = 0; i < N; i++)
     {
-        host_vA[i] = (float)i;
-        host_vB[i] = (float)i;
+        host_vA[i] = (float) i;
+        host_vB[i] = (float) i;
     }
 
     printf("Matrix A:\n");
@@ -639,7 +761,7 @@ void runTest(int argc, char **argv, int devID)
     printf("\n");
 
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 1, host_A, host_B, host_C, 1.0, 1.0);
-    RunMatrixKernel(argc, argv, devID, testMatrixSize, 2, host_A, host_B, host_D, 1.0, 1.0);
+    RunMatrixKernel(argc, argv, devID, testMatrixSize, 3, host_A, host_B, host_D, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 1, host_vA, host_vB, host_vC, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 2, host_vA, host_vB, host_vD, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 3, host_vA, host_vB, host_vE, 1.0, 1.0);
@@ -682,7 +804,7 @@ void runTest(int argc, char **argv, int devID)
 
     for (int i = 0; i < N; i++)
     {
-        printf("%6.0f ", host_vE[0]);
+        printf("%6.0f ", host_vE[i]);
     }
     printf("\n");
 }
