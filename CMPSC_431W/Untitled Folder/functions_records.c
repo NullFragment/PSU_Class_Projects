@@ -29,20 +29,14 @@ void getIndexedRecord(_table *schema, linkedList *selects, FILE* output)
     // Get number of records in file
     fseek(database,0L, SEEK_END);
     long fileLen = ftell(database);
-    long records = fileLen/(schema->reclen);
-    long seekLen = (records/2);
-    rewind(database);
+    long records = fileLen/(schema->reclen * sizeof(char));
+    long seekLen = (records/2) * schema->reclen;
     do{
-        memset(buffer, 0, MAXINPUTLENGTH);
-        memset(print_string, 0, MAXINPUTLENGTH);
-        fseek(database,seekLen*schema->reclen, SEEK_CUR);
-        fprintf(output, "==> TRACE: %s\n", print_string);
+        fseek(database,seekLen*sizeof(char), SEEK_SET);
+        fread(buffer, (size_t) field->length, 1, database);
+        fprintf(output, "==> TRACE: %s\n", buffer);
         seekLen = seekLen/2;
-        if (strlen(print_string) > 0 && strncmp(print_string, select->condition, strlen(select->condition)) == 0)
-        {
-            fprintf(output,"%s\n", print_string);
-        }
-    }while(strncmp(print_string, select->condition, strlen(select->condition)) != 0);
+    }while(seekLen > 1 && strncmp(buffer, select->condition, strlen(select->condition)) != 0);
 }
 
 // #############################################################################
@@ -227,15 +221,17 @@ bool selectRecord(char *buffer)
     buffer = calloc(MAXINPUTLENGTH, 1);
     strcpy(buffer, tables->head->field);
     loadSchema(schema, buffer);
-    if(schema->index == true && clauses->count > 0)
-    {
-        getIndexedRecord(schema, fields, stdout);
-    }
-    else
-    {
-        getRecord(schema, fields, stdout);
-    }
-    free(fields); /** DEALLOCATE: FIELDS */
-    free(tables); /** DEALLOCATE: TABLES */
-    free(clauses); /** DEALLOCATE: CLAUSES */
+//    if(schema->index == false)
+//    {
+//        getRecord(schema, fields, stdout);
+//    }
+//    else if (schema->index == true)
+//    {
+//         getIndexedRecord(schema, fields, stdout);
+//    }
+//    free(fields); /** DEALLOCATE: FIELDS */
+//    free(tables); /** DEALLOCATE: TABLES */
+//    free(clauses); /** DEALLOCATE: CLAUSES */
+//    free(schema); /** DEALLOCATE: SCHEMA */
+    printf("FUCK");
 }

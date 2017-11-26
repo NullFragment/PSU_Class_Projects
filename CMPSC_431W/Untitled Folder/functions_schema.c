@@ -311,9 +311,7 @@ void parseFile(FILE *toParse, FILE *output, fieldList *fields, bool comma)
                 fprintf(output, ",");
             } else
             {
-                int length = trace->length;
-                if (trace->next == NULL) length--;
-                fwrite(token, (size_t) length, sizeof(char), output);
+                fwrite(token, (size_t) trace->length, sizeof(char), output);
             }
             token = strtok(NULL, ",\n");
             trace = trace->next;
