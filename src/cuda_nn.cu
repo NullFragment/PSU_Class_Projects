@@ -682,14 +682,16 @@ void runTest(int argc, char **argv, int devID)
     float *host_A, *host_B, *host_C, *host_D;
     float *host_vA, *host_vB, *host_vC, *host_vD, *host_vE;
 
+    // Create matrices
     MatrixSize *testMatrixSize = (MatrixSize *) calloc(sizeof(MatrixSize), 1);
     size_t calcSize = N * N * sizeof(float);
     host_A = (float *) calloc(calcSize, 1);
     host_B = (float *) calloc(calcSize, 1);
     host_C = (float *) calloc(calcSize, 1);
     host_D = (float *) calloc(calcSize, 1);
-    SetMatrixSize(testMatrixSize, N, N, N, N, N, N);
+    SetMatrixSize(testMatrixSize, N, N, N, N, N+1, N+1);
 
+    // Create vectors
     VectorSize *testVectorSize = (VectorSize *) calloc(sizeof(VectorSize), 1);
     size_t calcSize_V = N * sizeof(float);
     host_vA = (float *) calloc(calcSize_V, 1);
@@ -699,100 +701,118 @@ void runTest(int argc, char **argv, int devID)
     host_vE = (float *) calloc(calcSize_V, 1);
     SetVectorSize(testVectorSize, N);
 
+    // Initialize matrix values
     for (int i = 0; i < N * N; i++)
     {
         host_A[i] = (float) i;
         host_B[i] = (float) i;
     }
 
+    // Initialize vector values
     for (int i = 0; i < N; i++)
     {
         host_vA[i] = (float) i;
         host_vB[i] = (float) i;
     }
 
-    if( LOGGING == 1 ) fprintf(stdout, "Matrix A:\n");
-    for (int i = 0; i < N; i++)
+    // MATRIX TESTS
+
+    if( LOGGING == 1 )
     {
-        for (int j = 0; j < N; j++)
+        fprintf(stdout, "Matrix A:\n");
+        for (int i = 0; i < N+1; i++)
         {
-            if( LOGGING == 1 ) fprintf(stdout, "%6.0f ", host_A[i * j]);
+            for (int j = 0; j < N+1; j++)
+            {
+                fprintf(stdout, "%6.0f ", host_A[i * j]);
+            }
+            fprintf(stdout, "\n");
         }
-        if( LOGGING == 1 ) fprintf(stdout, "\n");
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\nMatrix B:\n");
 
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
+        fprintf(stdout, "\nMatrix B:\n");
+        for (int i = 0; i < N; i++)
         {
-            if( LOGGING == 1 ) fprintf(stdout, "%6.0f ", host_B[i * j]);
+            for (int j = 0; j < N; j++)
+            {
+                fprintf(stdout, "%6.0f ", host_B[i * j]);
+            }
+            fprintf(stdout, "\n");
         }
-        if( LOGGING == 1 ) fprintf(stdout, "\n");
     }
 
-    if( LOGGING == 1 ) fprintf(stdout, "Vector A:\n");
-    for (int i = 0; i < N; i++)
-    {
-        if( LOGGING == 1 ) fprintf(stdout, "%6.0f ", host_vA[i]);
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\n");
 
-    if( LOGGING == 1 ) fprintf(stdout, "\nVector B:\n");
-
-    for (int i = 0; i < N; i++)
-    {
-        if( LOGGING == 1 ) fprintf(stdout, "%6.0f ", host_vB[i]);
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\n");
 
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 3, host_A, host_B, host_C, 1.0, 1.0);
     RunMatrixKernel(argc, argv, devID, testMatrixSize, 4, host_A, host_B, host_D, 1.0, 1.0);
+
+    if( LOGGING == 1 )
+    {
+        fprintf(stdout, "\nMatrix C:\n");
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                fprintf(stdout, "%6.10f ", host_C[i * j]);
+            }
+            fprintf(stdout, "\n");
+        }
+        fprintf(stdout, "\nMatrix D:\n");
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                fprintf(stdout, "%6.10f ", host_D[i * j]);
+            }
+            fprintf(stdout, "\n");
+        }
+    }
+
+    // VECTOR TESTS
+
+    if( LOGGING == 1 )
+    {
+        fprintf(stdout, "Vector A:\n");
+        for (int i = 0; i < N; i++)
+        {
+            fprintf(stdout, "%6.0f ", host_vA[i]);
+        }
+        fprintf(stdout, "\n");
+        fprintf(stdout, "\nVector B:\n");
+
+        for (int i = 0; i < N; i++)
+        {
+            fprintf(stdout, "%6.0f ", host_vB[i]);
+        }
+        fprintf(stdout, "\n");
+    }
+
     RunVectorKernel(argc, argv, devID, testVectorSize, 3, host_vA, host_vB, host_vC, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 4, host_vA, host_vB, host_vD, 1.0, 1.0);
     RunVectorKernel(argc, argv, devID, testVectorSize, 5, host_vA, host_vB, host_vE, 1.0, 1.0);
 
-    if( LOGGING == 1 ) fprintf(stdout, "\nMatrix C:\n");
-    for (int i = 0; i < N; i++)
+    if( LOGGING == 1 )
     {
-        for (int j = 0; j < N; j++)
+        fprintf(stdout, "Vector C:\n");
+        for (int i = 0; i < N; i++)
         {
-            if( LOGGING == 1 ) fprintf(stdout, "%6.10f ", host_C[i * j]);
+            fprintf(stdout, "%6.0f ", host_vC[i]);
         }
-        if( LOGGING == 1 ) fprintf(stdout, "\n");
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\nMatrix D:\n");
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
+        fprintf(stdout, "\n");
+        fprintf(stdout, "\nVector D:\n");
+
+        for (int i = 0; i < N; i++)
         {
-            if( LOGGING == 1 ) fprintf(stdout, "%6.10f ", host_D[i * j]);
+            fprintf(stdout, "%6.10f ", host_vD[i]);
         }
-        if( LOGGING == 1 ) fprintf(stdout, "\n");
+        fprintf(stdout, "\n");
+        fprintf(stdout, "\nVector E:\n");
+
+        for (int i = 0; i < N; i++)
+        {
+            fprintf(stdout, "%6.10f ", host_vE[i]);
+        }
+        fprintf(stdout, "\n");
     }
-
-    if( LOGGING == 1 ) fprintf(stdout, "Vector C:\n");
-    for (int i = 0; i < N; i++)
-    {
-        if( LOGGING == 1 ) fprintf(stdout, "%6.0f ", host_vC[i]);
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\n");
-
-    if( LOGGING == 1 ) fprintf(stdout, "\nVector D:\n");
-
-    for (int i = 0; i < N; i++)
-    {
-        if( LOGGING == 1 ) fprintf(stdout, "%6.10f ", host_vD[i]);
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\n");
-
-    if( LOGGING == 1 ) fprintf(stdout, "\nVector E:\n");
-
-    for (int i = 0; i < N; i++)
-    {
-        if( LOGGING == 1 ) fprintf(stdout, "%6.10f ", host_vE[i]);
-    }
-    if( LOGGING == 1 ) fprintf(stdout, "\n");
 }
 
 //======================================================================================================================
@@ -811,7 +831,7 @@ int main(int argc, char **argv)
     int devID = 0;
     cudaGetDevice(&devID);
     cudaError_t mainErr;
-    // runTest(argc, argv, devID);
+    runTest(argc, argv, devID);
 
     // Define NN layer lengths
     unsigned int layer_1 = 785;
@@ -879,47 +899,47 @@ int main(int argc, char **argv)
     int m = 1;   // Number of samples;
 
     // Perform neural network training
-    for(int epoch = 0; epoch < epochs; epoch++)
-    {
-        for(int sample = 0; sample < m; sample++)
-        {
-            // FORWARD PROPOGATION:
-            //read a1 from file
-            MatrixMultiplyCUBLAS(argc, argv, devID, inter2, a1, W1, z2, 1.0, 1.0, false, true); // Compute z2
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "z2 Computation: %s\n", cudaGetErrorString(mainErr));
-            RunVectorKernel(argc, argv, devID, activation2, 4, z2, z2, a2, 1.0, 1.0);           // Compute a2
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "a2 Computation: %s\n", cudaGetErrorString(mainErr));
-            MatrixMultiplyCUBLAS(argc, argv, devID, inter3, a2, W2, z3, 1.0, 1.0, false, true); // Compute z3
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "z3 Computation: %s\n", cudaGetErrorString(mainErr));
-            RunVectorKernel(argc, argv, devID, activation3, 4, z3, z3, a3, 1.0, 1.0);           // Compute a3
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "a3 Computation: %s\n", cudaGetErrorString(mainErr));
-
-            // BACKWARD PROPOGATION:
-            RunVectorKernel(argc, argv, devID, delta3, 1, z3, y, del3, 1.0, (float) -1.0);           // Compute del3
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "del3 Computation: %s\n", cudaGetErrorString(mainErr));
-            MatrixMultiplyCUBLAS(argc, argv, devID, inter3, del3, W2, del2, 1.0, 1.0, false, false); // Compute pre-del2
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "pre-del2 Computation: %s\n", cudaGetErrorString(mainErr));
-            RunVectorKernel(argc, argv, devID, delta2, 5, del2, y, del3, 1.0, (float) -1.0);         // Compute del2
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "del2 Computation: %s\n", cudaGetErrorString(mainErr));
-            MatrixMultiplyCUBLAS(argc, argv, devID, grad1, del2, a1, Del1, 1.0, 1.0, true, false);   // Compute Del1
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "Del1 Computation: %s\n", cudaGetErrorString(mainErr));
-            MatrixMultiplyCUBLAS(argc, argv, devID, grad2, del3, a2, Del2, 1.0, 1.0, true, false);   // Compute Del2
-            mainErr = cudaGetLastError();
-            if (mainErr != cudaSuccess) fprintf(stderr,  "Del2 Computation: %s\n", cudaGetErrorString(mainErr));
-
-            // Gradient descent
-            RunMatrixKernel(argc, argv, devID, backprop1, 1, W1, Del1, W1, 1.0, (float)-1.0/(float)m); // Compute new W1
-            RunMatrixKernel(argc, argv, devID, backprop2, 1, W2, Del2, W2, 1.0, (float)-1.0/(float)m); // Compute new W2
-        }
-    }
+    // for(int epoch = 0; epoch < epochs; epoch++)
+    // {
+    //     for(int sample = 0; sample < m; sample++)
+    //     {
+    //         // FORWARD PROPOGATION:
+    //         //read a1 from file
+    //         MatrixMultiplyCUBLAS(argc, argv, devID, inter2, a1, W1, z2, 1.0, 1.0, false, true); // Compute z2
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "z2 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         RunVectorKernel(argc, argv, devID, activation2, 4, z2, z2, a2, 1.0, 1.0);           // Compute a2
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "a2 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         MatrixMultiplyCUBLAS(argc, argv, devID, inter3, a2, W2, z3, 1.0, 1.0, false, true); // Compute z3
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "z3 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         RunVectorKernel(argc, argv, devID, activation3, 4, z3, z3, a3, 1.0, 1.0);           // Compute a3
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "a3 Computation: %s\n", cudaGetErrorString(mainErr));
+    //
+    //         // BACKWARD PROPOGATION:
+    //         RunVectorKernel(argc, argv, devID, delta3, 1, z3, y, del3, 1.0, (float) -1.0);           // Compute del3
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "del3 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         MatrixMultiplyCUBLAS(argc, argv, devID, inter3, del3, W2, del2, 1.0, 1.0, false, false); // Compute pre-del2
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "pre-del2 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         RunVectorKernel(argc, argv, devID, delta2, 5, del2, y, del3, 1.0, (float) -1.0);         // Compute del2
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "del2 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         MatrixMultiplyCUBLAS(argc, argv, devID, grad1, del2, a1, Del1, 1.0, 1.0, true, false);   // Compute Del1
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "Del1 Computation: %s\n", cudaGetErrorString(mainErr));
+    //         MatrixMultiplyCUBLAS(argc, argv, devID, grad2, del3, a2, Del2, 1.0, 1.0, true, false);   // Compute Del2
+    //         mainErr = cudaGetLastError();
+    //         if (mainErr != cudaSuccess) fprintf(stderr,  "Del2 Computation: %s\n", cudaGetErrorString(mainErr));
+    //
+    //         // Gradient descent
+    //         RunMatrixKernel(argc, argv, devID, backprop1, 1, W1, Del1, W1, 1.0, (float)-1.0/(float)m); // Compute new W1
+    //         RunMatrixKernel(argc, argv, devID, backprop2, 1, W2, Del2, W2, 1.0, (float)-1.0/(float)m); // Compute new W2
+    //     }
+    // }
 
     return 0;
 }
