@@ -1,5 +1,9 @@
 #include "functions_field_list.h"
 
+// #############################################################################
+// ### FIELD LIST FUNCTIONS
+// #############################################################################
+
 void fillFieldNode(fieldNode *to_fill, char *fieldName, char *fieldType, int length)
 {
     to_fill->length = length;

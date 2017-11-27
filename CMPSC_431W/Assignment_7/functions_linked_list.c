@@ -1,5 +1,9 @@
 #include "functions_linked_list.h"
 
+// #############################################################################
+// ### LINKED LIST FUNCTIONS
+// #############################################################################
+
 void fillNode(node *to_fill, char *field, char *condition, bool constant)
 {
     to_fill->condition = calloc(MAXINPUTLENGTH, 1);
