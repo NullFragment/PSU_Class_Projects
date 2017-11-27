@@ -199,7 +199,7 @@ void createIndex(char *buffer, FILE *stream)
 
     // Load Next Line
     fgets(buffer, MAXINPUTLENGTH - 1, stream);
-    printf("===> %s\n", buffer);
+    printf("===> %s", buffer);
 
     // Load base table into memory and create index field list
     if (strncmp(buffer, "FROM", 4) == 0)
@@ -231,7 +231,7 @@ void createIndex(char *buffer, FILE *stream)
 
     // Load Next Line
     fgets(buffer, MAXINPUTLENGTH - 1, stream);
-    printf("===> %s\n", buffer);
+    printf("===> %s", buffer);
 
     // Generate index schema file
     strncat(indexName, ".schema", 7);

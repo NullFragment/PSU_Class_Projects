@@ -55,21 +55,20 @@ void processCommand(char *buffer)
     }
     else if (strncmp(buffer, "CLEAN ALL", 9) == 0)
     {
-        system("rm *.bin");
-        system("rm *.schema");
-        system("rm garbage*");
+        system("rm -f *.bin > /dev/null");
+        system("rm -f *.schema > /dev/null");
+        system("rm -f garbage* > /dev/null");
     }
     else if (strncmp(buffer, "CLEAN TEMP", 10) == 0)
     {
-        system("rm tt*");
-        system("rm temp_*");
-        system("rm garbage*");
+        system("rm -f tt* > /dev/null");
+        system("rm -f temp_* > /dev/null");
+        system("rm -f garbage* > /dev/null");
     }
 }
 
 int main()
 {
-    //system("rm -rf *.bin > nul");
     static char buffer[MAXINPUTLENGTH];
     memset(buffer, 0, MAXINPUTLENGTH);
     printf("Welcome!\n");
@@ -82,6 +81,9 @@ int main()
         printf("===> %s\n", buffer);
         processCommand(buffer);
         status = fgets(buffer, MAXINPUTLENGTH - 1, stdin);
+        system("rm -f tt* > /dev/null");
+        system("rm -f temp_* > /dev/null");
+        system("rm -f garbage* > /dev/null");
     }
     printf("Goodbye!\n");
     return 0;

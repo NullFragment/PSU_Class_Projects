@@ -246,17 +246,17 @@ bool selectRecord(char *buffer)
         if (tables->count == 1 && clauses->count > 0 && schema->index == false)
         {
             checkWhereLiteral(schema, tables->head, clauses);
-        } else if (tables->count == 1 && clauses->count > 0 && schema->index == true)
-        {
-            getIndexedRecord(schema, fields, clauses, stdout);
         }
-
     }
     // Pass in fields to read without where clause info
     memset(buffer, 0, MAXINPUTLENGTH);
     strcpy(buffer, tables->head->field);
     loadSchema(schema, buffer);
-    if (clauses->count == 0)
+    if (clauses->count > 0 && schema->index == true)
+    {
+        getIndexedRecord(schema, fields, clauses, stdout);
+    }
+    else
     {
         getRecord(schema, fields, stdout);
     }
