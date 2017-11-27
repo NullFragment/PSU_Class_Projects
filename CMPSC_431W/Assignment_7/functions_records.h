@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-void getIndexedRecord(_table *schema, linkedList *selects, FILE* output);
+void getIndexedRecord(_table *schema, linkedList *selects, linkedList *clauses, FILE* output);
 
 void getRecord(_table *schema, linkedList *selects, FILE* output);
 

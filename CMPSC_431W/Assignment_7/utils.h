@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #define MAXINPUTLENGTH 5000
+#define MAXBINSEARCH 100
 
 typedef enum
 {

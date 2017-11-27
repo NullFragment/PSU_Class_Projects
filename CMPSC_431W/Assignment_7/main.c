@@ -53,6 +53,18 @@ void processCommand(char *buffer)
         cmd = strtok(NULL, "\n");
         dropTable(cmd);
     }
+    else if (strncmp(buffer, "CLEAN ALL", 9) == 0)
+    {
+        system("rm *.bin");
+        system("rm *.schema");
+        system("rm garbage*");
+    }
+    else if (strncmp(buffer, "CLEAN TEMP", 10) == 0)
+    {
+        system("rm tt*");
+        system("rm temp_*");
+        system("rm garbage*");
+    }
 }
 
 int main()

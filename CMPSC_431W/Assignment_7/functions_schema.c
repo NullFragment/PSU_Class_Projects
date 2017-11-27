@@ -283,10 +283,10 @@ void loadIndex(char *indexName, _table *baseTable, linkedList *indexOn, fieldLis
     fclose(outFile);
 
     // Sort garbage file
-    system("sort garbage.txt > /dev/null");
+    system("sort garbage.txt > garbage_srt.txt");
 
     // re-write all records to text at proper length in bin file
-    inFile = fopen("garbage.txt", "r");
+    inFile = fopen("garbage_srt.txt", "r");
     outFile = fopen(indexBin, "wb+");
     parseFile(inFile, outFile, idxFields, false);
     fclose(inFile);

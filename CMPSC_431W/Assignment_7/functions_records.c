@@ -8,14 +8,16 @@
 // ### INDEX SEARCH FUNCTIONS
 // #############################################################################
 
-void getIndexedRecord(_table *schema, linkedList *selects, FILE* output)
+void getIndexedRecord(_table *schema, linkedList *selects, linkedList *clauses, FILE *output)
 {
     FILE *database;
     char *buffer = calloc(MAXINPUTLENGTH, 1), /** ALLOCATE: BUFFER */
             *print_string = calloc(MAXINPUTLENGTH, 1), /** ALLOCATE: PRINT_STRING */
             *db_name = calloc(strlen(schema->tableFileName) + 5, 1);
+    int compareVal = 0, iter = 0;
     fieldNode *field = schema->fields->head;
-    node *select = selects->head;
+    node *select = selects->head,
+            *clause = clauses->head;
     strcat(db_name, "temp_");
     strcat(db_name, schema->tableFileName);
     if (access(db_name, F_OK) != -1)
@@ -27,22 +29,44 @@ void getIndexedRecord(_table *schema, linkedList *selects, FILE* output)
     }
 
     // Get number of records in file
-    fseek(database,0L, SEEK_END);
+    fseek(database, 0L, SEEK_END);
     long fileLen = ftell(database);
-    long records = fileLen/(schema->reclen);
-    long seekLen = (records/2);
+    long records = fileLen / (schema->reclen);
+    long seekLen = (records / 2);
     rewind(database);
-    do{
+    do
+    {
+        compareVal = 0;
         memset(buffer, 0, MAXINPUTLENGTH);
         memset(print_string, 0, MAXINPUTLENGTH);
-        fseek(database,seekLen*schema->reclen, SEEK_CUR);
-        fprintf(output, "==> TRACE: %s\n", print_string);
-        seekLen = seekLen/2;
-        if (strlen(print_string) > 0 && strncmp(print_string, select->condition, strlen(select->condition)) == 0)
+        fseek(database, seekLen * schema->reclen, SEEK_CUR);
+        while (field != NULL)
         {
-            fprintf(output,"%s\n", print_string);
+            fread(buffer, (size_t) field->length, 1, database);
+            strncat(print_string, buffer, (size_t) field->length);
+            strncat(print_string, ",", 1);
+            field = field->next;
         }
-    }while(strncmp(print_string, select->condition, strlen(select->condition)) != 0);
+        field = schema->fields->head;
+        trimChars(print_string, ",");
+        fprintf(output, "==> TRACE: %s\n", print_string);
+        compareVal = strncmp(print_string, clause->condition, strlen(clause->condition));
+        fseek(database, -1 * schema->reclen, SEEK_CUR);
+        if (compareVal < 0)
+        {
+            seekLen = seekLen / 2;
+            if(seekLen == 0) seekLen = 1;
+        } else if (compareVal > 0)
+        {
+            seekLen = -1 * seekLen / 2;
+            if(seekLen == 0) seekLen = -1;
+        }
+        if (compareVal == 0 && strlen(print_string) > 0)
+        {
+            fprintf(output, "%s\n", print_string);
+        }
+    } while (compareVal != 0 && iter < MAXBINSEARCH);
+
 }
 
 // #############################################################################
@@ -54,7 +78,7 @@ void getIndexedRecord(_table *schema, linkedList *selects, FILE* output)
  * @param schema - reference to loaded table
  * @param selects - reference to linked list of fields to get
  */
-void getRecord(_table *schema, linkedList *selects, FILE* output)
+void getRecord(_table *schema, linkedList *selects, FILE *output)
 {
     // Initialize values
     FILE *database;
@@ -68,8 +92,7 @@ void getRecord(_table *schema, linkedList *selects, FILE* output)
     if (access(db_name, F_OK) != -1)
     {
         database = fopen(db_name, "rb"); /** OPEN: DATABASE */
-    }
-    else
+    } else
     {
         database = fopen(schema->tableFileName, "rb"); /** OPEN: DATABASE */
     }
@@ -102,7 +125,7 @@ void getRecord(_table *schema, linkedList *selects, FILE* output)
         trimChars(print_string, ",");
         if (strlen(print_string) > 0)
         {
-            fprintf(output,"%s\n", print_string);
+            fprintf(output, "%s\n", print_string);
         }
         memset(buffer, 0, MAXINPUTLENGTH);
         memset(print_string, 0, MAXINPUTLENGTH);
@@ -217,21 +240,23 @@ bool selectRecord(char *buffer)
                 free(join2); /** DEALLOCATE: JOIN2 */
             }
         }
-        else if (clauses->count > 0)
+        memset(buffer, 0, MAXINPUTLENGTH);
+        strcpy(buffer, tables->head->field);
+        loadSchema(schema, buffer);
+        if (tables->count == 1 && clauses->count > 0 && schema->index == false)
         {
             checkWhereLiteral(schema, tables->head, clauses);
+        } else if (tables->count == 1 && clauses->count > 0 && schema->index == true)
+        {
+            getIndexedRecord(schema, fields, clauses, stdout);
         }
 
     }
     // Pass in fields to read without where clause info
-    buffer = calloc(MAXINPUTLENGTH, 1);
+    memset(buffer, 0, MAXINPUTLENGTH);
     strcpy(buffer, tables->head->field);
     loadSchema(schema, buffer);
-    if(schema->index == true && clauses->count > 0)
-    {
-        getIndexedRecord(schema, fields, stdout);
-    }
-    else
+    if (clauses->count == 0)
     {
         getRecord(schema, fields, stdout);
     }
