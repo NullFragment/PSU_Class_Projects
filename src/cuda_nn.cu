@@ -44,9 +44,9 @@ void SetVectorSize(VectorSize *vector_size, unsigned int len)
     vector_size->len_C = len;
 
     if( LOGGING == 1 ) fprintf(stdout, "Vector A(%u), Vector B(%u), Vector C(%u)\n",
-           vector_size->len_A,
-           vector_size->len_B,
-           vector_size->len_C);
+                               vector_size->len_A,
+                               vector_size->len_B,
+                               vector_size->len_C);
 
     if (vector_size->len_A != vector_size->len_B ||
         vector_size->len_B != vector_size->len_C ||
@@ -81,12 +81,12 @@ void SetMatrixSize(MatrixSize *matrixSize,
     matrixSize->C_width = widthC;
 
     if( LOGGING == 1 ) fprintf(stdout, "Matrix A(%u x %u), Matrix B(%u x %u), Matrix C(%u x %u)\n",
-           matrixSize->A_width,
-           matrixSize->A_height,
-           matrixSize->B_width,
-           matrixSize->B_height,
-           matrixSize->C_width,
-           matrixSize->C_height);
+                               matrixSize->A_width,
+                               matrixSize->A_height,
+                               matrixSize->B_width,
+                               matrixSize->B_height,
+                               matrixSize->C_width,
+                               matrixSize->C_height);
 
 }
 
@@ -898,48 +898,48 @@ int main(int argc, char **argv)
     int epochs = 1; // Number of training epochs (iterations through data)
     int m = 1;   // Number of samples;
 
-    // Perform neural network training
-    // for(int epoch = 0; epoch < epochs; epoch++)
-    // {
-    //     for(int sample = 0; sample < m; sample++)
-    //     {
-    //         // FORWARD PROPOGATION:
-    //         //read a1 from file
-    //         MatrixMultiplyCUBLAS(argc, argv, devID, inter2, a1, W1, z2, 1.0, 1.0, false, true); // Compute z2
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "z2 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         RunVectorKernel(argc, argv, devID, activation2, 4, z2, z2, a2, 1.0, 1.0);           // Compute a2
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "a2 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         MatrixMultiplyCUBLAS(argc, argv, devID, inter3, a2, W2, z3, 1.0, 1.0, false, true); // Compute z3
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "z3 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         RunVectorKernel(argc, argv, devID, activation3, 4, z3, z3, a3, 1.0, 1.0);           // Compute a3
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "a3 Computation: %s\n", cudaGetErrorString(mainErr));
-    //
-    //         // BACKWARD PROPOGATION:
-    //         RunVectorKernel(argc, argv, devID, delta3, 1, z3, y, del3, 1.0, (float) -1.0);           // Compute del3
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "del3 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         MatrixMultiplyCUBLAS(argc, argv, devID, inter3, del3, W2, del2, 1.0, 1.0, false, false); // Compute pre-del2
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "pre-del2 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         RunVectorKernel(argc, argv, devID, delta2, 5, del2, y, del3, 1.0, (float) -1.0);         // Compute del2
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "del2 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         MatrixMultiplyCUBLAS(argc, argv, devID, grad1, del2, a1, Del1, 1.0, 1.0, true, false);   // Compute Del1
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "Del1 Computation: %s\n", cudaGetErrorString(mainErr));
-    //         MatrixMultiplyCUBLAS(argc, argv, devID, grad2, del3, a2, Del2, 1.0, 1.0, true, false);   // Compute Del2
-    //         mainErr = cudaGetLastError();
-    //         if (mainErr != cudaSuccess) fprintf(stderr,  "Del2 Computation: %s\n", cudaGetErrorString(mainErr));
-    //
-    //         // Gradient descent
-    //         RunMatrixKernel(argc, argv, devID, backprop1, 1, W1, Del1, W1, 1.0, (float)-1.0/(float)m); // Compute new W1
-    //         RunMatrixKernel(argc, argv, devID, backprop2, 1, W2, Del2, W2, 1.0, (float)-1.0/(float)m); // Compute new W2
-    //     }
-    // }
+     Perform neural network training
+     for(int epoch = 0; epoch < epochs; epoch++)
+     {
+         for(int sample = 0; sample < m; sample++)
+         {
+             // FORWARD PROPOGATION:
+             //read a1 from file
+             MatrixMultiplyCUBLAS(argc, argv, devID, inter2, a1, W1, z2, 1.0, 1.0, false, true); // Compute z2
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "z2 Computation: %s\n", cudaGetErrorString(mainErr));
+             RunVectorKernel(argc, argv, devID, activation2, 4, z2, z2, a2, 1.0, 1.0);           // Compute a2
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "a2 Computation: %s\n", cudaGetErrorString(mainErr));
+             MatrixMultiplyCUBLAS(argc, argv, devID, inter3, a2, W2, z3, 1.0, 1.0, false, true); // Compute z3
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "z3 Computation: %s\n", cudaGetErrorString(mainErr));
+             RunVectorKernel(argc, argv, devID, activation3, 4, z3, z3, a3, 1.0, 1.0);           // Compute a3
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "a3 Computation: %s\n", cudaGetErrorString(mainErr));
+
+             // BACKWARD PROPOGATION:
+             RunVectorKernel(argc, argv, devID, delta3, 1, z3, y, del3, 1.0, (float) -1.0);           // Compute del3
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "del3 Computation: %s\n", cudaGetErrorString(mainErr));
+             MatrixMultiplyCUBLAS(argc, argv, devID, inter3, del3, W2, del2, 1.0, 1.0, false, false); // Compute pre-del2
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "pre-del2 Computation: %s\n", cudaGetErrorString(mainErr));
+             RunVectorKernel(argc, argv, devID, delta2, 5, del2, y, del3, 1.0, (float) -1.0);         // Compute del2
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "del2 Computation: %s\n", cudaGetErrorString(mainErr));
+             MatrixMultiplyCUBLAS(argc, argv, devID, grad1, del2, a1, Del1, 1.0, 1.0, true, false);   // Compute Del1
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "Del1 Computation: %s\n", cudaGetErrorString(mainErr));
+             MatrixMultiplyCUBLAS(argc, argv, devID, grad2, del3, a2, Del2, 1.0, 1.0, true, false);   // Compute Del2
+             mainErr = cudaGetLastError();
+             if (mainErr != cudaSuccess) fprintf(stderr,  "Del2 Computation: %s\n", cudaGetErrorString(mainErr));
+
+             // Gradient descent
+             RunMatrixKernel(argc, argv, devID, backprop1, 1, W1, Del1, W1, 1.0, (float)-1.0/(float)m); // Compute new W1
+             RunMatrixKernel(argc, argv, devID, backprop2, 1, W2, Del2, W2, 1.0, (float)-1.0/(float)m); // Compute new W2
+         }
+     }
 
     return 0;
 }
