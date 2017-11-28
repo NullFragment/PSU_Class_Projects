@@ -20,10 +20,10 @@ train_res = np.eye(10)[train_res]
 tests_res = np.eye(10)[tests_res]
 valid_res = np.eye(10)[valid_res]
 
-np.savetxt("train_img.csv", train_img, delimiter=",")
-np.savetxt("tests_img.csv", tests_img, delimiter=",")
-np.savetxt("valid_img.csv", valid_img, delimiter=",")
-np.savetxt("train_res.csv", train_res, delimiter=",")
-np.savetxt("tests_res.csv", tests_res, delimiter=",")
-np.savetxt("valid_res.csv", valid_res, delimiter=",")
+np.savetxt("train_img.csv", train_img, delimiter=",", fmt='%f')
+np.savetxt("tests_img.csv", tests_img, delimiter=",", fmt='%f')
+np.savetxt("valid_img.csv", valid_img, delimiter=",", fmt='%f')
+np.savetxt("train_res.csv", train_res, delimiter=",", fmt='%f')
+np.savetxt("tests_res.csv", tests_res, delimiter=",", fmt='%f')
+np.savetxt("valid_res.csv", valid_res, delimiter=",", fmt='%f')
 
