@@ -881,12 +881,8 @@ int main(int argc, char **argv) {
 
     // Set number of epochs and samples
     int epochs = 1; // Number of training epochs (iterations through data)
-    int num_train = 10000;   // Number of samples;
-    int num_test = 10000;
-
-    // Open training data files
-    std::ifstream x_train_data("./data/train_img.csv");
-    std::ifstream y_train_data("./data/train_res.csv");
+    int num_train = 20000;   // Number of samples;
+    int num_test = 5000;
 
     // Initalize weights
     InitializeWeights(W1, grad1);
@@ -894,6 +890,11 @@ int main(int argc, char **argv) {
 
     //Perform neural network training
     for (int epoch = 0; epoch < epochs; epoch++) {
+
+        // Open training data files
+        std::ifstream x_train_data("./data/train_img.csv");
+        std::ifstream y_train_data("./data/train_res.csv");
+
         for (int sample = 0; sample < num_train; sample++) {
             // LOAD a1 AND y VECTORS:
             ReadCSV(x_train_data, layer_1, a1);
@@ -944,17 +945,14 @@ int main(int argc, char **argv) {
             RunMatrixKernel(argc, argv, devID, backprop2, 1, W2, Del2, W2, 1.0,
                             (float) -1.0 / (float) num_train); // Compute new W2
             cudaDeviceSynchronize();
-            if(sample%5000 == 0)
-            {
-                printf("Iteration: %d", sample);
-                cudaDeviceReset();
-            }
+            if( (sample % 1000) == 0) printf("Iteration: %d\n", sample);
+            if( (sample % 5000) == 0) cudaDeviceReset();
         }
-    }
+        // Close training data files
+        x_train_data.close();
+        y_train_data.close();
 
-    // Close training data files
-    x_train_data.close();
-    y_train_data.close();
+    }
 
     // Open verification data files
     std::ifstream x_test_data("./data/tests_img.csv");
@@ -997,7 +995,8 @@ int main(int argc, char **argv) {
         }
         if(ymax_idx == a3max_idx) correct++;
     }
-
+    x_test_data.close();
+    y_test_data.close();
     printf("The network correctly identified %d of %d samples\n", correct, num_test);
     return 0;
 }
