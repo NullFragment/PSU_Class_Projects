@@ -73,7 +73,7 @@
 This program is designed to identify hand written numbers (0 ~ 9) by neural network digit classification technique. Generally, this technique requires enourmous amuont of run time. For training process, it calculates 5 matrix multiplications, 2 matrix subtractions, and 5 elemnt-wise vector operations. For verification, it requires 2 matrix multiplications and 2 element-wise operations for sigmoid function. In the case of all of the operations listed, the matrices and vectors are all densely populated. We decided to approach this problem by processing these operations in parallel on NVDIA's GPU processors. 
 
 \section{Related Work}
-Due to the age of neural networks, which were conceived in the 1940s, there is a large amount of documentation to reference. For the purposes of this paper, the first and second chapters of the online book Neural Networks and Deep Learning (NNDL) can be used a supplemental material (referenced at the end of the paper). Figures used in the Neural Network Structure and Forward Propogation sections were sourced from this book.
+Due to the age of neural networks, which were conceived in the 1940s, there is a large amount of documentation to reference. For the purposes of this paper, the first and second chapters of the online book Neural Networks and Deep Learning (NNDL) can be used a supplemental material (referenced at the end of the paper). Figures used in the Neural Network Structure and Forward Propagation sections were sourced from this book.
 
 \section{Neural Network Background}
 This portion of the document briefly covers the background on the mathematical methods employed for neural networks.
@@ -101,7 +101,7 @@ This representation is known as a 1-hot format, where the element that has a val
 \end{itemize}
 
 
-\subsection{Forward Propogation}
+\subsection{Forward Propagation}
 The behaivor of the neural network is defined by a function chosen by the network implementor. When a set of inputs are passed into a neuron layer (pictured below), each neuron in the layer computes its activation using this predetermined function. For the case of this assignment (and most simple neural networks), the sigmoid function was used. The sigmoid function helps us to bind the output from our neurons between 0 and 1 because we are looking for a (mostly) boolean answer: true or false for identifying a digit. This is where a significant portion of our computational cost comes from, as it includes a floating point exponential function, division and addition.
 \begin{align}
 	\sigma(z) & = \frac{1}{1 + e^{-z}} & \text{Sigmoid Function} 
@@ -123,7 +123,7 @@ In our case, we use a densely connected neural network where every neuron in a l
 
 The majority of the computational costs arise from the vector-matrix multiplication between these dense weight matrices and the activations of the previous neurons. Each weight matrix is initalized to a random set of values and is adjusted during the final step (gradient descent) after each iteration through the network. In the following equations, $a^{(l)}$ represents the activation of layer $l$ and $\theta^{(l)}$ represents the weights between $a^{(l)}$ and $a^{(l+1)}$
  
-To compute a full pass of forward propogation, we must compute the following equations:
+To compute a full pass of forward propagation, we must compute the following equations:
 \begin{align*}
 	z^{(2)} & = a^{(1)}*\theta^{(1)T} \\
 	a^{(2)} & = \sigma\{z^{(2)}\}     \\
@@ -137,12 +137,12 @@ For our neural networks, the following are the weight matrix sizes:
 	\item Weight Matrix 2: 10x128 elements
 \end{itemize}
 
-At this point, the forward propogation has computed the estimated answer to a given input. Next, the result is evaluated in backpropogation which prepares for adjusting the weights to be more accurate.
+At this point, the forward propagation has computed the estimated answer to a given input. Next, the result is evaluated in backpropagation which prepares for adjusting the weights to be more accurate.
 
-\subsection{Backward Propogation}
-The second step in training a neural network, as stated previously, is called backpropogation. This step evaluates the error in each layer's activations. This information can be used simply as a metric evaluated by a defined cost function (not used for our purposes) or can be used to adjust the weights through various methods. The validation data is typically used for computing the cost function.
+\subsection{Backward Propagation}
+The second step in training a neural network, as stated previously, is called backpropagation. This step evaluates the error in each layer's activations. This information can be used simply as a metric evaluated by a defined cost function (not used for our purposes) or can be used to adjust the weights through various methods. The validation data is typically used for computing the cost function.
 
-The first step in backpropogation is to evaluate how far off the network was from the expected result. To do this the following value is caluclated, where $y$ is the known answer in one-hot format:
+The first step in backpropagation is to evaluate how far off the network was from the expected result. To do this the following value is caluclated, where $y$ is the known answer in one-hot format:
 \begin{align*}
 	\delta^{(3)} & = a^{(3)} - y 
 \end{align*}
@@ -173,7 +173,7 @@ The following equation is the computation for the gradient of each weight matrix
 	\nabla\frac{\partial J}{\partial\Theta^{(l)}} & = \frac{1}{m} \delta^{(l+1)T}*a^{(l)} 
 \end{align}
 
-For the investigated network, the following gradients were computed after each forward propogation for each data example (image).
+For the investigated network, the following gradients were computed after each forward propagation for each data example (image).
 \begin{align*}
 	\nabla^{(1)} & = \frac{1}{m} \delta^{(2)T}*a^{(1)} \\
 	\nabla^{(2)} & = \frac{1}{m} \delta^{(3)T}*a^{(2)} 
@@ -253,7 +253,7 @@ This computes the dot product of two vectors and returns a scalar value.
 \end{align*}
 
 \subsubsection{Vector Sigmoid Function}
-As explained above, the sigmoid function must be performed on a vector if computing forward propogation of data samples one at a time.
+As explained above, the sigmoid function must be performed on a vector if computing forward propagation of data samples one at a time.
 \begin{align*}
 	\hat{C} = \sigma(\hat{A}) & = \frac{1}{1 + e^{-\hat{A}}} 
 \end{align*}
@@ -282,17 +282,17 @@ The final functions implemented were for testing the kernels and utility operati
 
 The data that was used by the network was stored in a CSV format created by a Python script. This data was read line by line into the input (a1) and expected value (y) vectors using a utility function that takes the file to read from and number of elements to read as arguments.
 
-In order to actually perform the forward propogation, weights were initialized using a helper function (InitializeWeights) that takes a MatrixSize structure and reference to the matrix to initialize as input arguments. It then assigns a value between 0 and 1 to each element using the rand() function.
+In order to actually perform the forward propagation, weights were initialized using a helper function (InitializeWeights) that takes a MatrixSize structure and reference to the matrix to initialize as input arguments. It then assigns a value between 0 and 1 to each element using the rand() function.
 
 \section{Network Training Results}
 For the network employed, we were only able to successfully run training with $\approx 20,000-30,000$ training samples and $10,000$ testing samples due to restrictions on the ACI-I cluster. One major issue encountered with the ACI-I nodes was that one person is capable of utilizing the entire CUDA device at once, so there was no way to guarantee obtaining enough memory for the computations. However on this limited subset of training data, the network was able to identify nearly 1/5th of the training data presented correctly on successful runs.
 
-All things considered, using these standard methods with the full training samples and multiple (5-10) epochs typically results in a near 80\% accuracy in digit identification, so 20\% using only 20,000 samples is quite good. This is considering that if a network is trained using all 50,000 samples 10 times each, that results in a total of 500,000 iterations through backpropogation and gradient descent in order to train the network, so using only 4\% of the number of training iterations to obtain nearly 25\% of the performance is promising.
+All things considered, using these standard methods with the full training samples and multiple (5-10) epochs typically results in a near 80\% accuracy in digit identification, so 20\% using only 20,000 samples is quite good. This is considering that if a network is trained using all 50,000 samples 10 times each, that results in a total of 500,000 iterations through backpropagation and gradient descent in order to train the network, so using only 4\% of the number of training iterations to obtain nearly 25\% of the performance is promising.
 
 \section{Alternate Approaches and Future Work}
-One alternate method is to train using the entire 50,000 samples at one time instead of iterating through forward propogation for each sample individually. It is possible that using this method with CUDA may improve performance significantly. It was not attempted in order to stay true to a traditional network training scenario.
+One alternate method is to train using the entire 50,000 samples at one time instead of iterating through forward propagation for each sample individually. It is possible that using this method with CUDA may improve performance significantly. It was not attempted in order to stay true to a traditional network training scenario.
 
-Another change or approach is to include a bias term in all of of the network layers except the output layer. The bias term is set to be $1$ and is not used when computing backpropogation performing gradient descent on the weights, however the weight matrices are increased by one in the dimension corresponding to the previous layer, shown below:
+Another change or approach is to include a bias term in all of of the network layers except the output layer. The bias term is set to be $1$ and is not used when computing backpropagation performing gradient descent on the weights, however the weight matrices are increased by one in the dimension corresponding to the previous layer, shown below:
 
 \begin{itemize}
 	\item Layer 1 (input): 784 neurons $\rightarrow$ 785 neurons
@@ -304,7 +304,7 @@ Another change or approach is to include a bias term in all of of the network la
 
 The bias term was left out for simplicity in reading the data and calcuations.
 
-Another common adjustment to the backpropogation and gradient descent methods used is called regularization. This regularization term $\lambda$ is included to perturb the gradient in order to potentially find a lower local minima, especially if the gradient is small. A regularization term that is too large may cause divergence in the weights, so it is usually scaled by the number of samples in the dataset. Below are the equations for the gradient calcuation using regularization. 
+Another common adjustment to the backpropagation and gradient descent methods used is called regularization. This regularization term $\lambda$ is included to perturb the gradient in order to potentially find a lower local minima, especially if the gradient is small. A regularization term that is too large may cause divergence in the weights, so it is usually scaled by the number of samples in the dataset. Below are the equations for the gradient calcuation using regularization. 
 
 \begin{align*}
 	L^{[m \times m]} & = & \begin{bmatrix} 
