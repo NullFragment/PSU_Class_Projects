@@ -247,7 +247,7 @@ lm_best = lm_full_aic
 #### Final Model Plots/Tests
 ####################################################################
 ## Shapiro-Wilk
-shapiro_bwd = shapiro.test(lm_best$residuals)
+shapiro_best = shapiro.test(lm_best$residuals)
 
 ## R-plots
 plot(lm_best)
