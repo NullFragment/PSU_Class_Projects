@@ -222,7 +222,7 @@ adj_r2_sum = c(summary(lm_full_aic)$adj.r.squared, summary(lm_full_bic)$adj.r.sq
                summary(lm_red_mallow)$adj.r.squared)
 names(adj_r2_sum) <- c("lm_full_aic", "lm_full_bic", "lm_red_mallow")
 
-lm_best = lm_full_aic
+lm_untransformed = lm_full_aic
 ## lm_full_aic is the best model. OBP was not selected for any models by exhaustive model selection.
 ## Model: Salary ~ Hits + Triples + HomeRuns + StrikeOuts + StolenBases + Errors + FreeAgentEligibility + FreeAgent + ArbitrationEligibility + Arbitration
 ## Categorical predictors have the highest values for the model. Arbitration eligibility has an extremely high impact, which makes sense
@@ -232,13 +232,13 @@ lm_best = lm_full_aic
 #### Final Model Plots/Tests
 ####################################################################
 ## R-plots
-plot(lm_best, which = 1)
-plot(lm_best, which = 2)
-plot(lm_best, which = 3)
-plot(lm_best, which = 4)
-plot(lm_best, which = 5)
-shapiro.test(lm_best$residuals)
+plot(lm_untransformed, which = 1)
+plot(lm_untransformed, which = 2)
+plot(lm_untransformed, which = 3)
+plot(lm_untransformed, which = 4)
+plot(lm_untransformed, which = 5)
+shapiro.test(lm_untransformed$residuals)
 
 means = data.frame(rbind(colMeans(baseball[1:17])))
 means[14:17] <- round(means[14:17])
-unt_pred = predict(lm_best, means, interval = "predict")
+unt_pred = predict(lm_untransformed, means, interval = "predict")
