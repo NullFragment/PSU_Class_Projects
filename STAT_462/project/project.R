@@ -9,31 +9,31 @@ ipak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-packages <- c("ggplot2", "reshape2", "gridExtra", "leaps", "car")
+packages <- c("ggplot2", "reshape2", "gridExtra", "leaps", "car", "MASS", "quantreg")
 ipak(packages)
 
 ## Load and label data
 baseball = read.table("baseball.dat.txt")
 names(baseball) <- 
   c(
-  'Salary',
-  'BattingAverage',
-  'OBP',
-  'Runs',
-  'Hits',
-  'Doubles',
-  'Triples',
-  'HomeRuns',
-  'RBI',
-  'Walks',
-  'StrikeOuts',
-  'StolenBases',
-  'Errors',
-  'FreAgtEli',
-  'FreeAgent',
-  'ArbEli',
-  'Arbitration',
-  'Name'
+    'Salary',
+    'BattingAverage',
+    'OBP',
+    'Runs',
+    'Hits',
+    'Doubles',
+    'Triples',
+    'HomeRuns',
+    'RBI',
+    'Walks',
+    'StrikeOuts',
+    'StolenBases',
+    'Errors',
+    'FreAgtEli',
+    'FreeAgent',
+    'ArbEli',
+    'Arbitration',
+    'Name'
   )
 
 ## Add singles data
@@ -160,17 +160,21 @@ red_selection_betas = rbind(c(r2_r, mc_r, aic_r, bic_r))
 #### Model Selection Summary and VIF Analysis
 ####################################################################
 ## Number of Betas suggested by each method
-selection_matrix = matrix(c(full_selection_betas,red_selection_betas),ncol=length(full_selection_betas))
-colnames(selection_matrix) <- c('Adj R2','MallowC','AIC','BIC')
-rownames(selection_matrix) <- c('Full','Reduced')
+Updated <- c(7,10,10,7) #Determined for both full and reduced 
+
+selection_matrix_auto = matrix(c(full_selection_betas,red_selection_betas),ncol=length(full_selection_betas))
+selection_matrix_user = matrix(c(Updated,Updated),ncol=length(Updated))
+colnames(selection_matrix_auto) <- c('Adj R2','MallowC','AIC','BIC')
+rownames(selection_matrix_auto) <- c('Full','Reduced')
+colnames(selection_matrix_user) <- c('Adj R2','MallowC','AIC','BIC')
+rownames(selection_matrix_user) <- c('Full','Reduced')
 
 ## Full Model Selection Results
-lm_full_aic = lm(Salary ~ Runs+Hits+Triples+HomeRuns+RBI+StrikeOuts+StolenBases+Errors+FreAgtEli+FreeAgent+ArbEli+Arbitration, data=baseball)
-lm_full_bic = lm(Salary ~ Runs+Hits+HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+FreeAgent+ArbEli, data=baseball)
+lm_full_aic = lm(Salary ~ Runs+Hits+HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+FreeAgent+ArbEli, data=baseball)
+lm_full_bic = lm(Salary ~ HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+ArbEli, data=baseball)
 
 ## Reduced (No OBP) Model Selection Results
-lm_red_r2 = lm(Salary ~ Runs+Hits+HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+FreeAgent+ArbEli, data=baseball)
-lm_red_aic = lm(Salary ~ BattingAverage+Runs+Hits+Doubles+Triples+HomeRuns+RBI+StrikeOuts+StolenBases+Errors+FreAgtEli+FreeAgent+ArbEli+Arbitration, data=baseball)
+lm_red_aic = lm(Salary ~ Runs+Hits+HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+FreeAgent+ArbEli, data=baseball)
 lm_red_bic = lm(Salary ~ HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+ArbEli, data=baseball)
 
 ## NOTE: lm_full_bic and lm_red_r2 are the same model!
@@ -197,45 +201,15 @@ lm_full_bic = update(lm_full_bic, . ~ . - RBI)
 vif(lm_full_bic)
 which.max(vif(lm_full_bic))
 
-lm_full_bic = update(lm_full_bic, . ~ . - Runs) 
-vif(lm_full_bic)
-
-######################
-# Reduced models
-######################
-## Reduced AIC VIF
-vif(lm_red_aic)
-which.max(vif(lm_red_aic))
-
-lm_red_aic = update(lm_red_aic, . ~ . - Hits) 
-vif(lm_red_aic)
-which.max(vif(lm_red_aic))
-
-lm_red_aic = update(lm_red_aic, . ~ . - RBI) 
-vif(lm_red_aic)
-which.max(vif(lm_red_aic))
-
-lm_red_aic = update(lm_red_aic, . ~ . - Runs) 
-vif(lm_red_aic)
-
-## Reduced BIC VIF
-vif(lm_red_bic)
-which.max(vif(lm_red_bic))
-
-lm_red_bic = update(lm_red_bic, . ~ . - RBI)
-vif(lm_red_bic)
-
 ####################################################################
 #### Adjusted Models after VIF and final model selection
 ####################################################################
 ## After selection lm_red_r2 and lm_full_bic are the same
-summary(lm_full_aic) # Adj R2 Value = 0.6745
-summary(lm_full_bic) # Adj R2 Value = 0.6732
-summary(lm_red_aic) # Adj R2 Value = 0.6678
-summary(lm_red_bic) # Adj R2 Value = 0.6459
+summary(lm_full_aic) # Adj R2 Value = 0.6732
+summary(lm_full_bic) # Adj R2 Value = 0.6459
 
-adj_r2_sum = c(summary(lm_full_aic)$adj.r.squared,summary(lm_full_bic)$adj.r.squared,summary(lm_red_aic)$adj.r.squared,summary(lm_red_bic)$adj.r.squared)
-names(adj_r2_sum) <- c("lm_full_aic", "lm_full_bic", "lm_red_aic", "lm_red_bic")
+adj_r2_sum = c(summary(lm_full_aic)$adj.r.squared,summary(lm_full_bic)$adj.r.squared)
+names(adj_r2_sum) <- c("lm_full_aic", "lm_full_bic")
 
 lm_best = lm_full_aic
 ## lm_full_aic is the best model. OBP was not selected for any models by exhaustive model selection.
@@ -255,4 +229,41 @@ plot(lm_best,which=c(4,6))
 
 means = data.frame(rbind(colMeans(baseball[1:17])))
 predict(lm_best,means, interval="predict")
+
+
+
+
+####################################################################
+#### TESTING
+####################################################################
+baseball = read.table("baseball.dat.txt")
+names(baseball) <- 
+  c('Salary','BattingAverage','OBP','Runs','Hits','Doubles','Triples','HomeRuns','RBI','Walks','StrikeOuts','StolenBases','Errors','FreAgtEli','FreeAgent','ArbEli','Arbitration','Name')
+baseball$Singles <- baseball$Hits - baseball$Doubles - baseball$Triples - baseball$HomeRuns
+
+baseball = baseball[-c(22,25,26,52,80,153,154,205,218,269,284,297,322),]
+baseball = subset(baseball, baseball$Singles > 0)
+
+
+test = lm(log(Salary) ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli, data=baseball)
+test = lm(sqrt(Salary) ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli, data=baseball)
+
+plot(test,which=1)
+plot(test,which=2)
+plot(test,which=3)
+plot(test,which=4)
+plot(test,which=5)
+shapiro.test(test$residuals)
+
+
+bc <- boxcox(Salary ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli,lambda=seq(-1,1,0.05),data=baseball)
+(lambda <- bc$x[which.max(bc$y)])
+test = lm((Salary^lambda - 1)/lambda ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli, data=baseball)
+wts <- 1/fitted(lm(abs(residuals(test)) ~ fitted(test)))^2
+test = lm((Salary^lambda - 1)/lambda ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli, data=baseball, weights=wts)
+
+
+test = lm(log(Salary) ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli, data=baseball)
+wts <- 1/fitted(lm(abs(residuals(test)) ~ fitted(test)))^2
+test = lm(log(Salary) ~ Hits + HomeRuns + StrikeOuts + StolenBases + FreAgtEli + FreeAgent + ArbEli, data=baseball, weights=wts)
 
