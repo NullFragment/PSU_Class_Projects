@@ -9,7 +9,7 @@ ipak <- function(pkg) {
   sapply(pkg, require, character.only = TRUE)
 }
 
-#packages <- c('ggplot2', 'reshape2', 'gridExtra', 'leaps', 'car', 'rstudioapi')
+#packages <- c("ggplot2", "reshape2", "gridExtra", "leaps", "car", "rstudioapi")
 packages <- c("ggplot2", "reshape2", "gridExtra", "leaps", "car")
 ipak(packages)
 
@@ -91,12 +91,12 @@ RSS_full = full_sum$rss
 
 ## Adjusted R2
 R2_adj_full = 1 - (RSS_full/(n - p_f))/(totalSS/(n - 1))
-plot(p_f, R2_adj_full, xlab = "Number of betas", ylab = "Adjusted R-squared")  # Manual: 9
+plot(p_f, R2_adj_full, xlab = "Number of betas", ylab = "Adjusted R-squared") # Manual: 9
 
 ## Mallow's C
 C_p_full = RSS_full/(sigma_hat_full^2) + 2 * p_f - n
 C_p_diff_full = abs(abs(C_p_full) - p_f)
-plot(p_f, C_p_full, xlab = "Number of betas", ylab = "Mallow's Cp")  # Manual: 8
+plot(p_f, C_p_full, xlab = "Number of betas", ylab = "Mallow's Cp") # Manual: 8
 abline(0, 1)
 
 ## AIC
@@ -124,12 +124,12 @@ RSS_red = red_sum$rss
 
 ## Adjusted R2
 R2_adj_red = 1 - (RSS_red/(n - p_r))/(totalSS/(n - 1))
-plot(p_r, R2_adj_red, xlab = "Number of betas", ylab = "Adjusted R-squared")  # Manual: 8
+plot(p_r, R2_adj_red, xlab = "Number of betas", ylab = "Adjusted R-squared") # Manual: 8
 
 ## Mallow's C
 C_p_red = RSS_red/(sigma_hat_full^2) + 2 * p_r - n
 C_p_diff_red = abs(abs(C_p_red) - p_r)
-plot(p_r, C_p_red, xlab = "Number of betas", ylab = "Mallow's Cp")  # 15
+plot(p_r, C_p_red, xlab = "Number of betas", ylab = "Mallow's Cp") # 15
 abline(0, 1)
 
 ## AIC
@@ -165,13 +165,9 @@ rownames(selection_matrix_user) <- c("Full", "Reduced")
 ## Full Model Selection Results
 
 ## NOTE: AIC and BIC selections for Reduced and Full are the SAME
-lm_full_aic = lm(Salary ~ Runs + HomeRuns + RBI + StrikeOuts + StolenBases + 
-                   FreAgtEli + FreeAgent + ArbEli, data = baseball)
-lm_full_bic = lm(Salary ~ HomeRuns + RBI + StrikeOuts + StolenBases + FreAgtEli + 
-                   FreeAgent + ArbEli, data = baseball)
-lm_red_mallow = lm(Salary ~ Runs + Hits + Doubles + Triples + HomeRuns + 
-                     RBI + Walks + StrikeOuts + StolenBases + Errors + FreAgtEli + FreeAgent + 
-                     ArbEli + Arbitration, data = baseball)
+lm_full_aic = lm(Salary ~ Runs+HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+FreeAgent+ArbEli, data = baseball)
+lm_full_bic = lm(Salary ~ HomeRuns+RBI+StrikeOuts+StolenBases+FreAgtEli+FreeAgent+ArbEli, data = baseball)
+lm_red_mallow = lm(Salary ~ Runs+Hits+Doubles+Triples+HomeRuns+RBI+Walks+StrikeOuts+StolenBases+Errors+FreAgtEli+FreeAgent+ArbEli+Arbitration, data = baseball)
 
 ######################
 # Same models
@@ -218,8 +214,7 @@ summary(lm_full_aic)  # Adj R2 Value = 0.7301
 summary(lm_full_bic)  # Adj R2 Value = 0.7279
 summary(lm_red_mallow)  # Adj R2 Value = 0.7229
 
-adj_r2_sum = c(summary(lm_full_aic)$adj.r.squared, summary(lm_full_bic)$adj.r.squared, 
-               summary(lm_red_mallow)$adj.r.squared)
+adj_r2_sum = c(summary(lm_full_aic)$adj.r.squared, summary(lm_full_bic)$adj.r.squared, summary(lm_red_mallow)$adj.r.squared)
 names(adj_r2_sum) <- c("lm_full_aic", "lm_full_bic", "lm_red_mallow")
 
 lm_best = lm_full_aic
