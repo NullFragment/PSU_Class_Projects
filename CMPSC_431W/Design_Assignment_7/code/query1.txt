@@ -1,12 +1,12 @@
 SELECT
-  week.start_date        AS 'weekStart',
-  weekday.day_name       AS 'day',
-  shift_time.shift_start AS 'start',
-  shift_time.shift_end   AS 'end',
-  employee.fname         AS 'firstName',
-  employee.lname         AS 'lastName',
-  department.dept_name   AS 'department',
-  role.role              AS 'role'
+  shift.day,
+  weekday.day_name,
+  shift_time.shift_start,
+  shift_time.shift_end,
+  employee.fname,
+  employee.lname,
+  department.dept_name,
+  role.role
 FROM shift, week, weekday, shift_time, department, role, certification, employee
 WHERE shift.day_ID = weekday.day_ID
       AND shift.time_ID = shift_time.time_ID
@@ -17,5 +17,5 @@ WHERE shift.day_ID = weekday.day_ID
       AND certification.role_ID = role.role_ID
       AND employee.emp_ID = 1
       AND week.week_ID >= 1
-      AND week.week_ID <= 6
-ORDER BY weekStart, weekday.day_ID;
+      AND week.week_ID <= 6;
+

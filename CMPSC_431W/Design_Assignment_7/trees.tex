@@ -3,75 +3,79 @@
 \usepackage[left=0in,right=0in]{geometry}
 \begin{document}
 %---------------------------------------------------------------------
-% QUERY 1
+% QEP 1
 %---------------------------------------------------------------------
 
 \Tree
 	[.$\Pi_{\text{date, day, shift, department, role, name}}$
-	[.$\underset{role\_id = role\_id}{\bowtie}$ 
-		[.$\underset{day\_id = day\_id}{\bowtie}$ 
-			[.$\underset{time\_id = time\_id}{\bowtie}$ 
-				[.$\underset{dept\_id = dept\_id}{\bowtie}$ 
-					[.$\underset{emp\_id = emp\_id}{\bowtie}$ 
-						[.$\underset{week\_id = week\_id}{\bowtie}$ 
-							shift week ] 
-						[.$\sigma_{\text{emp\_id = n}}$
-							employee ] ] 
-					department ]
-				shift\_time ] 
-			weekday ] 
-		[.$\underset{role\_id = role\_id}{\bowtie}$ 
-			role 
-			[.$\underset{emp\_id = emp\_id}{\bowtie}$ 
-				certification employee ] ] ] ]
+	[.$\underset{role\_id = role\_id}{\bowtie^{\textbf{5}}}$ 
+		[.$\underset{day\_id = day\_id}{\bowtie^{\textbf{5}}}$ 
+			[.$\underset{time\_id = time\_id}{\bowtie^{\textbf{5}}}$ 
+				[.$\underset{dept\_id = dept\_id}{\bowtie^{\textbf{5}}}$ 
+					[.$\underset{emp\_id = emp\_id}{\bowtie^{\textbf{5}}}$ 
+						[.$\underset{week\_id = week\_id}{\bowtie^{\textbf{600}}}$ 
+							shift^{\textbf{1200}} 
+							[.$\sigma_{m \leq \text{week\_id} \leq n}^{\textbf{6}}$ week^{\textbf{12}} ] ]
+						[.$\sigma^{\textbf{1}}_{\text{emp\_id = n}}$
+							employee^{\textbf{20}} ] ] 
+					department^{\textbf{6}} ]
+				shift\_time^{\textbf{5}} ] 
+			weekday^{\textbf{7}} ] 
+		[.$\underset{role\_id = role\_id}{\bowtie^{\textbf{20}}}$ 
+			role^{\textbf{7}} 
+			[.$\underset{emp\_id = emp\_id}{\bowtie^{\textbf{20}}}$ 
+				certification^{\textbf{20}} employee^{\textbf{20}} ] ] ] ]
 				
 \newpage
 %---------------------------------------------------------------------
-% QUERY 2
+% QEP 2
 %---------------------------------------------------------------------
 \Tree
 	[.$\Pi_{\text{date, day, shift, need, role}}$
-	[.$\underset{role\_id = role\_id}{\bowtie}$  
-		[.$\underset{dept\_id = dept\_id}{\bowtie}$ 
-			[.$\underset{shift\_id = shift\_id}{\bowtie}$ 
-				[.$\underset{day\_id = day\_id}{\bowtie}$ 
-					[.$\underset{week\_id = week\_id}{\bowtie}$ 
-						department\_need week ]
-					weekday ]
-				shift ]
-			department ]
-		role ] ]
+	[.$\underset{role\_id = role\_id}{\bowtie^{\textbf{95}}}$  
+		[.$\underset{dept\_id = dept\_id}{\bowtie^{\textbf{95}}}$ 
+			[.$\underset{shift\_id = shift\_id}{\bowtie^{\textbf{570}}}$ 
+				[.$\underset{day\_id = day\_id}{\bowtie^{\textbf{570}}}$ 
+					[.$\underset{week\_id = week\_id}{\bowtie^{\textbf{570}}}$ 
+						department\_need^{\textbf{6800}}
+						[.$\sigma^{\textbf{1}}_{\text{week\_id = n}}$
+							week^{\textbf{12}} ] ] 
+					weekday^{\textbf{7}} ]
+				shift^{\textbf{1200}} ]
+			[.$\sigma^{\textbf{1}}_{\text{dept\_id = n}}$ department^{\textbf{6}} ] ]
+		role^{\textbf{7}} ] ]
 		
 \newpage
 %---------------------------------------------------------------------
-% QUERY 3
+% QEP 3
 %---------------------------------------------------------------------
 \Tree
 	[.$\Pi_{\text{date, day, shift, lname, fname, phone}}$
-	[.$\underset{day\_id = day\_id}{\bowtie}$  
-		[.$\underset{time\_id = time\_id}{\bowtie}$  
-			[.$\underset{emp\_id = emp\_id}{\bowtie}$  
-				[.$\underset{dept\_id = dept\_id}{\bowtie}$  
-					[.$\underset{week\_id = week\_id}{\bowtie}$  
-						[.$\sigma_{\text{week\_id = n}}$ week ]
-						 shift ]
-					department ]
-				employee ]
-			shift\_time ]
-		weekday ] ]
+	[.$\underset{day\_id = day\_id}{\bowtie^{\textbf{100}}}$  
+		[.$\underset{time\_id = time\_id}{\bowtie^{\textbf{100}}}$  
+			[.$\underset{emp\_id = emp\_id}{\bowtie^{\textbf{100}}}$  
+				[.$\underset{dept\_id = dept\_id}{\bowtie^{\textbf{100}}}$  
+					[.$\underset{week\_id = week\_id}{\bowtie^{\textbf{100}}}$  
+						[.$\sigma_{\text{week\_id = n}}$ week^{\textbf{12}} ]
+						 shift^{\textbf{1200}} ]
+					department^{\textbf{6}} ]
+				employee^{\textbf{20}} ]
+			shift\_time^{\textbf{5}} ]
+		weekday^{\textbf{7}} ] ]
 
 \newpage
 %---------------------------------------------------------------------
-% QUERY 4
+% QEP 4
 %---------------------------------------------------------------------
 \Tree
 	[.$\Pi_{\text{day, shift, salary}}$
-	[.$\underset{time\_id = time\_id}{\bowtie}$ 
-		[.$\underset{emp\_id = emp\_id}{\bowtie}$ 
-			[.$\underset{dept\_id = dept\_id}{\bowtie}$ 
-				[.$\underset{week\_id = week\_id}{\bowtie}$ 
-					shift week ]
-				department ]
-			employee ]
-		shift\_time ] ]
+	[.$\underset{time\_id = time\_id}{\bowtie^{\textbf{100}}}$ 
+		[.$\underset{emp\_id = emp\_id}{\bowtie^{\textbf{100}}}$ 
+			[.$\underset{dept\_id = dept\_id}{\bowtie^{\textbf{100}}}$ 
+				[.$\underset{week\_id = week\_id}{\bowtie^{\approx\textbf{100}}}$ 
+					[.$\sigma_{m \leq \text{day} \leq n}$ shift^{\textbf{1200}} ]
+					week^{\textbf{12}} ]
+				department^{\textbf{6}} ]
+			employee^{\textbf{20}} ]
+		shift\_time^{\textbf{5}} ] ]
 \end{document}

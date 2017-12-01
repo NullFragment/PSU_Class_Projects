@@ -2,8 +2,7 @@
 % Using the texMemo package by Rob Oakes
 \documentclass[letter,12pt]{texMemo}
 \usepackage[english]{babel}
-\usepackage{color, listings, graphicx, float, booktabs, multirow, outlines}
-\usepackage{changepage, fancybox}
+\usepackage{color, listings, graphicx, float, booktabs, multirow, outlines, changepage, fancybox, enumitem}
 \pagenumbering{gobble}
 
 %% Edit the header section here. To include your
@@ -34,6 +33,21 @@
     showtabs=false,                  
     tabsize=2
 }
+
+\lstdefinestyle{smallstyle}{
+    %backgroundcolor=\color{backcolour},   
+    basicstyle=\scriptsize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+%    numbers=left,                    
+%    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
  
 \lstset{style=mystyle}
 
@@ -46,11 +60,8 @@
 \end{Sbox}\centerline{\parbox{\wd\@Sbox}{\TheSbox}}}% And output it centered
 \makeatother
 
-
-
 \begin{document}
 \maketitle
-
 The purpose of the following document is to explain in depth a database for a nursing care assistance hospital or clinic. Such database was created to solve the problem of scheduling each shift and combining the available resources to meet the working constraints of each nurse.
 
 The database model and the select examples give an overview of the relationship and capabilities of the data. It is important that data can get increasingly big and processing the select queries can exponentially increase in run time. Thus, this document also explains how the database is internally optimized to avoid long run time processing through indexing techniques. The data model that will be referenced throughout the document is attached at the end of the document.
@@ -106,21 +117,46 @@ The first query is designed to return a single employee's schedule for any given
 	\centering
 	\includegraphics[width=\textwidth]{query1.png}
 \end{figure}
-On the first query the tables indexed are the shift table on the shift\_id and the employee table on employee\_id. The reason of indexing these tables is because, in comparison to the other tables that are joined in this query, shits and employees have the most rows, and relationships with the fields in other tables. 
+For the first query, the best table to index is Shift on shift\_id and week\_id. This index is chosen because the shift table will be the second largest table in the database (only department\_need will be larger) and the ability to quickly find the desired weeks for the employee's schedule. This will narrow down the number of records to a maximum of 30 times the number of employees, and has the following costs.
+\begin{itemize}[noitemsep,nolistsep]
+	\item Week Between Dates: T0 = O(W)
+	\item Shift-Week Join: T1 = O(S*T0)
+	\item Employee Equal to N: O(E)
+	\item T1-Emp Join: T2 = O(SW) because there will only be 1 employee
+	\item T2-Department Join: T3 = O(T2 D)
+	\item T3-Time Join: T4 = O(T3 Time)
+	\item T4-Weekday Join: T4 = O(T4 Weekday)
+	\item Certification-Employee Join: T5 = O(C * E)
+	\item T5-Role Join: T6 = O(T5 R)
+	\item T4-T6 Join: T7 = O(T4 * T6)
+\end{itemize}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{query1_indexed.png}
 \end{figure}
-For the first query, indexing employees and shifts tables the access time for each search goes to O(1), instead of the iterative approach of looking at each row and making it O(n), where n is the rows in each table. Indexing in such case is much better because we speedup the process from O(n*m) to O(n) when employees and shifts are combined, where n is the number of employees and m is the number of shifts. Such optimization then has to get added the join of the other tables, but such other tables don't have as many rows and so they won't affect the performance as much as if employees or shifts will not be indexed.
+Using the indexes stated has the following effect on the query execution time:
+\begin{itemize}[noitemsep,nolistsep]
+	\item Week Between Dates: T0 = O(W)
+	\item Shift-Week Join: T1 = O(S*T0) $\rightarrow$ O(S*log T0)
+	\item Employee Equal to N: O(E)
+	\item T1-Emp Join: T2 = O(SW) because there will only be 1 employee
+	\item T2-Department Join: T3 = O(T2 D)
+	\item T3-Time Join: T4 = O(T3 Time)
+	\item T4-Weekday Join: T4 = O(T4 Weekday)
+	\item Certification-Employee Join: T5 = O(C * E)
+	\item T5-Role Join: T6 = O(T5 R)
+	\item T4-T6 Join: T7 = O(T4 * T6)
+\end{itemize}
+
+
 \vspace{1em}
 \subsubsection*{Example Data}
-
-\begin{changemargin}{-1.25cm}{-1.25cm}
+\lstset{style=smallstyle}
 	\begin{center}
 		\lstinputlisting[language=SQL]{./code/query1_data.txt}
 	\end{center}
-\end{changemargin}
-
+\lstset{style=mystyle}
 
 %---------------------------------------------
 \subsection*{Query 2}
@@ -132,19 +168,36 @@ Query 2 returns a department's need for a single week including the week's start
 	\centering
 	\includegraphics[width=.75\textwidth]{query2.png}
 \end{figure}
-For the second query the process is much similar to query one. The difference is that the table that is getting joined for the following select query is the departments table. Following the above principle one can optimize the run-time of the query by indexing shifts on shift\_id and department\_id. 
+For the second query the process is much similar to query one. The difference is that the table that is getting joined for the following select query is the departments table. Following the above principle one can optimize the run-time of the query by indexing shifts on shift\_id and department\_id to optimize the given big-O runtimes.
+\begin{itemize}[noitemsep,nolistsep]
+	\item Week Equals: T0 = O(W)
+	\item Need-Week Join: T1 = O(N*T0)
+	\item T1-Weekday: T2 = O(T1 Weekday)
+	\item T2-Shift: T3 = O(T2 S)
+	\item T3-Department: T4 = O(T3 D)
+	\item T4-Role: T5 = O(T4 R)
+\end{itemize}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.75\textwidth]{query2_indexed.png}
 \end{figure}
-Creating the indexing described above yields O(1) access for both shifts and department tables and only giving O(n) for the tables with the least elements and won't affect much the performance.
+Creating the indexing described above yields log(N) access for both the shifts and department tables, providing a significant speed up because these two tables will be the largest within the database. The optimized runtime changes are shown below:
+\begin{itemize}[noitemsep,nolistsep]
+	\item Need-Week Join: T1 = O(N*W) $\rightarrow$ O(log(N) * W)
+	\item T1-Weekday: T2 = O(T1 Weekday)
+	\item T2-Shift: T3 = O(T2 Shift) $\rightarrow$ O(T2 log(S))
+	\item T3-Department: T4 = O(T3 D)
+	\item T4-Role: T5 = O(T4 R)
+\end{itemize}
+
 \vspace{1em}
 \subsubsection*{Example Data}
-\begin{changemargin}{-1.25cm}{-1.25cm}
+\lstset{style=smallstyle}
 	\begin{center}
-		\lstinputlisting[language=SQL]{./code/query2_data_truncated.txt}
+		\lstinputlisting[language=SQL]{./code/query2_data.txt}
 	\end{center}
-\end{changemargin}
+\lstset{style=mystyle}
 
 %---------------------------------------------
 \subsection*{Query 3}
@@ -154,19 +207,37 @@ Query 3 will give a single department's schedule for a specified week, ordered b
 	\centering
 	\includegraphics[width=.6\textwidth]{query3.png}
 \end{figure}
-For the third query a similar index scheme will be implemented on the shift table between the shift.week\_id and week.week\_id. The largest amount of comparisons occur during this table join. 
+For the third query a similar index scheme will be implemented on the shift table between the shift.week\_id and week.week\_id. The largest amount of comparisons occur during this table join. The time complexities for the joins are shown in the following list.
+\begin{itemize}[noitemsep,nolistsep]
+	\item Week = N: T1 = O(Week)
+	\item T1-Shift Join: T2 = O(T1 S)
+	\item T2-Department Join: T3 = O(T2 D)
+	\item T3-Employee Join: T4 = O(T3 E)
+	\item T4-Shift Time Join: T5 = O(T4 ST)
+	\item T5-Weekday Join: T6 = O(T5 WD)
+\end{itemize}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.6\textwidth]{query3_indexed.png}
 \end{figure}
 The third query would experience the largest speedup in the join between the tables from O(m*n) to O(log(m*n)+c) due to the ability to conduct a binary search on the values corresponding to the correct week ID for both tables and a linear search to find the beginning and end of that week.
+\begin{itemize}[noitemsep,nolistsep]
+	\item Week = N: T1 = O(Week)
+	\item T1-Shift Join: T2 = O(T1 S) $\rightarrow$O(T1 log(S)) 
+	\item T2-Department Join: T3 = O(T2 D)
+	\item T3-Employee Join: T4 = O(T3 E)
+	\item T4-Shift Time Join: T5 = O(T4 ST)
+	\item T5-Weekday Join: T6 = O(T5 WD)
+\end{itemize}
+
 \vspace{1em}
 \subsubsection*{Example Data}
-\begin{changemargin}{-1.25cm}{-1.25cm}
+\lstset{style=smallstyle}
 	\begin{center}
 		\lstinputlisting[language=SQL]{./code/query3_data.txt}
 	\end{center}
-\end{changemargin}
+\lstset{style=mystyle}
 
 %---------------------------------------------
 \subsection*{Query 4}
@@ -177,19 +248,34 @@ Query 4 will return an employee's pay rate, department, shift start, and shift e
 	\centering
 	\includegraphics[width=.5\textwidth]{query4.png}
 \end{figure}
-Query 4 will benefit from the given indexes for a similar reason to Query 3
+Query 4 will also benefit from an index on the shift table between the shift.week\_id and week.week\_id. Again, the largest amount of comparisons occur during this table join. The time complexities for the joins are shown in the following list.
+\begin{itemize}[noitemsep,nolistsep]
+	\item Shift Between Days: T1 = O(S)
+	\item T1-Week Join: T2 = O(T1 W) 
+	\item T2-Department Join: T3 = O(T2 D)
+	\item T3-Employee Join: T4 = O(T3 E)
+	\item T4-Shift Time Join: T5 = O(T4 ST)
+\end{itemize}
+
 .\begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\textwidth]{query4_indexed.png}
 \end{figure}
-On the fourth query the run-time of the tables other than shifts won't be optimized as they aren't the focal point of the select. Thus it will only make sense to index the shifts table on shifts\_id to gain any optimization or performance improvement.  
-\vspace{1em}
+For the fourth query, selecting the shifts between date ranges is the only step involving large amounts of data to compare. Indexing this first step would be the most beneficial to the query execution and would result in the new execution time below.
+\begin{itemize}[noitemsep,nolistsep]
+	\item Shift Between Days: T1 = O(S) $\rightarrow$ O(log(S))
+	\item T1-Week Join: T2 = O(T1 W) 
+	\item T2-Department Join: T3 = O(T2 D)
+	\item T3-Employee Join: T4 = O(T3 E)
+	\item T4-Shift Time Join: T5 = O(T4 ST)
+\end{itemize}
+\newpage
 \subsubsection*{Example Data}
-\begin{changemargin}{-1.25cm}{-1.25cm}
+\lstset{style=smallstyle}
 	\begin{center}
 		\lstinputlisting[language=SQL]{./code/query4_data.txt}
 	\end{center}
-\end{changemargin}
+\lstset{style=smallstyle}
 
 \section*{Final Notes}
 In closing, the supplied data model, table structures, and queries will return the data required by the specification documents. The indexes implemented should provide a considerable performance speedup as the database grows. Output returned by the MySQL queries shall be parse-able by the program supplied by your company in order to create the desired output formats.

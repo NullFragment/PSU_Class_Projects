@@ -13,5 +13,5 @@
 | end_date   | date       | YES  |     | NULL              |                |
 | full_time  | tinyint(1) | NO   |     | 0                 |                |
 | salaried   | tinyint(1) | NO   |     | 0                 |                |
-| pay_rate   | double     | NO   |     | 0                 |                |
+| hourly_pay | double     | NO   |     | 0                 |                |
 +------------+------------+------+-----+-------------------+----------------+

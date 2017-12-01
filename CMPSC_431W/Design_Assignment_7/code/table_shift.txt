@@ -9,4 +9,5 @@
 | day_ID       | int(11) | NO   | MUL | NULL    |                |
 | status_ID    | int(11) | YES  | MUL | NULL    |                |
 | pay_modifier | double  | YES  |     | NULL    |                |
+| day          | date    | YES  |     | NULL    |                |
 +--------------+---------+------+-----+---------+----------------+

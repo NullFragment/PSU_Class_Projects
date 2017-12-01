@@ -1,17 +1,16 @@
 SELECT
-  department.dept_name   AS 'department',
-  employee.fname         AS 'firstName',
-  employee.lname         AS 'lastName',
-  employee.phone1        AS 'phoneNumber',
-  week.start_date        AS 'weekStart',
-  weekday.day_name       AS 'day',
-  shift_time.shift_start AS 'start',
-  shift_time.shift_end   AS 'end'
+  department.dept_name,
+  employee.fname,
+  employee.lname,
+  employee.phone1,
+  shift.day,
+  weekday.day_name,
+  shift_time.shift_start,
+  shift_time.shift_end
 FROM department, week, employee, shift, shift_time, weekday
 WHERE week.week_ID = 1
       AND shift.emp_ID = employee.emp_ID
       AND shift.dept_ID = department.dept_ID
       AND shift.time_ID = shift_time.time_ID
       AND shift.week_ID = week.week_ID
-      AND shift.day_ID = weekday.day_ID
-ORDER BY department, lastName, firstName;
+      AND shift.day_ID = weekday.day_ID;

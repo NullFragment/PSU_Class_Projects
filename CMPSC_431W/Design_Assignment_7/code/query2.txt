@@ -1,13 +1,14 @@
 SELECT
-  week.start_date        AS 'weekStart',
-  weekday.day_name       AS 'day',
-  shift_time.shift_start AS 'start',
-  shift_time.shift_end   AS 'end',
-  department.dept_name   AS 'department',
-  role.role              AS 'role',
-  department_need.need   AS 'needs'
+  department_need.day,
+  weekday.day_name,
+  shift_time.shift_start,
+  shift_time.shift_end,
+  department.dept_name,
+  role.role,
+  department_need.need
 FROM department_need, week, weekday, shift_time, department, role
 WHERE department_need.week_ID = 1
+      AND department.dept_ID = 1
       AND department_need.week_ID = week.week_ID
       AND department_need.day_ID = weekday.day_ID
       AND department_need.time_ID = shift_time.time_ID

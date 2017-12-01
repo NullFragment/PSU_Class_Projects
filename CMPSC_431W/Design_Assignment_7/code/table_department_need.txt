@@ -8,4 +8,5 @@
 | dept_ID | int(11) | YES  | MUL | NULL    |                |
 | role_ID | int(11) | YES  | MUL | NULL    |                |
 | need    | int(11) | YES  |     | NULL    |                |
+| day     | date    | YES  |     | NULL    |                |
 +---------+---------+------+-----+---------+----------------+
