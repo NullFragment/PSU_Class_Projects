@@ -69,41 +69,41 @@ The database model and the select examples give an overview of the relationship 
 This section contains the specifications for each table used in the relational model.
 	\subsection*{Address}
 		The address table contains the information for an address, with each address being linked to an employee by their employee ID. This allows the database to handle employees with multiple addresses without wasting space by having multiple address fields per employee.
-		\lstinputlisting[language=SQL]{./code/table_address.txt}
+		\lstinputlisting[language=]{./code/table_address.txt}
 	\newpage
 	\subsection*{Certification}
 		Each certification is linked to a role by the role ID and an employee by their employee ID. This implementation allows an employee to have multiple registered certifications.
-		\lstinputlisting[language=SQL]{./code/table_certification.txt}
+		\lstinputlisting[language=]{./code/table_certification.txt}
 	\subsection*{Role}
 		The role table contains the description of each role (RN, LPN, etc) in order to save storage space by preventing repeated copies of the data.
-		\lstinputlisting[language=SQL]{./code/table_role.txt}
+		\lstinputlisting[language=]{./code/table_role.txt}
 	\subsection*{Department}
 		The department table contains the department name and number of beds as well as the maximum and minimum amount of staff necessary.
-		\lstinputlisting[language=SQL]{./code/table_department.txt}
+		\lstinputlisting[language=]{./code/table_department.txt}
 	\newpage
 	\subsection*{Department Need}
 		The department need table is linked to the week, day, shift time, department, and roles by their respective IDs. A single department need record contains the role and number of personnel needed for a particular shift on a particular day.
-		\lstinputlisting[language=SQL]{./code/table_department_need.txt}
+		\lstinputlisting[language=]{./code/table_department_need.txt}
 	\subsection*{Employee}
 		The employee table contains personal and financial information for each employee. The home department of the employee may be filled out, if applicable, via a foreign key to the department table.
-		\lstinputlisting[language=SQL]{./code/table_employee.txt}
+		\lstinputlisting[language=]{./code/table_employee.txt}
 	\newpage	
 	\subsection*{Shift}
 		The shift table contains entries for a specific shift for a specific employee on a specific day. The table is linked to the employee, department, shift time, week, day, and shift status tables by their respective foreign keys. The pay modifier may be adjusted to increase the employee's shift pay if they are called in or work a special shift such as a holiday.
-		\lstinputlisting[language=SQL]{./code/table_shift.txt}
+		\lstinputlisting[language=]{./code/table_shift.txt}
 	\subsection*{Shift Status}
 		The shift status table contains information with common notes for a shift, such as someone calling off, requesting the shift off, requesting to be staffed for the shift or being called in.
-		\lstinputlisting[language=SQL]{./code/table_shift_status.txt}
+		\lstinputlisting[language=]{./code/table_shift_status.txt}
 	\subsection*{Shift Time}
 		The shift times table contains the hospital's current shift schedules.
-		\lstinputlisting[language=SQL]{./code/table_shift_time.txt}
+		\lstinputlisting[language=]{./code/table_shift_time.txt}
 	\newpage	
 	\subsection*{Week}
 		The week table was created to easily access shifts by week, as it serves only to be used in the shift as a foreign key for this purpose.
-		\lstinputlisting[language=SQL]{./code/table_week.txt}
+		\lstinputlisting[language=]{./code/table_week.txt}
 	\subsection*{Weekday}
 		The weekday table contains the days of the week as text in order to save on data storage and time costs of re-writing the names of each day repeatedly.
-		\lstinputlisting[language=SQL]{./code/table_weekday.txt}
+		\lstinputlisting[language=]{./code/table_weekday.txt}
 
 \newpage
 \section*{Desired Queries}
@@ -112,7 +112,7 @@ Within this section all queries are explained, the MySQL query itself is given, 
 \subsection*{Query 1}
 The first query is designed to return a single employee's schedule for any given 6 week period. It shall return the week start date, day of week, shift, department, and role for the employee. The input parameters to the query are the start week, end week, and ID of the employee in question.
 \subsubsection*{MySQL Query}
-	\lstinputlisting[language=SQL]{./code/query1.txt}
+	\lstinputlisting[language=]{./code/query1.txt}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{query1.png}
@@ -154,7 +154,7 @@ Using the indexes stated has the following effect on the query execution time:
 \subsubsection*{Example Data}
 \lstset{style=smallstyle}
 	\begin{center}
-		\lstinputlisting[language=SQL]{./code/query1_data.txt}
+		\lstinputlisting[language=]{./code/query1_data.txt}
 	\end{center}
 \lstset{style=mystyle}
 
@@ -163,7 +163,7 @@ Using the indexes stated has the following effect on the query execution time:
 Query 2 returns a department's need for a single week including the week's start date, day of week, shift start time, shift end time, and needs per role per shift. The query can be tuned by changing the department ID and week ID.
 
 \subsubsection*{MySQL Query}
-	\lstinputlisting[language=SQL]{./code/query2.txt}
+	\lstinputlisting[language=]{./code/query2.txt}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.75\textwidth]{query2.png}
@@ -195,14 +195,14 @@ Creating the indexing described above yields log(N) access for both the shifts a
 \subsubsection*{Example Data}
 \lstset{style=smallstyle}
 	\begin{center}
-		\lstinputlisting[language=SQL]{./code/query2_data.txt}
+		\lstinputlisting[language=]{./code/query2_data.txt}
 	\end{center}
 \lstset{style=mystyle}
 
 %---------------------------------------------
 \subsection*{Query 3}
 Query 3 will give a single department's schedule for a specified week, ordered by the employee's names. Included information shall contain the start date of the week, the day of the week, shift start and end times, the employee's name, and their phone number. The department and week ID values will need to be changed in order to get the desired data.\subsubsection*{MySQL Query}
-	\lstinputlisting[language=SQL]{./code/query3.txt}
+	\lstinputlisting[language=]{./code/query3.txt}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.6\textwidth]{query3.png}
@@ -235,7 +235,7 @@ The third query would experience the largest speedup in the join between the tab
 \subsubsection*{Example Data}
 \lstset{style=smallstyle}
 	\begin{center}
-		\lstinputlisting[language=SQL]{./code/query3_data.txt}
+		\lstinputlisting[language=]{./code/query3_data.txt}
 	\end{center}
 \lstset{style=mystyle}
 
@@ -243,7 +243,7 @@ The third query would experience the largest speedup in the join between the tab
 \subsection*{Query 4}
 Query 4 will return an employee's pay rate, department, shift start, and shift end times per shift when given a range of dates sorted by date and then shift start time. The total cost per shift shall be calculated by the data parser supplied by you.
 \subsubsection*{MySQL Query}
-	\lstinputlisting[language=SQL]{./code/query4.txt}
+	\lstinputlisting[language=]{./code/query4.txt}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\textwidth]{query4.png}
@@ -273,7 +273,7 @@ For the fourth query, selecting the shifts between date ranges is the only step 
 \subsubsection*{Example Data}
 \lstset{style=smallstyle}
 	\begin{center}
-		\lstinputlisting[language=SQL]{./code/query4_data.txt}
+		\lstinputlisting[language=]{./code/query4_data.txt}
 	\end{center}
 \lstset{style=smallstyle}
 
