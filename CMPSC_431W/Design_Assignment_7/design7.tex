@@ -221,7 +221,7 @@ For the third query a similar index scheme will be implemented on the shift tabl
 	\centering
 	\includegraphics[width=.6\textwidth]{query3_indexed.png}
 \end{figure}
-The third query would experience the largest speedup in the join between the tables from O(m*n) to O(log(m*n)+c) due to the ability to conduct a binary search on the values corresponding to the correct week ID for both tables and a linear search to find the beginning and end of that week.
+The third query would experience the largest enhancement in the join between the tables from O(m*n) to O(log(m*n)+c) due to the ability to conduct a binary search on the values corresponding to the correct week ID for both tables and a linear search to find the beginning and end of that week.
 \begin{itemize}[noitemsep,nolistsep]
 	\item Week = N: T1 = O(Week)
 	\item T1-Shift Join: T2 = O(T1 S) $\rightarrow$O(T1 log(S)) 
@@ -278,7 +278,7 @@ For the fourth query, selecting the shifts between date ranges is the only step 
 \lstset{style=smallstyle}
 
 \section*{Final Notes}
-In closing, the supplied data model, table structures, and queries will return the data required by the specification documents. The indexes implemented should provide a considerable performance speedup as the database grows. Output returned by the MySQL queries shall be parse-able by the program supplied by your company in order to create the desired output formats.
+In closing, the supplied data model, table structures, and queries will return the data required by the specification documents. The indexes implemented should provide a considerable performance enhancement as the database grows. Output returned by the MySQL queries shall be parse-able by the program supplied by your company in order to create the desired output formats.
 
 \newpage
 \section*{Data Model}
