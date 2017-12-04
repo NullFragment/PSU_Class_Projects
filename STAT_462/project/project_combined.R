@@ -355,14 +355,17 @@ rownames(selection_matrix_log_auto) <- c("Full", "Reduced")
 
 ## NOTE: Both models selected are the same for reduced and full!
 
-lm_log_aic = lm(log(Salary) ~ Hits + RBI + FreAgtEli + FreeAgent + ArbEli, 
+lm_log_bic = lm(log(Salary) ~ Hits + RBI + FreAgtEli + FreeAgent + ArbEli, 
                 data = baseball)
-lm_log_bic = lm(log(Salary) ~ Hits + RBI + StolenBases + Errors + FreAgtEli + 
-                  FreeAgent + ArbEli, data = baseball)
+lm_log_aic = lm(log(Salary) ~ Hits + RBI + StolenBases + Errors + FreAgtEli + FreeAgent + ArbEli, data = baseball)
 
 ######################
 # AIC model
 ######################
+vif(lm_log_aic)
+which.max(vif(lm_log_aic))
+
+lm_log_aic = update(lm_log_aic, . ~ . - Hits)
 vif(lm_log_aic)
 which.max(vif(lm_log_aic))
 
@@ -372,16 +375,12 @@ which.max(vif(lm_log_aic))
 vif(lm_log_bic)
 which.max(vif(lm_log_bic))
 
-lm_log_bic = update(lm_log_bic, . ~ . - Hits)
-vif(lm_log_bic)
-which.max(vif(lm_log_bic))
-
 ####################################################################
 #### Adjusted Models after VIF and final model selection
 ####################################################################
 ## After selection lm_red_r2 and lm_full_bic are the same
-summary(lm_log_aic)  # Adj R2 Value = 0.8413871
-summary(lm_log_bic)  # Adj R2 Value = 0.8368659
+summary(lm_log_aic)  # Adj R2 Value = 0.8368659
+summary(lm_log_bic)  # Adj R2 Value = 0.8413871
 
 adj_r2_sum = c(summary(lm_log_aic)$adj.r.squared, summary(lm_log_bic)$adj.r.squared)
 names(adj_r2_sum) <- c("lm_log_aic", "lm_log_bic")
@@ -389,7 +388,7 @@ names(adj_r2_sum) <- c("lm_log_aic", "lm_log_bic")
 ####################################################################
 #### Final Model Plots/Tests
 ####################################################################
-## Full Adj-R^2 Selected Model
+## AIC Selected Model
 plot(lm_log_aic, which = 1)
 plot(lm_log_aic, which = 2)
 plot(lm_log_aic, which = 3)
@@ -397,7 +396,7 @@ plot(lm_log_aic, which = 4)
 plot(lm_log_aic, which = 5)
 shapiro.test(lm_log_aic$residuals)
 
-## Reduced Adj-R^2 Selected Model
+## BIC Selected Model
 plot(lm_log_bic, which = 1)
 plot(lm_log_bic, which = 2)
 plot(lm_log_bic, which = 3)
@@ -412,4 +411,20 @@ bic_pred = exp(predict(lm_log_bic, means, interval = "predict"))
 
 pred_matrix = matrix(rbind(aic_pred, bic_pred, unt_pred), ncol = length(aic_pred))
 colnames(pred_matrix) <- c("fit", "lwr", "upr")
-rownames(pred_matrix) <- c("lm_log_aic", "lm_log_aic", "lm_untransformed")
+rownames(pred_matrix) <- c("lm_log_aic", "lm_log_bic", "lm_untransformed")
+
+means[14] = 1
+bic_fre_agt_eli_pred = exp(predict(lm_log_bic, means, interval = "predict"))
+means[15] = 1
+bic_fre_agt_and_eli_pred = exp(predict(lm_log_bic, means, interval = "predict"))
+means[14] = 0
+means[15] = 0
+means[16] = 1
+bic_arb_eli_pred = exp(predict(lm_log_bic, means, interval = "predict"))
+means[16] = 0
+bic_fre_agt_eli = exp(predict(lm_log_bic, means, interval = "predict"))
+
+
+bic_pred_matrix = matrix(rbind(bic_pred, bic_fre_agt_eli_pred, bic_fre_agt_and_eli_pred, bic_arb_eli_pred), ncol = length(aic_pred));
+colnames(bic_pred_matrix) <- c("fit", "lwr", "upr")
+rownames(bic_pred_matrix) <- c("None", "Free Agent Eligibile", "Free Agent and Eligible", "Arbitration Eligible")
