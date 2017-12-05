@@ -3,6 +3,7 @@
 \usepackage{fullpage} % changes the margin
 \usepackage{color,listings,graphicx,float,booktabs,multirow, amsmath}
 \usepackage[colorlinks=true, urlcolor=blue]{hyperref}
+\usepackage{hyperref}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -41,7 +42,7 @@
 % Section 0
 %---------------------------------------------------------------
 \section*{Serial vs Parallel}
-After adapting the CUDA code (ref: https://github.com/amosgwa/Exclusive-Scan-CUDA, https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch39.html) to handle arrays larger than 1024, the program was set to run for M = 1000 to M = 10,000,000 in steps of 1000, where M is the size of the vector. Times were collected at the following sections in the code:
+After adapting the CUDA code (ref: \url{https://github.com/amosgwa/Exclusive-Scan-CUDA}, \url{https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch39.html}) to handle arrays larger than 1024, the program was set to run for M = 1000 to M = 10,000,000 in steps of 1000, where M is the size of the vector. Times were collected at the following sections in the code:
 \begin{itemize}
 	\item Before copying array to GPU
 	\item Before running the GPU calculations
@@ -51,12 +52,14 @@ After adapting the CUDA code (ref: https://github.com/amosgwa/Exclusive-Scan-CUD
 	\item After running the serialized code
 \end{itemize}
 
-This data is plotted in the figure below. Unsurprisingly, at low values of M, the serial computation is significantly faster due to the amount of time that it takes to copy the memory from the host to the GPU. However at around
+This data is plotted in the figure below. Unsurprisingly, at low values of M, the serial computation is significantly faster due to the amount of time that it takes to copy the memory from the host to the GPU. The data ends up slightly noisy and inconsistent using such a fine step, however at around 261000 elements, a clear divergence starts where the GPU calculation time begins to be less even when copying all of the elements is considered. 
 
+In contrast, if one looks at only the prefix sum calculation time, it increases at a significantly slower rate than the CPU runtimes. Looking at the actual percentage increase, the GPU calculation only increases by $\approx54.46x$ while the CPU time increases by $\approx1626x$, with the total GPU execution time increasing by only $\approx13x$. This shows that both the CPU and GPU implementations are bound by computation time after a certain point, where memory access becomes irrelevant. The following figure includes a graph of the runtimes.
+\newpage
 \begin{figure}[H]
 	\centering
-	\centerline{\includegraphics[width=7.5in]{comm_time_avg_scaled.png}}
-	\caption{Average Communication Time for Given Time Steps (Adjusted)}
+	\centerline{\includegraphics[width=10.5in,angle=90]{runtimes.png}}
+	\caption{Plot of Runtimes}
 \end{figure}
 
 
@@ -66,7 +69,7 @@ This data is plotted in the figure below. Unsurprisingly, at low values of M, th
 %====================================================================
 \newpage
 \section*{Code Appendix}
-\lstinputlisting[language=C]{../main.c}
+\lstinputlisting[language=C]{../prefix_sum.cu}
 
 
 \end{document}
