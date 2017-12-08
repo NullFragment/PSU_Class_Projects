@@ -58,4 +58,6 @@ void trimwhitespace(char *to_trim);
 
 char *trimChars(char *string, char *to_trim);
 
+bool compareStrings(char *string1, char *string2, size_t length, int comparison);
+
 #endif //ASSIGNMENT_4_UTILS_H

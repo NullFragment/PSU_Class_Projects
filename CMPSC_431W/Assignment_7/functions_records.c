@@ -23,7 +23,8 @@ void getIndexedRecord(_table *schema, linkedList *selects, linkedList *clauses, 
     if (access(db_name, F_OK) != -1)
     {
         database = fopen(db_name, "rb"); /** OPEN: DATABASE */
-    } else
+    }
+    else
     {
         database = fopen(schema->tableFileName, "rb"); /** OPEN: DATABASE */
     }
@@ -55,11 +56,12 @@ void getIndexedRecord(_table *schema, linkedList *selects, linkedList *clauses, 
         if (compareVal < 0)
         {
             seekLen = seekLen / 2;
-            if(seekLen == 0) seekLen = 1;
-        } else if (compareVal > 0)
+            if (seekLen == 0) seekLen = 1;
+        }
+        else if (compareVal > 0)
         {
             seekLen = -1 * seekLen / 2;
-            if(seekLen == 0) seekLen = -1;
+            if (seekLen == 0) seekLen = -1;
         }
         if (compareVal == 0 && strlen(print_string) > 0)
         {
@@ -92,7 +94,8 @@ void getRecord(_table *schema, linkedList *selects, FILE *output)
     if (access(db_name, F_OK) != -1)
     {
         database = fopen(db_name, "rb"); /** OPEN: DATABASE */
-    } else
+    }
+    else
     {
         database = fopen(schema->tableFileName, "rb"); /** OPEN: DATABASE */
     }
@@ -103,7 +106,7 @@ void getRecord(_table *schema, linkedList *selects, FILE *output)
             fread(buffer, (size_t) field->length, 1, database);
             while (select != NULL)
             {
-                if (strcmp(field->fieldName, select->field) == 0)
+                if (compareStrings(field->fieldName, select->field, 0, 0))
                 {
                     strcpy(select->condition, buffer);
                     break;
@@ -179,7 +182,7 @@ bool selectRecord(char *buffer)
         // Initialize fields
         char *condition, *field;
         bool constant;
-        while (strncmp(cmd, "END", 3) != 0)
+        while (!compareStrings(cmd, "END", 3, 0))
         {
             // Initialize fields
             condition = calloc(MAXINPUTLENGTH, sizeof(char)); /** ALLOCATE: CONDITION */
@@ -190,7 +193,7 @@ bool selectRecord(char *buffer)
             cmd = strtok(NULL, " ");
             strncat(field, cmd, MAXINPUTLENGTH);
             cmd = strtok(NULL, " =");
-            if (strncmp(cmd, "\"", 1) == 0)
+            if (compareStrings(cmd, "\"", 1, 0))
             {
                 constant = true;
             }

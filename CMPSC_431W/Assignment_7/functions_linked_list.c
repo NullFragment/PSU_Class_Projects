@@ -43,7 +43,6 @@ bool addNode(linkedList *list, bool at_head, char *field, char *condition, bool 
         list->count++;
         return true;
     }
-
     else if (list->count == 0 && list->head == NULL)
     {
         list->head = calloc(sizeof(node), 1);

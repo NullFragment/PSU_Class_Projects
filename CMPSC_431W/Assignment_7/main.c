@@ -14,18 +14,24 @@
 void processCommand(char *buffer)
 {
     char *cmd;
-    if (strncmp(buffer, "CREATE TABLE", 12) == 0)
+    char *tocomp1 = calloc(10, sizeof(char));
+    char *tocomp2 = calloc(10, sizeof(char));
+    char *tocomp3 = calloc(10, sizeof(char));
+    strcat(tocomp1, "testing0");
+    strcat(tocomp2, "testing1");
+    strcat(tocomp3, "testing2");
+    if (compareStrings(buffer, "CREATE TABLE", 12, 0))
     {
         cmd = strtok(buffer, " ");
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, "\n");
         createSchema(cmd, buffer, stdin, false, true);
     }
-    if (strncmp(buffer, "CREATE INDEX", 12) == 0)
+    else if (compareStrings(buffer, "CREATE INDEX", 12, 0))
     {
         createIndex(buffer, stdin);
     }
-    else if (strncmp(buffer, "INSERT", 6) == 0)
+    else if (compareStrings(buffer, "INSERT", 6, 0))
     {
         char *temp = calloc(MAXINPUTLENGTH, 1);
         strncpy(temp, buffer, MAXINPUTLENGTH);
@@ -42,24 +48,24 @@ void processCommand(char *buffer)
         free(table);
         free(temp);
     }
-    else if (strncmp(buffer, "SELECT", 6) == 0)
+    else if (compareStrings(buffer, "SELECT", 6, 0))
     {
         selectRecord(buffer);
     }
-    else if (strncmp(buffer, "DROP", 4) == 0)
+    else if (compareStrings(buffer, "DROP", 4, 0))
     {
         cmd = strtok(buffer, " ");
         cmd = strtok(NULL, " ");
         cmd = strtok(NULL, "\n");
         dropTable(cmd);
     }
-    else if (strncmp(buffer, "CLEAN ALL", 9) == 0)
+    else if (compareStrings(buffer, "CLEAN ALL", 9, 0))
     {
         system("rm -f *.bin > /dev/null");
         system("rm -f *.schema > /dev/null");
         system("rm -f garbage* > /dev/null");
     }
-    else if (strncmp(buffer, "CLEAN TEMP", 10) == 0)
+    else if (compareStrings(buffer, "CLEAN TEMP", 10, 0))
     {
         system("rm -f tt* > /dev/null");
         system("rm -f temp_* > /dev/null");
@@ -76,7 +82,7 @@ int main()
     while (status != NULL)
     {
         trimwhitespace(buffer);
-        if (strlen(buffer) < 5)
+        if (strlen(buffer) < 3)
             break;
         printf("===> %s\n", buffer);
         processCommand(buffer);

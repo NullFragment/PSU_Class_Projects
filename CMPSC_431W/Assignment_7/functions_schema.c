@@ -40,11 +40,12 @@ bool loadSchema(_table *table, char *buffer)
     int field_number = 0;
     char *str_in = calloc(MAXINPUTLENGTH, sizeof(char)); /** ALLOCATE: STR IN */
     fread(str_in, MAXINPUTLENGTH, 1, schema);
-    if (strncmp(str_in, "INDEX", 5) == 0)
+    if (compareStrings(str_in, "INDEX", 5, 0))
     {
         table->index = true;
         fread(str_in, MAXINPUTLENGTH, 1, schema);
-    } else
+    }
+    else
     {
         table->index = false;
     }
@@ -63,7 +64,7 @@ bool loadSchema(_table *table, char *buffer)
                 *fieldType = calloc(MAXINPUTLENGTH, 1),
                 *current = strtok(str_in, " \n");
         int fieldLength;
-        if (strncmp(current, "ADD", 3) == 0)
+        if (compareStrings(current, "ADD", 3, 0))
         {
             table->fieldcount++;
             strncpy(fieldName, strtok(NULL, " \n"), MAXINPUTLENGTH);
@@ -101,7 +102,8 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
     if (append == true && access(file_name, F_OK) == 0)
     {
         schema = fopen(file_name, "ab+"); /** OPEN FILE: SCHEMA */
-    } else
+    }
+    else
     {
         schema = fopen(file_name, "wb+"); /** OPEN FILE: SCHEMA */
     }
@@ -109,7 +111,8 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
     if (stream == stdin)
     {
         fgets(buffer, MAXINPUTLENGTH, stream);
-    } else
+    }
+    else
     {
         fread(buffer, sizeof(char), MAXINPUTLENGTH, stream);
     }
@@ -117,7 +120,7 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
     // Start reading in schema structure and saving to file
     trimwhitespace(buffer);
     if (logging) printf("===> %s\n", buffer);
-    while (strncmp(buffer, "END", 3) != 0 && buffer != NULL && !feof(stream))
+    while (!compareStrings(buffer, "END", 3, 0) && buffer != NULL && !feof(stream))
     {
         fwrite(buffer, MAXINPUTLENGTH - 1, 1, schema);
         fwrite("\n", 1, 1, schema);
@@ -125,7 +128,8 @@ bool createSchema(char *schema_name, char *buffer, FILE *stream, bool append, bo
         if (stream == stdin)
         {
             fgets(buffer, MAXINPUTLENGTH, stream);
-        } else
+        }
+        else
         {
             fread(buffer, sizeof(char), MAXINPUTLENGTH, stream);
         }
@@ -187,7 +191,7 @@ void createIndex(char *buffer, FILE *stream)
     token = strtok(NULL, " ,\n");
 
     // Create linked list of fields to use
-    if (strncmp(token, "USING", 5) == 0)
+    if (compareStrings(token, "USING", 5, 0))
     {
         token = strtok(NULL, " ,\n");
         while (token != NULL)
@@ -202,7 +206,7 @@ void createIndex(char *buffer, FILE *stream)
     printf("===> %s", buffer);
 
     // Load base table into memory and create index field list
-    if (strncmp(buffer, "FROM", 4) == 0)
+    if (compareStrings(buffer, "FROM", 4, 0))
     {
         token = strtok(buffer, " ,\n");
         token = strtok(NULL, " ,\n");
@@ -216,7 +220,8 @@ void createIndex(char *buffer, FILE *stream)
             {
                 while (traceBaseFields != NULL)
                 {
-                    if (strcmp(traceBaseFields->fieldName, traceIndexFields->field) == 0)
+                    if (compareStrings(traceBaseFields->fieldName, traceIndexFields->field,
+                                       strlen(traceIndexFields->field), 0))
                     {
                         addfieldNode(indexFields, false, traceBaseFields->fieldName, traceBaseFields->fieldType,
                                      traceBaseFields->length);
@@ -309,7 +314,8 @@ void parseFile(FILE *toParse, FILE *output, fieldList *fields, bool comma)
             {
                 fprintf(output, "%-*.*s", trace->length, trace->length, token);
                 fprintf(output, ",");
-            } else
+            }
+            else
             {
                 int length = trace->length;
                 if (trace->next == NULL) length--;

@@ -44,3 +44,59 @@ char *trimChars(char *string, char *to_trim)
     }
     return string;
 }
+
+bool compareStrings(char *string1, char *string2, size_t length, int comparison)
+{
+    if (length != 0)
+    {
+        switch (comparison)
+        {
+            case 0:
+            {
+                if (strncmp(string1, string2, length) == 0) return true;
+                else return false;
+            }
+            case -1:
+            {
+                if (strncmp(string1, string2, length) < 0) return true;
+                else return false;
+            }
+            case 1:
+            {
+                if (strncmp(string1, string2, length) > 0) return true;
+                else return false;
+            }
+            default:
+            {
+                fprintf(stderr, "Invalid case entered -- returning failure");
+                return false;
+            }
+        }
+    }
+    else
+    {
+        switch (comparison)
+        {
+            case 0:
+            {
+                if (strcmp(string1, string2) == 0) return true;
+                else return false;
+            }
+            case -1:
+            {
+                if (strcmp(string1, string2) < 0) return true;
+                else return false;
+            }
+            case 1:
+            {
+                if (strcmp(string1, string2) > 0) return true;
+                else return false;
+            }
+            default:
+            {
+                fprintf(stderr, "Invalid case entered -- returning failure");
+                return false;
+            }
+        }
+    }
+}

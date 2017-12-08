@@ -42,8 +42,7 @@ bool loadDatabase(_table *table, char *buffer)
     if (access(filename, F_OK) == -1)
     {
         database = fopen(filename, "wb+"); /** OPEN FILE: DATABASE */
-    }
-    else
+    } else
     {
         database = fopen(filename, "ab"); /** OPEN FILE: DATABASE */
     }
@@ -112,8 +111,9 @@ bool checkWhereLiteral(_table *schema, node *table, linkedList *clauses)
             fread(buffer, (size_t) field->length, 1, database);
             while (where != NULL && failure == false)
             {
-                if (where->constant == true && strcmp(field->fieldName, where->field) == 0 &&
-                    strcmp(buffer, where->condition) != 0)
+                if (where->constant == true &&
+                    compareStrings(field->fieldName, where->field, 0, 0) &&
+                    !compareStrings(buffer, where->condition, 0, 0))
                 {
                     failure = true;
                     break;
@@ -209,13 +209,13 @@ bool joinTable(_table *first, _table *second, linkedList *clauses, char *temp_na
                     {
                         if (where->constant == false)
                         {
-                            if (strcmp(where->field, firstField->fieldName) == 0 ||
-                                strcmp(where->field, secondField->fieldName) == 0)
+                            if (compareStrings(where->field, firstField->fieldName, 0, 0) ||
+                                compareStrings(where->field, secondField->fieldName, 0, 0))
                             {
-                                if (strcmp(where->condition, secondField->fieldName) == 0 ||
-                                    strcmp(where->condition, firstField->fieldName) == 0)
+                                if (compareStrings(where->condition, firstField->fieldName, 0, 0) ||
+                                    compareStrings(where->condition, secondField->fieldName, 0, 0))
                                 {
-                                    if (strcmp(firstBuffer, secondBuffer) != 0)
+                                    if (!compareStrings(firstBuffer, secondBuffer, 0, 0))
                                     {
                                         failure = true;
                                     }
@@ -249,8 +249,7 @@ bool joinTable(_table *first, _table *second, linkedList *clauses, char *temp_na
                 fwrite(firstBuffer, 1, (size_t) first->reclen - 1, tempDB);
                 fwrite("\0", 1, 1, tempDB);
                 fwrite(secondBuffer, 1, (size_t) second->reclen, tempDB);
-            }
-            else
+            } else
             {
                 fseek(secondDB, second->reclen, SEEK_CUR);
             }

@@ -33,8 +33,7 @@ bool addfieldNode(fieldList *list, bool at_head, char *fieldName, char *fieldTyp
         fillFieldNode(list->tail, fieldName, fieldType, length);
         list->count++;
         return true;
-    }
-    else if (at_head == true && list->head != NULL)
+    } else if (at_head == true && list->head != NULL)
     {
         fieldNode *temp = calloc(sizeof(fieldNode), 1);
         temp->next = list->head;
@@ -42,9 +41,7 @@ bool addfieldNode(fieldList *list, bool at_head, char *fieldName, char *fieldTyp
         fillFieldNode(list->head, fieldName, fieldType, length);
         list->count++;
         return true;
-    }
-
-    else if (list->count == 0 && list->head == NULL)
+    } else if (list->count == 0 && list->head == NULL)
     {
         list->head = calloc(sizeof(fieldNode), 1);
         fillFieldNode(list->head, fieldName, fieldType, length);
@@ -54,8 +51,7 @@ bool addfieldNode(fieldList *list, bool at_head, char *fieldName, char *fieldTyp
             list->tail = list->head;
         }
         return true;
-    }
-    else return false;
+    } else return false;
 }
 
 void popFieldNode(fieldList *list)

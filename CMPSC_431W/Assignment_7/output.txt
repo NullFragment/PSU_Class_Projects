@@ -1,0 +1,113 @@
+===> SELECT emptype_id, fullETname, salaryrange
+===> FROM emptypes
+===> END
+RN,Registered Nurse,$35000-$70000
+LPN,Licensed Practical Nurse,$18000-$35000
+NA,Nurse Assistant,$12000-$18000
+
+===> SELECT lname, city, zip, gender
+===> FROM people
+===> END
+BERRYMAN,BRONX,10456,FEMALE
+DESCHOMP,BROOKLYN,11224,MALE
+THOMAS,BRONX,10473,FEMALE
+CHEVALIER,NEW YORK,10029,MALE
+CERVANTES,BRONX,10473,FEMALE
+PETERSEN,BRONX,10461,MALE
+FORD,BROOKLYN,11226,FEMALE
+HAGIN,PATCHOGUE,11772,MALE
+KOROTCHEN,BROOKLYN,11220,FEMALE
+MILES,CHESTER,10915,FEMALE
+POTTER,OAKDALE,11769,FEMALE
+
+===> SELECT lname, city, zip, gender
+===> FROM people
+===> WHERE city = "BRONX"
+===> AND gender = "FEMALE"
+===> END
+BERRYMAN,BRONX,10456,FEMALE
+THOMAS,BRONX,10473,FEMALE
+CERVANTES,BRONX,10473,FEMALE
+
+===> SELECT lname, city, zip, gender
+===> FROM people
+===> WHERE city = "BRONX"
+===> AND gender = "MALE"
+===> END
+PETERSEN,BRONX,10461,MALE
+
+===> SELECT lname, city, zip
+===> FROM people
+===> WHERE city = "BRONX"
+===> AND gender = "FEMALE"
+===> END
+BERRYMAN,BRONX,10456
+THOMAS,BRONX,10473
+CERVANTES,BRONX,10473
+
+===> SELECT lname, fname, salary, emptype
+===> FROM people, employees
+===> WHERE people_id = pid
+===> END
+THOMAS,JO,$65000,RN
+CHEVALIER,AULIO,$60000,RN
+PETERSEN,BOB,$25000,NA
+KOROTCHEN,AURORA,$55000,LPN
+
+===> SELECT lname, fname, salary, emptype
+===> FROM people, employees
+===> WHERE people_id = pid
+===> AND city = "BRONX"
+===> END
+THOMAS,JO,$65000,RN
+PETERSEN,BOB,$25000,NA
+
+===> SELECT lname, fname, salary, fullETname, salaryrange
+===> FROM people, employees, emptypes
+===> WHERE people_id = pid
+===> AND emptype = emptype_id
+===> AND city = "BRONX"
+===> END
+THOMAS,JO,$65000,Registered Nurse,$35000-$70000
+PETERSEN,BOB,$25000,Nurse Assistant,$12000-$18000
+
+===> SELECT deptnum,deptname
+===> FROM departments
+===> END
+1001,ER
+1002,MATERNITY
+1003,SURGERY
+
+===> SELECT lname, fname, salary, fullETname, salaryrange, deptname
+===> FROM people, employees, emptypes, departments
+===> WHERE people_id = pid
+===> AND emptype = emptype_id
+===> AND city = "BRONX"
+===> AND edeptnum = deptnum
+===> END
+THOMAS,JO,$65000,Registered Nurse,$35000-$70000,SURGERY
+PETERSEN,BOB,$25000,Nurse Assistant,$12000-$18000,MATERNITY
+
+===> SELECT lname, fname, phone1
+===> FROM ipeople
+===> END
+BERRYMAN,MARTHA,732-461-9820
+CERVANTES,LEAH,631-733-8223
+CHEVALIER,AULIO,631-718-3288
+DESCHOMP,HAROLD,929-275-3170
+FORD,CRYSTAL,718-787-9479
+HAGIN,PAUL,845-744-5075
+KOROTCHEN,AURORA,845-357-6017
+MILES,NORMA,848-896-8296
+PETERSEN,BOB,610-950-3948
+POTTER,LISA,212-850-6105
+THOMAS,JO,934-716-4031
+
+===> SELECT lname, fname, phone1
+===> FROM ipeople
+===> WHERE lname = "KOROTCHEN"
+===> END
+TRACE: HAGIN,PAUL,845-744-5075
+TRACE: PETERSEN,BOB,610-950-3948
+TRACE: KOROTCHEN,AURORA,845-357-6017
+KOROTCHEN,AURORA,845-357-6017
