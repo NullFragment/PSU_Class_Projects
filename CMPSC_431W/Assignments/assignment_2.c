@@ -95,8 +95,13 @@ bool loadDatabase(struct _table *table)
         current = strtok(str_in, ",\n");
         for (int i = 0; i < table->fieldcount; i++)
         {
-            strncat(&record[rec_loc], current, table->fields[i].fieldLength - 1);
-            rec_loc += table->fields[i].fieldLength;
+            int f_length = table->fields[i].fieldLength;
+            if(strlen(current) > f_length)
+            {
+                printf("*** WARNING: Data in field %s is being truncated ***\n", table->fields[i].fieldName);
+            }
+            strncat(&record[rec_loc], current, f_length - 1);
+            rec_loc += f_length;
             current = strtok(NULL, ",\n");
         }
         rec_loc = 0;
@@ -108,6 +113,7 @@ bool loadDatabase(struct _table *table)
         fgets(str_in, MAXINPUTLENGTH, stdin);
     } while (str_in != NULL && strlen(str_in) > 11);
     printf("*** LOG: Closing file\n");
+    fclose(database);
     return true;
 }
 

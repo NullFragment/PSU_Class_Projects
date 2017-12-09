@@ -127,7 +127,6 @@ END
 SELECT lname, fname, phone1
 FROM ipeople
 END
-
 SELECT lname, fname, phone1
 FROM ipeople
 WHERE lname = "KOROTCHEN"
