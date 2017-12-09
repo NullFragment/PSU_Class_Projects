@@ -3,11 +3,11 @@
 
 #include "utils.h"
 
-void fillNode(node *to_fill, char *field, char *condition, bool constant);
+void fillNode(node *to_fill, char *field, char *compareVal, int conditional, bool constant);
 
-linkedList *makeLinkedList(char *field, char *condition, bool constant);
+linkedList *makeLinkedList(char *field, char *compareVal, int conditional, bool constant);
 
-bool addNode(linkedList *list, bool at_head, char *field, char *condition, bool constant);
+bool addNode(linkedList *list, bool at_head, char *field, char *compareVal, int condition, bool constant);
 
 void popNode(linkedList *list);
 

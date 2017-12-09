@@ -51,7 +51,7 @@ void getIndexedRecord(_table *schema, linkedList *selects, linkedList *clauses, 
         field = schema->fields->head;
         trimChars(print_string, ",");
         fprintf(output, "==> TRACE: %s\n", print_string);
-        compareVal = strncmp(print_string, clause->condition, strlen(clause->condition));
+        compareVal = strncmp(print_string, clause->compareVal, strlen(clause->compareVal));
         fseek(database, -1 * schema->reclen, SEEK_CUR);
         if (compareVal < 0)
         {
@@ -106,9 +106,14 @@ void getRecord(_table *schema, linkedList *selects, FILE *output)
             fread(buffer, (size_t) field->length, 1, database);
             while (select != NULL)
             {
-                if (compareStrings(field->fieldName, select->field, 0, 0))
+                size_t fieldNameLen = strlen(field->fieldName);
+                size_t selectNameLen = strlen(select->field);
+
+                size_t complen = (fieldNameLen > selectNameLen) ? fieldNameLen : selectNameLen;
+
+                if (compareStrings(field->fieldName, select->field, complen, 0))
                 {
-                    strcpy(select->condition, buffer);
+                    strcpy(select->compareVal, buffer);
                     break;
                 }
                 select = select->next;
@@ -118,9 +123,9 @@ void getRecord(_table *schema, linkedList *selects, FILE *output)
         }
         while (select != NULL)
         {
-            strcat(print_string, select->condition);
+            strcat(print_string, select->compareVal);
             strcat(print_string, ",");
-            memset(select->condition, 0, MAXINPUTLENGTH);
+            memset(select->compareVal, 0, MAXINPUTLENGTH);
             select = select->next;
         }
         select = selects->head;
@@ -156,7 +161,7 @@ bool selectRecord(char *buffer)
     // Read in comma delimited fields and create linked list of fields to select.
     while (cmd != NULL)
     {
-        addNode(fields, false, cmd, "", false);
+        addNode(fields, false, cmd, "", 0, false);
         cmd = strtok(NULL, ", ");
     }
 
@@ -168,7 +173,7 @@ bool selectRecord(char *buffer)
     cmd = strtok(NULL, ", ");
     while (cmd != NULL)
     {
-        addNode(tables, false, cmd, "", false);
+        addNode(tables, false, cmd, "", 0, false);
         cmd = strtok(NULL, ", ");
     }
 
@@ -192,14 +197,36 @@ bool selectRecord(char *buffer)
             // Create field name and string to match for where clause
             cmd = strtok(NULL, " ");
             strncat(field, cmd, MAXINPUTLENGTH);
-            cmd = strtok(NULL, " =");
+            cmd = strtok(NULL, " ");
+            int compareCondition = 9;
+            if (compareStrings(cmd, "=", 1, 0))
+            {
+                compareCondition = 0;
+            }
+            else if (compareStrings(cmd, ">=", 2, 0))
+            {
+                compareCondition = 2;
+            }
+            else if (compareStrings(cmd, "<=", 2, 0))
+            {
+                compareCondition = -2;
+            }
+            else if (compareStrings(cmd, ">", 1, 0))
+            {
+                compareCondition = 1;
+            }
+            else if (compareStrings(cmd, "<", 1, 0))
+            {
+                compareCondition = -1;
+            }
+            cmd = strtok(NULL, " ");
             if (compareStrings(cmd, "\"", 1, 0))
             {
                 constant = true;
             }
             cmd = trimChars(cmd, "\"");
             strncat(condition, cmd, MAXINPUTLENGTH);
-            addNode(clauses, false, field, condition, constant);
+            addNode(clauses, false, field, condition, compareCondition, constant);
             free(field); /** DEALLOCATE: FIELD */
             free(condition); /** DEALLOCATE: CONDITION */
             fgets(buffer, MAXINPUTLENGTH - 1, stdin);
@@ -237,7 +264,7 @@ bool selectRecord(char *buffer)
                 // Update Linked List
                 popNode(tables);
                 popNode(tables);
-                addNode(tables, true, temp_name, "", false);
+                addNode(tables, true, temp_name, "", 0, false);
 
                 free(join1); /** DEALLOCATE: JOIN1 */
                 free(join2); /** DEALLOCATE: JOIN2 */

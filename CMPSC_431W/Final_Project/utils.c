@@ -61,9 +61,20 @@ bool compareStrings(char *string1, char *string2, size_t length, int comparison)
                 if (strncmp(string1, string2, length) < 0) return true;
                 else return false;
             }
+            case -2:
+            {
+                if (strncmp(string1, string2, length) <= 0)
+                    return true;
+                else return false;
+            }
             case 1:
             {
                 if (strncmp(string1, string2, length) > 0) return true;
+                else return false;
+            }
+            case 2:
+            {
+                if (strncmp(string1, string2, length) >= 0) return true;
                 else return false;
             }
             default:
@@ -79,17 +90,37 @@ bool compareStrings(char *string1, char *string2, size_t length, int comparison)
         {
             case 0:
             {
+//                int cmpVal = strcmp(string1, string2);
+//                printf("Compare 1: %s, Compare 2: %s, CmpVal: %d, Case: %d\n", string1, string2, cmpVal, comparison);
                 if (strcmp(string1, string2) == 0) return true;
                 else return false;
             }
             case -1:
             {
+                int cmpVal = strcmp(string1, string2);
+                printf("Compare 1: %s, Compare 2: %s, CmpVal: %d, Case: %d\n", string1, string2, cmpVal, comparison);
                 if (strcmp(string1, string2) < 0) return true;
+                else return false;
+            }
+            case -2:
+            {
+                int cmpVal = strcmp(string1, string2);
+                printf("Compare 1: %s, Compare 2: %s, CmpVal: %d, Case: %d\n", string1, string2, cmpVal, comparison);
+                if (strcmp(string1, string2) <= 0) return true;
                 else return false;
             }
             case 1:
             {
+                int cmpVal = strcmp(string1, string2);
+                printf("Compare 1: %s, Compare 2: %s, CmpVal: %d, Case: %d\n", string1, string2, cmpVal, comparison);
                 if (strcmp(string1, string2) > 0) return true;
+                else return false;
+            }
+            case 2:
+            {
+                int cmpVal = strcmp(string1, string2);
+                printf("Compare 1: %s, Compare 2: %s, CmpVal: %d, Case: %d\n", string1, string2, cmpVal, comparison);
+                if (strcmp(string1, string2) >= 0) return true;
                 else return false;
             }
             default:

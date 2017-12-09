@@ -245,7 +245,7 @@ void selectRecord(struct _table *schema, char *fields)
     // Initialize values
     char *buffer = calloc(MAXINPUTLENGTH, 1);
     int field_counter = 0;
-    int *field_numbers = calloc((uint)schema->fieldcount, sizeof(int));
+    int *field_numbers = calloc((int)schema->fieldcount, sizeof(int));
     char *field = strtok(fields, ",");
     // Find all matching fields and create an array of their indices.
     while (field != NULL)
@@ -265,7 +265,7 @@ void selectRecord(struct _table *schema, char *fields)
     // Open schema file and search through all records for wanted information
     FILE *table = fopen(schema->tableFileName, "rb");
     strtok(buffer, " \n\0");
-    fread(buffer, (uint) schema->fields[0].fieldLength, 1, table);
+    fread(buffer, (int) schema->fields[0].fieldLength, 1, table);
     while (!feof(table))
     {
         for(int j = 0; j < field_counter; j++)
@@ -277,7 +277,7 @@ void selectRecord(struct _table *schema, char *fields)
         }
         for(int i = 1; i < schema->fieldcount; i++)
         {
-            fread(buffer, (uint) schema->fields[i].fieldLength, 1, table);
+            fread(buffer, (int) schema->fields[i].fieldLength, 1, table);
             for(int j = 0; j < field_counter; j++)
             {
                 if(field_numbers[j] == i)
@@ -288,7 +288,7 @@ void selectRecord(struct _table *schema, char *fields)
             memset(buffer, 0, MAXINPUTLENGTH);
         }
         printf("\n");
-        fread(buffer, (uint) schema->fields[0].fieldLength, 1, table);
+        fread(buffer, (int) schema->fields[0].fieldLength, 1, table);
     }
     fclose(table);
 }

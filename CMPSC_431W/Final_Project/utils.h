@@ -18,7 +18,8 @@ typedef enum
 typedef struct node
 {
     char *field;
-    char *condition;
+    char *compareVal;
+    int conditional;
     bool constant;
     struct node *next;
 } node;

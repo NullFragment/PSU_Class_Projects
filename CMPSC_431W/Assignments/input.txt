@@ -1,148 +1,4 @@
 //=================================================================
-//== CREATE TABLES
-//=================================================================
-CREATE TABLE people
-ADD people_id char 50
-ADD lname char 50
-ADD fname char 50
-ADD mname char 50
-ADD suffix char 50
-ADD bdate char 50
-ADD gender char 20
-ADD ssnum char 30
-ADD address1 char 70
-ADD address2 char 70
-ADD zip char 25
-ADD maiden char 50
-ADD mrn char 50
-ADD city char 50
-ADD state char 25
-ADD phone1 char 30
-ADD phone2 char 30
-ADD email char 30
-ADD alias char 100
-END
-CREATE TABLE employees
-ADD employee_id char 50
-ADD pid char 50
-ADD salary char 50
-ADD emptype char 504
-ADD edeptnum char 50
-END
-CREATE TABLE emptypes
-ADD emptype_id char 50
-ADD fullETname char 50
-ADD salaryrange char 50
-END
-CREATE TABLE departments
-ADD deptnum char 50
-ADD deptname char 50
-END
-
-//=================================================================
-//== CREATE INDEXES
-//=================================================================
-CREATE INDEX ipeople USING lname, fname, phone1
-FROM people
-END
-
-//=================================================================
-//== INSERT DATA
-//=================================================================
-INSERT INTO people 13125316,BERRYMAN,MARTHA,n/a,n/a,8/6/1993,FEMALE,857-46-5079,1120 CLAY AVE,4G,10456,n/a,n/a,BRONX,NY,732-461-9820,n/a,n/a,n/a
-INSERT INTO people 14423865,DESCHOMP,HAROLD,n/a,n/a,6/13/1973,MALE,822-36-9891,1172 E 73RD ST,PVT,11224,n/a,n/a,BROOKLYN,NY,929-275-3170,n/a,n/a,n/a
-INSERT INTO people 15058700,THOMAS,JO,JOSEFINA,n/a,5/26/1990,FEMALE,882-90-8105,1780 LAFAYETTE AVE,1B,10473,n/a,n/a,BRONX,NY,934-716-4031,934-716-4031,n/a,n/a
-INSERT INTO people 14377701,CHEVALIER,AULIO,n/a,n/a,5/14/2014,MALE,877-20-3599,330 FIRST AVE,n/a,10029,n/a,n/a,NEW YORK,NY,631-718-3288,n/a,n/a,n/a
-INSERT INTO people 14946687,CERVANTES,LEAH,n/a,n/a,1/26/1990,FEMALE,n/a,755 WHITE PLS RD,24K,10473,n/a,n/a,BRONX,NY,631-733-8223,n/a,n/a,n/a
-INSERT INTO people 14593403,PETERSEN,BOB,n/a,n/a,9/23/2011,MALE,n/a,1123 CROES AVE,n/a,10461,n/a,n/a,BRONX,NY,610-950-3948,n/a,n/a,n/a
-INSERT INTO people 12726346,FORD,CRYSTAL,LYNETTE,n/a,9/13/1924,FEMALE,876-89-3695,250 BORADWAY,325,11226,n/a,n/a,BROOKLYN,NY,718-787-9479,n/a,n/a,n/a
-INSERT INTO people 12950013,HAGIN,PAUL,TIMOTHY,n/a,1/9/2007,MALE,885-56-1040,35 THORBURN AVENUE,n/a,11772,n/a,3705392,PATCHOGUE,NY,845-744-5075,n/a,n/a,n/a
-INSERT INTO people 14600091,KOROTCHEN,AURORA,n/a,n/a,7/2/1939,FEMALE,855-46-1822,837 51ST ST,n/a,11220,LEONI,2470160,BROOKLYN,NY,845-357-6017,n/a,AKOROTCHEN@AMGGT.COM,n/a
-INSERT INTO people 14156155,MILES,NORMA,TAMMY,n/a,9/16/1964,FEMALE,856-83-7720,LAGUARDIA RD,SHLT,10915,n/a,n/a,CHESTER,NY,848-896-8296,n/a,NMILES@AMGGT.COM,n/a
-INSERT INTO people 12224307,POTTER,LISA,n/a,n/a,5/16/1951,FEMALE,n/a,166 LAKESIDE DR,n/a,11769,n/a,n/a,OAKDALE,NY,212-850-6105,n/a,n/a,LISA FERGUSON POTTER
-INSERT INTO employees 101,14377701,$60000,RN,1001
-INSERT INTO employees 202,14600091,$55000,LPN,1002
-INSERT INTO employees 303,15058700,$65000,RN,1003
-INSERT INTO employees 404,14593403,$25000,NA,1002
-INSERT INTO emptypes RN,Registered Nurse,$35000-$70000
-INSERT INTO emptypes LPN,Licensed Practical Nurse,$18000-$35000
-INSERT INTO emptypes NA,Nurse Assistant,$12000-$18000
-INSERT INTO departments 1001,ER
-INSERT INTO departments 1002,MATERNITY
-INSERT INTO departments 1003,SURGERY
-
-//=================================================================
-//== SELECT TABLE STATEMENTS
-//=================================================================
-SELECT emptype_id, fullETname, salaryrange
-FROM emptypes
-END
-SELECT lname, city, zip, gender
-FROM people
-END
-SELECT lname, city, zip, gender
-FROM people
-WHERE city = "BRONX"
-AND gender = "FEMALE"
-END
-SELECT lname, city, zip, gender
-FROM people
-WHERE city = "BRONX"
-AND gender = "MALE"
-END
-SELECT lname, city, zip
-FROM people
-WHERE city = "BRONX"
-AND gender = "FEMALE"
-END
-SELECT lname, fname, salary, emptype
-FROM people, employees
-WHERE people_id = pid
-END
-SELECT lname, fname, salary, emptype
-FROM people, employees
-WHERE people_id = pid
-AND city = "BRONX"
-END
-SELECT lname, fname, salary, fullETname, salaryrange
-FROM people, employees, emptypes
-WHERE people_id = pid
-AND emptype = emptype_id
-AND city = "BRONX"
-END
-SELECT deptnum,deptname
-FROM departments
-END
-SELECT lname, fname, salary, fullETname, salaryrange, deptname
-FROM people, employees, emptypes, departments
-WHERE people_id = pid
-AND emptype = emptype_id
-AND city = "BRONX"
-AND edeptnum = deptnum
-END
-
-SELECT lname, fname, salary, fullETname, salaryrange, deptname
-FROM people, employees, emptypes, departments
-WHERE people_id = pid
-AND emptype = emptype_id
-AND city = "BRONX"
-AND edeptnum = deptnum
-AND salary >= "$25000"
-END
-
-//=================================================================
-//== SELECT INDEX STATEMENTS
-//=================================================================
-SELECT lname, fname, phone1
-FROM ipeople
-END
-SELECT lname, fname, phone1
-FROM ipeople
-WHERE lname = "KOROTCHEN"
-END
-
-
-//=================================================================
 //== CREATE ALL
 //=================================================================
 CREATE TABLE people
@@ -205,4 +61,63 @@ INSERT INTO departments 1002,MATERNITY
 INSERT INTO departments 1003,SURGERY
 CREATE INDEX ipeople USING lname, fname, phone1
 FROM people
+END
+//=================================================================
+//== STANDARD TABLE STATEMENTS
+//=================================================================
+SELECT emptype_id, fullETname, salaryrange
+FROM emptypes
+END
+SELECT lname, city, zip, gender
+FROM people
+END
+SELECT lname, city, zip, gender
+FROM people
+WHERE city = "BRONX"
+AND gender = "FEMALE"
+END
+SELECT lname, city, zip, gender
+FROM people
+WHERE city = "BRONX"
+AND gender = "MALE"
+END
+SELECT lname, city, zip
+FROM people
+WHERE city = "BRONX"
+AND gender = "FEMALE"
+END
+SELECT lname, fname, salary, emptype
+FROM people, employees
+WHERE people_id = pid
+END
+SELECT lname, fname, salary, emptype
+FROM people, employees
+WHERE people_id = pid
+AND city = "BRONX"
+END
+SELECT lname, fname, salary, fullETname, salaryrange
+FROM people, employees, emptypes
+WHERE people_id = pid
+AND emptype = emptype_id
+AND city = "BRONX"
+END
+SELECT deptnum,deptname
+FROM departments
+END
+SELECT lname, fname, salary, fullETname, salaryrange, deptname
+FROM people, employees, emptypes, departments
+WHERE people_id = pid
+AND emptype = emptype_id
+AND city = "BRONX"
+AND edeptnum = deptnum
+END
+//=================================================================
+//== INDEX STATEMENTS
+//=================================================================
+SELECT lname, fname, phone1
+FROM ipeople
+END
+SELECT lname, fname, phone1
+FROM ipeople
+WHERE lname = "KOROTCHEN"
 END

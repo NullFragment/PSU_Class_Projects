@@ -42,7 +42,8 @@ bool loadDatabase(_table *table, char *buffer)
     if (access(filename, F_OK) == -1)
     {
         database = fopen(filename, "wb+"); /** OPEN FILE: DATABASE */
-    } else
+    }
+    else
     {
         database = fopen(filename, "ab"); /** OPEN FILE: DATABASE */
     }
@@ -111,9 +112,12 @@ bool checkWhereLiteral(_table *schema, node *table, linkedList *clauses)
             fread(buffer, (size_t) field->length, 1, database);
             while (where != NULL && failure == false)
             {
+                size_t fieldLen = strlen(field->fieldName);
+                size_t whereLen = strlen(where->field);
+                size_t compLen = (fieldLen > whereLen) ? fieldLen : whereLen;
                 if (where->constant == true &&
-                    compareStrings(field->fieldName, where->field, 0, 0) &&
-                    !compareStrings(buffer, where->condition, 0, 0))
+                    compareStrings(field->fieldName, where->field, compLen, 0) &&
+                    !compareStrings(buffer, where->compareVal, compLen, where->conditional))
                 {
                     failure = true;
                     break;
@@ -209,13 +213,29 @@ bool joinTable(_table *first, _table *second, linkedList *clauses, char *temp_na
                     {
                         if (where->constant == false)
                         {
-                            if (compareStrings(where->field, firstField->fieldName, 0, 0) ||
-                                compareStrings(where->field, secondField->fieldName, 0, 0))
+                            size_t firstFieldLen = strlen(firstField->fieldName);
+                            size_t secondFieldLen = strlen(secondField->fieldName);
+                            size_t whereLen = strlen(where->field);
+                            size_t compareLen = strlen(where->compareVal);
+                            size_t firstBufLen = strlen(firstBuffer);
+                            size_t secondBufLen = strlen(secondBuffer);
+
+
+                            size_t firstCompLen = (firstFieldLen > whereLen) ? firstFieldLen : whereLen;
+                            size_t secCompLen = (secondFieldLen > whereLen) ? secondFieldLen : whereLen;
+
+                            size_t firstValLen = (firstFieldLen > compareLen) ? firstFieldLen : compareLen;
+                            size_t secValLen = (secondFieldLen > compareLen) ? secondFieldLen : compareLen;
+
+                            size_t bufferCompLen = (firstBufLen > secondBufLen) ? firstBufLen : secondBufLen;
+
+                            if (compareStrings(where->field, firstField->fieldName, firstCompLen, 0) ||
+                                compareStrings(where->field, secondField->fieldName, secCompLen, 0))
                             {
-                                if (compareStrings(where->condition, firstField->fieldName, 0, 0) ||
-                                    compareStrings(where->condition, secondField->fieldName, 0, 0))
+                                if (compareStrings(where->compareVal, firstField->fieldName, firstValLen, 0) ||
+                                    compareStrings(where->compareVal, secondField->fieldName, secValLen, 0))
                                 {
-                                    if (!compareStrings(firstBuffer, secondBuffer, 0, 0))
+                                    if (!compareStrings(firstBuffer, secondBuffer, bufferCompLen, where->conditional))
                                     {
                                         failure = true;
                                     }
@@ -249,7 +269,8 @@ bool joinTable(_table *first, _table *second, linkedList *clauses, char *temp_na
                 fwrite(firstBuffer, 1, (size_t) first->reclen - 1, tempDB);
                 fwrite("\0", 1, 1, tempDB);
                 fwrite(secondBuffer, 1, (size_t) second->reclen, tempDB);
-            } else
+            }
+            else
             {
                 fseek(secondDB, second->reclen, SEEK_CUR);
             }

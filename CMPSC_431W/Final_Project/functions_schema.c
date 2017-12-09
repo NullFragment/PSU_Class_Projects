@@ -196,7 +196,7 @@ void createIndex(char *buffer, FILE *stream)
         token = strtok(NULL, " ,\n");
         while (token != NULL)
         {
-            addNode(indexOn, false, token, " ", false);
+            addNode(indexOn, false, token, " ", 0, false);
             token = strtok(NULL, " ,\n");
         }
     }
@@ -220,8 +220,7 @@ void createIndex(char *buffer, FILE *stream)
             {
                 while (traceBaseFields != NULL)
                 {
-                    if (compareStrings(traceBaseFields->fieldName, traceIndexFields->field,
-                                       strlen(traceIndexFields->field), 0))
+                    if (compareStrings(traceBaseFields->fieldName, traceIndexFields->field, 0, 0))
                     {
                         addfieldNode(indexFields, false, traceBaseFields->fieldName, traceBaseFields->fieldType,
                                      traceBaseFields->length);
