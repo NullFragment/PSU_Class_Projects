@@ -63,12 +63,45 @@ void getIndexedRecord(_table *schema, linkedList *selects, linkedList *clauses, 
             seekLen = -1 * seekLen / 2;
             if (seekLen == 0) seekLen = -1;
         }
+    } while (compareVal != 0 && iter < MAXBINSEARCH);
+    do
+    {
+        memset(buffer, 0, MAXINPUTLENGTH);
+        memset(print_string, 0, MAXINPUTLENGTH);
+        fseek(database, -2 * schema->reclen, SEEK_CUR);
+        while (field != NULL)
+        {
+            fread(buffer, (size_t) field->length, 1, database);
+            strncat(print_string, buffer, (size_t) field->length);
+            strncat(print_string, ",", 1);
+            field = field->next;
+        }
+        field = schema->fields->head;
+        trimChars(print_string, ",");
+        fprintf(output, "==> TRACE: %s\n", print_string);
+        compareVal = strncmp(print_string, clause->compareVal, strlen(clause->compareVal));
+    } while (compareVal == 0);
+
+    do
+    {
+        memset(buffer, 0, MAXINPUTLENGTH);
+        memset(print_string, 0, MAXINPUTLENGTH);
+        while (field != NULL)
+        {
+            fread(buffer, (size_t) field->length, 1, database);
+            strncat(print_string, buffer, (size_t) field->length);
+            strncat(print_string, ",", 1);
+            field = field->next;
+        }
+        field = schema->fields->head;
+        trimChars(print_string, ",");
+        compareVal = strncmp(print_string, clause->compareVal, strlen(clause->compareVal));
+
         if (compareVal == 0 && strlen(print_string) > 0)
         {
             fprintf(output, "%s\n", print_string);
         }
-    } while (compareVal != 0 && iter < MAXBINSEARCH);
-
+    } while (compareVal == 0);
 }
 
 // #############################################################################
