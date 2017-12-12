@@ -1,4 +1,4 @@
-SELECT dept_name, emp_fname, emp_lname, shift_day, time_start, time_end, emp_hourlyPay, shift_status
+SELECT dept_name, emp_fname, emp_lname, shift_day, time_start, time_end, time_length, emp_hourlyPay, shift_status
 FROM shift, department, employee, shift_time, week, shift_status
 WHERE shift_day >= "2017-10-01"
 AND shift_day <= "2017-10-05"

@@ -1,4 +1,4 @@
-SELECT shift_day, day_name, time_start, time_end, emp_fname, emp_lname, dept_name, role_name
+SELECT shift_day, day_name, time_start, time_end, emp_fname, emp_lname, dept_name, role_name, week_startDate
 FROM shift, week, employee, weekday, shift_time, department, role, certification
 WHERE weekID >= "0001"
 AND weekID <= "0006"
