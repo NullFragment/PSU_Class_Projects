@@ -1,0 +1,85 @@
+Welcome!
+===> //=================================================================
+===> //== CREATE ALL TABLES
+===> //=================================================================
+===> CREATE TABLE address
+===> ADD addID char 6
+===> ADD add_empID char 6
+===> ADD add_street1 char 30
+===> ADD add_street2 char 30
+===> ADD add_city char 30
+===> ADD add_state char 30
+===> ADD add_zip char 30
+===> END
+===> CREATE TABLE certification
+===> ADD certID char 6
+===> ADD cert_empID char 6
+===> ADD cert_roleID char 6
+===> END
+===> CREATE TABLE role
+===> ADD roleID char 6
+===> ADD role_name char 30
+===> END
+===> CREATE TABLE department
+===> ADD deptID char 6
+===> ADD dept_min_staff char 30
+===> ADD dept_max_staff char 30
+===> ADD dept_beds char 30
+===> ADD dept_name char 30
+===> END
+===> CREATE TABLE dept_need
+===> ADD needID char 6
+===> ADD need_weekID char 6
+===> ADD need_dayID char 6
+===> ADD need_timeID char 6
+===> ADD need_deptID char 6
+===> ADD need_roleID char 6
+===> ADD need_value char 30
+===> ADD need_day char 30
+===> END
+===> CREATE TABLE employee
+===> ADD empID char 6
+===> ADD emp_homeDept char 30
+===> ADD emp_fname char 30
+===> ADD emp_mname char 30
+===> ADD emp_lname char 30
+===> ADD emp_ssn char 30
+===> ADD emp_phone1 char 30
+===> ADD emp_phone2 char 30
+===> ADD emp_startDate char 30
+===> ADD emp_endDate char 30
+===> ADD emp_fullTime char 30
+===> ADD emp_salaried char 30
+===> ADD emp_hourlyPay char 30
+===> END
+===> CREATE TABLE shift
+===> ADD shiftID char 6
+===> ADD shift_empID char 6
+===> ADD shift_deptID char 6
+===> ADD shift_timeID char 6
+===> ADD shift_weekID char 6
+===> ADD shift_dayID char 6
+===> ADD shift_statusID char 6
+===> ADD shift_payModifier char 30
+===> ADD shift_day char 30
+===> END
+===> CREATE TABLE shift_status
+===> ADD statusID char 6
+===> ADD status_type char 30
+===> END
+===> CREATE TABLE shift_time
+===> ADD timeID char 6
+===> ADD time_start char 30
+===> ADD time_end char 30
+===> ADD time_length char 30
+===> END
+===> CREATE TABLE week
+===> ADD weekID char 6
+===> ADD week_startDate char 30
+===> ADD week_endDate char 30
+===> END
+===> CREATE TABLE weekday
+===> ADD dayID char 6
+===> ADD day_name char 30
+===> END
+Goodbye!
