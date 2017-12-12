@@ -1,0 +1,10 @@
+SELECT need_day, day_name, time_start, time_end, dept_name, role_name, need_value
+FROM dept_need, week, shift_time, weekday, department, role
+WHERE need_weekID = "0001"
+AND deptID = "0001"
+AND need_weekID = weekID
+AND need_dayID = dayID
+AND need_timeID = timeID
+AND need_deptID = deptID
+AND need_roleID = roleID
+END

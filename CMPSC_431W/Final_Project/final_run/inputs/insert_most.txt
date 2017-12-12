@@ -1,0 +1,102 @@
+//=================================================================
+//== INSERT ALL EXCLUDING SHIFTS AND NEEDS
+//=================================================================
+INSERT INTO week 0001,2017-10-01,2017-10-07
+INSERT INTO week 0002,2017-10-08,2017-10-14
+INSERT INTO week 0003,2017-10-15,2017-10-21
+INSERT INTO week 0004,2017-10-22,2017-10-28
+INSERT INTO week 0005,2017-10-29,2017-11-04
+INSERT INTO week 0006,2017-11-05,2017-11-11
+INSERT INTO week 0007,2017-11-12,2017-11-18
+INSERT INTO week 0008,2017-11-19,2017-11-25
+INSERT INTO week 0009,2017-11-26,2017-12-02
+INSERT INTO week 0010,2017-12-03,2017-12-09
+INSERT INTO week 0011,2017-12-10,2017-12-16
+INSERT INTO week 0012,2017-12-17,2017-12-23
+INSERT INTO weekday 0001,SUN
+INSERT INTO weekday 0002,MON
+INSERT INTO weekday 0003,TUE
+INSERT INTO weekday 0004,WED
+INSERT INTO weekday 0005,THU
+INSERT INTO weekday 0006,FRI
+INSERT INTO weekday 0007,SAT
+INSERT INTO shift_status 0001,Call-in
+INSERT INTO shift_status 0002,Call-off
+INSERT INTO shift_status 0003,Req-in
+INSERT INTO shift_status 0004,Req-off
+INSERT INTO shift_time 0001,07:00:00,15:00:00,8
+INSERT INTO shift_time 0002,15:00:00,23:00:00,8
+INSERT INTO shift_time 0003,23:00:00,07:00:00,8
+INSERT INTO shift_time 0004,07:00:00,19:00:00,12
+INSERT INTO shift_time 0005,19:00:00,07:00:00,12
+INSERT INTO role 0001,RN
+INSERT INTO role 0002,LPN
+INSERT INTO role 0003,NP
+INSERT INTO role 0004,CNS
+INSERT INTO role 0005,NA
+INSERT INTO department 0001,1,10,26,ER
+INSERT INTO department 0002,2,6,19,ICU
+INSERT INTO department 0003,1,10,12,MAT
+INSERT INTO department 0004,1,7,25,OR
+INSERT INTO department 0005,1,9,26,QUAR
+INSERT INTO department 0006,2,9,25,PSYCH
+INSERT INTO employee 0001,null,Adam,Adam,Apple,000-00-0001,000-000-0001,000-000-0001,2017-10-11,null,1,1,22.5
+INSERT INTO employee 0002,null,Brad,Brad,Baker,000-00-0002,000-000-0002,000-000-0002,2017-10-11,null,0,0,15
+INSERT INTO employee 0003,null,Charles,Charles,Chaplan,000-00-0003,000-000-0003,000-000-0003,2017-10-11,null,0,1,37
+INSERT INTO employee 0004,null,Derek,Derek,Davis,000-00-0004,000-000-0004,000-000-0004,2017-10-11,null,1,1,40
+INSERT INTO employee 0005,null,Evan,Evan,Elliott,000-00-0005,000-000-0005,000-000-0005,2017-10-11,null,1,1,21
+INSERT INTO employee 0006,null,Frank,Frank,Farris,000-00-0006,000-000-0006,000-000-0006,2017-10-11,null,1,1,32
+INSERT INTO employee 0007,null,George,George,Grant,000-00-0007,000-000-0007,000-000-0007,2017-10-11,null,0,0,19
+INSERT INTO employee 0008,null,Hank,Hank,Hamill,000-00-0008,000-000-0008,000-000-0008,2017-10-11,null,0,0,21
+INSERT INTO employee 0009,null,Ivan,Ivan,Ikarov,000-00-0009,000-000-0009,000-000-0009,2017-10-11,null,1,0,24
+INSERT INTO employee 0010,null,Jack,Jack,Joplin,000-00-0010,000-000-0010,000-000-0010,2017-10-11,null,1,1,21
+INSERT INTO employee 0011,null,Kevin,Kevin,Keller,000-00-0011,000-000-0011,000-000-0011,2017-10-11,null,1,1,20
+INSERT INTO employee 0012,null,Lenny,Lenny,Landman,000-00-0012,000-000-0012,000-000-0012,2017-10-11,null,1,1,17
+INSERT INTO employee 0013,null,Mark,Mark,Morris,000-00-0013,000-000-0013,000-000-0013,2017-10-11,null,1,1,32
+INSERT INTO employee 0014,null,Nick,Nick,Norton,000-00-0014,000-000-0014,000-000-0014,2017-10-11,null,0,1,23
+INSERT INTO employee 0015,null,Orval,Orval,Obrian,000-00-0015,000-000-0015,000-000-0015,2017-10-11,null,0,0,30
+INSERT INTO employee 0016,null,Peter,Peter,Parker,000-00-0016,000-000-0016,000-000-0016,2017-10-11,null,0,1,39
+INSERT INTO employee 0017,null,Quinn,Quinn,Quarrick,000-00-0017,000-000-0017,000-000-0017,2017-10-11,null,1,0,15
+INSERT INTO employee 0018,null,Robert,Robert,Rodgers,000-00-0018,000-000-0018,000-000-0018,2017-10-11,null,1,1,17
+INSERT INTO employee 0019,null,Sam,Sam,Saville,000-00-0019,000-000-0019,000-000-0019,2017-10-11,null,0,1,38
+INSERT INTO employee 0020,null,Tom,Tom,Tarantino,000-00-0020,000-000-0020,000-000-0020,2017-10-11,null,0,0,27
+INSERT INTO address 0001,0001,123 Easy Street,Apt. A,State College,Pennsylvania,16801
+INSERT INTO address 0002,0002,124 Easy Street,Apt. B,State College,Pennsylvania,16801
+INSERT INTO address 0003,0003,125 Easy Street,Apt. C,State College,Pennsylvania,16801
+INSERT INTO address 0004,0004,126 Easy Street,Apt. D,State College,Pennsylvania,16801
+INSERT INTO address 0005,0005,127 Easy Street,Apt. E,State College,Pennsylvania,16801
+INSERT INTO address 0006,0006,128 Easy Street,Apt. F,State College,Pennsylvania,16801
+INSERT INTO address 0007,0007,129 Easy Street,Apt. G,State College,Pennsylvania,16801
+INSERT INTO address 0008,0008,130 Easy Street,Apt. H,State College,Pennsylvania,16801
+INSERT INTO address 0009,0009,131 Easy Street,Apt. I,State College,Pennsylvania,16801
+INSERT INTO address 0010,0010,132 Easy Street,Apt. J,State College,Pennsylvania,16801
+INSERT INTO address 0011,0011,133 Easy Street,Apt. K,State College,Pennsylvania,16801
+INSERT INTO address 0012,0012,134 Easy Street,Apt. L,State College,Pennsylvania,16801
+INSERT INTO address 0013,0013,135 Easy Street,Apt. M,State College,Pennsylvania,16801
+INSERT INTO address 0014,0014,136 Easy Street,Apt. N,State College,Pennsylvania,16801
+INSERT INTO address 0015,0015,137 Easy Street,Apt. O,State College,Pennsylvania,16801
+INSERT INTO address 0016,0016,138 Easy Street,Apt. P,State College,Pennsylvania,16801
+INSERT INTO address 0017,0017,139 Easy Street,Apt. Q,State College,Pennsylvania,16801
+INSERT INTO address 0018,0018,140 Easy Street,Apt. R,State College,Pennsylvania,16801
+INSERT INTO address 0019,0019,141 Easy Street,Apt. S,State College,Pennsylvania,16801
+INSERT INTO address 0020,0020,142 Easy Street,Apt. T,State College,Pennsylvania,16801
+INSERT INTO certification 0001,0001,0003
+INSERT INTO certification 0002,0002,0002
+INSERT INTO certification 0003,0003,0005
+INSERT INTO certification 0004,0004,0001
+INSERT INTO certification 0005,0005,0001
+INSERT INTO certification 0006,0006,0004
+INSERT INTO certification 0007,0007,0005
+INSERT INTO certification 0008,0008,0001
+INSERT INTO certification 0009,0009,0005
+INSERT INTO certification 0010,0010,0002
+INSERT INTO certification 0011,0011,0004
+INSERT INTO certification 0012,0012,0003
+INSERT INTO certification 0013,0013,0004
+INSERT INTO certification 0014,0014,0002
+INSERT INTO certification 0015,0015,0004
+INSERT INTO certification 0016,0016,0001
+INSERT INTO certification 0017,0017,0004
+INSERT INTO certification 0018,0018,0005
+INSERT INTO certification 0019,0019,0002
+INSERT INTO certification 0020,0020,0004

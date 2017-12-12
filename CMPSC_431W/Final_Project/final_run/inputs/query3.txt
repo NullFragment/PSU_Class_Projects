@@ -1,0 +1,10 @@
+SELECT dept_name, emp_fname, emp_lname, emp_phone1, shift_day, day_name, time_start, time_end
+FROM week, department, shift, employee, shift_time, weekday
+WHERE weekID = "0001"
+AND deptID = "0001"
+AND shift_empID = empID
+AND shift_deptID = deptID
+AND shift_timeID = timeID
+AND shift_weekID = weekID
+AND shift_dayID = dayID
+END

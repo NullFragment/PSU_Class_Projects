@@ -1,0 +1,185 @@
+//=================================================================
+//== CREATE ALL TABLES
+//=================================================================
+CREATE TABLE address
+ADD addID char 50
+ADD add_empID char 50
+ADD add_street1 char 50
+ADD add_street2 char 50
+ADD add_city char 50
+ADD add_state char 50
+ADD add_zip char 50
+END
+CREATE TABLE certification
+ADD certID char 50
+ADD cert_empID char 50
+ADD cert_roleID char 50
+END
+CREATE TABLE role
+ADD roleID char 50
+ADD role_name char 50
+END
+CREATE TABLE department
+ADD deptID char 50
+ADD dept_min_staff char 50
+ADD dept_max_staff char 50
+ADD dept_beds char 50
+ADD dept_name char 50
+END
+CREATE TABLE department_need
+ADD needID char 50
+ADD need_weekID char 50
+ADD need_dayID char 50
+ADD need_timeID char 50
+ADD need_deptID char 50
+ADD need_roleID char 50
+ADD need_value char 50
+ADD need_day char 50
+END
+CREATE TABLE employee
+ADD empID char 50
+ADD emp_homeDept char 50
+ADD emp_fname char 50
+ADD emp_mname char 50
+ADD emp_lname char 50
+ADD emp_ssn char 50
+ADD emp_phone1 char 50
+ADD emp_phone2 char 50
+ADD emp_startDate char 50
+ADD emp_endDate char 50
+ADD emp_fullTime char 50
+ADD emp_salaried char 50
+ADD emp_hourlyPay char 50
+END
+CREATE TABLE shift
+ADD shiftID char 50
+ADD shift_empID char 50
+ADD shift_deptID char 50
+ADD shift_timeID char 50
+ADD shift_weekID char 50
+ADD shift_dayID char 50
+ADD shift_statusID char 50
+ADD shift_payModifier char 50
+ADD shift_day char 50
+END
+CREATE TABLE shift_status
+ADD statusID char 50
+ADD status_type char 50
+END
+CREATE TABLE shift_time
+ADD timeID char 50
+ADD time_start char 50
+ADD time_end char 50
+ADD time_length char 50
+END
+CREATE TABLE week
+ADD weekID char 50
+ADD week_startDate char 50
+ADD week_endDate char 50
+END
+CREATE TABLE weekday
+ADD dayID char 50
+ADD day_name char 50
+END
+//=================================================================
+//== INSERT MOST DATA
+//=================================================================
+INSERT INTO week 1,2017-10-01,2017-10-07
+INSERT INTO week 2,2017-10-08,2017-10-14
+INSERT INTO week 3,2017-10-15,2017-10-21
+INSERT INTO week 4,2017-10-22,2017-10-28
+INSERT INTO week 5,2017-10-29,2017-11-04
+INSERT INTO week 6,2017-11-05,2017-11-11
+INSERT INTO week 7,2017-11-12,2017-11-18
+INSERT INTO week 8,2017-11-19,2017-11-25
+INSERT INTO week 9,2017-11-26,2017-12-02
+INSERT INTO week 10,2017-12-03,2017-12-09
+INSERT INTO week 11,2017-12-10,2017-12-16
+INSERT INTO week 12,2017-12-17,2017-12-23
+INSERT INTO weekday 1,SUN
+INSERT INTO weekday 2,MON
+INSERT INTO weekday 3,TUE
+INSERT INTO weekday 4,WED
+INSERT INTO weekday 5,THU
+INSERT INTO weekday 6,FRI
+INSERT INTO weekday 7,SAT
+INSERT INTO shift_status 1,Call-in
+INSERT INTO shift_status 2,Call-off
+INSERT INTO shift_status 3,Req-in
+INSERT INTO shift_status 4,Req-off
+INSERT INTO shift_time 1,07:00:00,15:00:00,8
+INSERT INTO shift_time 2,15:00:00,23:00:00,8
+INSERT INTO shift_time 3,23:00:00,07:00:00,8
+INSERT INTO shift_time 4,07:00:00,19:00:00,12
+INSERT INTO shift_time 5,19:00:00,07:00:00,12
+INSERT INTO role 1,RN
+INSERT INTO role 2,LPN
+INSERT INTO role 3,NP
+INSERT INTO role 4,CNS
+INSERT INTO role 5,NA
+INSERT INTO department 1,1,10,26,ER
+INSERT INTO department 2,2,6,19,ICU
+INSERT INTO department 3,1,10,12,MAT
+INSERT INTO department 4,1,7,25,OR
+INSERT INTO department 5,1,9,26,QUAR
+INSERT INTO department 6,2,9,25,PSYCH
+INSERT INTO employee 1,null,Adam,Adam,Apple,000-00-0001,000-000-0001,000-000-0001,2017-10-11,null,1,1,22.5
+INSERT INTO employee 2,null,Brad,Brad,Baker,000-00-0002,000-000-0002,000-000-0002,2017-10-11,null,0,0,15
+INSERT INTO employee 3,null,Charles,Charles,Chaplan,000-00-0003,000-000-0003,000-000-0003,2017-10-11,null,0,1,37
+INSERT INTO employee 4,null,Derek,Derek,Davis,000-00-0004,000-000-0004,000-000-0004,2017-10-11,null,1,1,40
+INSERT INTO employee 5,null,Evan,Evan,Elliott,000-00-0005,000-000-0005,000-000-0005,2017-10-11,null,1,1,21
+INSERT INTO employee 6,null,Frank,Frank,Farris,000-00-0006,000-000-0006,000-000-0006,2017-10-11,null,1,1,32
+INSERT INTO employee 7,null,George,George,Grant,000-00-0007,000-000-0007,000-000-0007,2017-10-11,null,0,0,19
+INSERT INTO employee 8,null,Hank,Hank,Hamill,000-00-0008,000-000-0008,000-000-0008,2017-10-11,null,0,0,21
+INSERT INTO employee 9,null,Ivan,Ivan,Ikarov,000-00-0009,000-000-0009,000-000-0009,2017-10-11,null,1,0,24
+INSERT INTO employee 10,null,Jack,Jack,Joplin,000-00-0010,000-000-0010,000-000-0010,2017-10-11,null,1,1,21
+INSERT INTO employee 11,null,Kevin,Kevin,Keller,000-00-0011,000-000-0011,000-000-0011,2017-10-11,null,1,1,20
+INSERT INTO employee 12,null,Lenny,Lenny,Landman,000-00-0012,000-000-0012,000-000-0012,2017-10-11,null,1,1,17
+INSERT INTO employee 13,null,Mark,Mark,Morris,000-00-0013,000-000-0013,000-000-0013,2017-10-11,null,1,1,32
+INSERT INTO employee 14,null,Nick,Nick,Norton,000-00-0014,000-000-0014,000-000-0014,2017-10-11,null,0,1,23
+INSERT INTO employee 15,null,Orval,Orval,Obrian,000-00-0015,000-000-0015,000-000-0015,2017-10-11,null,0,0,30
+INSERT INTO employee 16,null,Peter,Peter,Parker,000-00-0016,000-000-0016,000-000-0016,2017-10-11,null,0,1,39
+INSERT INTO employee 17,null,Quinn,Quinn,Quarrick,000-00-0017,000-000-0017,000-000-0017,2017-10-11,null,1,0,15
+INSERT INTO employee 18,null,Robert,Robert,Rodgers,000-00-0018,000-000-0018,000-000-0018,2017-10-11,null,1,1,17
+INSERT INTO employee 19,null,Sam,Sam,Saville,000-00-0019,000-000-0019,000-000-0019,2017-10-11,null,0,1,38
+INSERT INTO employee 20,null,Tom,Tom,Tarantino,000-00-0020,000-000-0020,000-000-0020,2017-10-11,null,0,0,27
+INSERT INTO address 1,1,123 Easy Street,Apt. A,State College,Pennsylvania,16801
+INSERT INTO address 2,2,124 Easy Street,Apt. B,State College,Pennsylvania,16801
+INSERT INTO address 3,3,125 Easy Street,Apt. C,State College,Pennsylvania,16801
+INSERT INTO address 4,4,126 Easy Street,Apt. D,State College,Pennsylvania,16801
+INSERT INTO address 5,5,127 Easy Street,Apt. E,State College,Pennsylvania,16801
+INSERT INTO address 6,6,128 Easy Street,Apt. F,State College,Pennsylvania,16801
+INSERT INTO address 7,7,129 Easy Street,Apt. G,State College,Pennsylvania,16801
+INSERT INTO address 8,8,130 Easy Street,Apt. H,State College,Pennsylvania,16801
+INSERT INTO address 9,9,131 Easy Street,Apt. I,State College,Pennsylvania,16801
+INSERT INTO address 10,10,132 Easy Street,Apt. J,State College,Pennsylvania,16801
+INSERT INTO address 11,11,133 Easy Street,Apt. K,State College,Pennsylvania,16801
+INSERT INTO address 12,12,134 Easy Street,Apt. L,State College,Pennsylvania,16801
+INSERT INTO address 13,13,135 Easy Street,Apt. M,State College,Pennsylvania,16801
+INSERT INTO address 14,14,136 Easy Street,Apt. N,State College,Pennsylvania,16801
+INSERT INTO address 15,15,137 Easy Street,Apt. O,State College,Pennsylvania,16801
+INSERT INTO address 16,16,138 Easy Street,Apt. P,State College,Pennsylvania,16801
+INSERT INTO address 17,17,139 Easy Street,Apt. Q,State College,Pennsylvania,16801
+INSERT INTO address 18,18,140 Easy Street,Apt. R,State College,Pennsylvania,16801
+INSERT INTO address 19,19,141 Easy Street,Apt. S,State College,Pennsylvania,16801
+INSERT INTO address 20,20,142 Easy Street,Apt. T,State College,Pennsylvania,16801
+INSERT INTO certification 1,1,3
+INSERT INTO certification 2,2,2
+INSERT INTO certification 3,3,5
+INSERT INTO certification 4,4,1
+INSERT INTO certification 5,5,1
+INSERT INTO certification 6,6,4
+INSERT INTO certification 7,7,5
+INSERT INTO certification 8,8,1
+INSERT INTO certification 9,9,5
+INSERT INTO certification 10,10,2
+INSERT INTO certification 11,11,4
+INSERT INTO certification 12,12,3
+INSERT INTO certification 13,13,4
+INSERT INTO certification 14,14,2
+INSERT INTO certification 15,15,4
+INSERT INTO certification 16,16,1
+INSERT INTO certification 17,17,4
+INSERT INTO certification 18,18,5
+INSERT INTO certification 19,19,2
+INSERT INTO certification 20,20,4

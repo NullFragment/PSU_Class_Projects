@@ -1,0 +1,10 @@
+SELECT dept_name, emp_fname, emp_lname, shift_day, time_start, time_end, emp_hourlyPay, shift_status
+FROM shift, department, employee, shift_time, week, shift_status
+WHERE shift_day >= "2017-10-01"
+AND shift_day <= "2017-10-05"
+AND shift_empID = empID
+AND shift_deptID = deptID
+AND shift_timeID = timeID
+AND shift_weekID = weekID
+AND shift_statusID = statusID
+END

@@ -1,0 +1,13 @@
+SELECT shift_day, day_name, time_start, time_end, emp_fname, emp_lname, dept_name, role_name
+FROM shift, week, employee, weekday, shift_time, department, role, certification
+WHERE weekID >= "0001"
+AND weekID <= "0006"
+AND empID = "0001"
+AND shift_timeID = timeID
+AND shift_deptID = deptID
+AND shift_weekID = weekID
+AND shift_empID = empID
+AND shift_dayID = dayID
+AND cert_empID = empID
+AND cert_roleID = roleID
+END

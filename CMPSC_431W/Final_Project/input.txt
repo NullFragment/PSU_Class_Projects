@@ -113,7 +113,7 @@ END
 SELECT deptnum,deptname
 FROM departments
 END
-SELECT lname, fname, salary, fullETname, salaryrange, deptname
+SELECT lname, fname, salary, fullETname, salaryrange, deptnameCL
 FROM people, employees, emptypes, departments
 WHERE people_id = pid
 AND emptype = emptype_id
@@ -128,6 +128,18 @@ AND emptype = emptype_id
 AND city = "BRONX"
 AND edeptnum = deptnum
 AND salary >= "$25000"
+AND salary <= "$60000"
+END
+
+SELECT weekID
+FROM week
+WHERE weekID >= "0001"
+AND weekID <= "0006"
+END
+
+SELECT shift_day
+FROM shift
+WHERE shift_day = "2017-10-05"
 END
 
 //=================================================================

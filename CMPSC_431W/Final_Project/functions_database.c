@@ -114,10 +114,13 @@ bool checkWhereLiteral(_table *schema, node *table, linkedList *clauses)
             {
                 size_t fieldLen = strlen(field->fieldName);
                 size_t whereLen = strlen(where->field);
-                size_t compLen = (fieldLen > whereLen) ? fieldLen : whereLen;
+                size_t bufLen = strlen(buffer);
+                size_t compValLen = strlen(where->compareVal);
+                size_t fCompLen = (fieldLen > whereLen) ? fieldLen : whereLen;
+                size_t vCompLen = (bufLen > compValLen) ? bufLen : compValLen;
                 if (where->constant == true &&
-                    compareStrings(field->fieldName, where->field, compLen, 0) &&
-                    !compareStrings(buffer, where->compareVal, compLen, where->conditional))
+                    compareStrings(field->fieldName, where->field, fCompLen, 0) &&
+                    !compareStrings(buffer, where->compareVal, vCompLen, where->conditional))
                 {
                     failure = true;
                     break;
