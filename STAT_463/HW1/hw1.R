@@ -27,11 +27,16 @@ plot(traffic_ts, main="Internet Traffic Time Series")
 
 ## Part A
 idx = 1:100
-n1 = rnorm(100, mean = 0, sd = 4)
-n2 = rnorm(100, mean = 0, sd = 4)
-n3 = rnorm(100, mean = 0, sd = 4)
-n4 = rnorm(100, mean = 0, sd = 4)
+n1 = rnorm(100, mean = 0, sd = 2)
+n2 = rnorm(100, mean = 0, sd = 2)
+n3 = rnorm(100, mean = 0, sd = 2)
+n4 = rnorm(100, mean = 0, sd = 2)
 norm = data.frame(idx, n1,n2,n3,n4)
+
+plot.ts(n1)
+lines(1:100,n2,col="red")
+
+plot
 
 norm_plot = ggplot(norm, aes(idx)) + 
   geom_line(aes(y = n1, colour = "n1")) + 
