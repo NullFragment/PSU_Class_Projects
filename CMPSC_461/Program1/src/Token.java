@@ -6,6 +6,13 @@ public class Token
         string, digit, invalid
     }
 
+    public Token(String input)
+    {
+        if(setType(input))
+            value = input;
+        else value = "Invalid Type";
+    }
+
     private TokenType type;
     private String value;
 
@@ -85,6 +92,82 @@ public class Token
                 return "Invalid Token";
         }
     }
+
+    private Boolean setType(String input)
+    {
+        if(input.startsWith("<"))
+        {
+            switch(input)
+            {
+                case "<body>":
+                    type = TokenType.openBody;
+                    return true;
+                case "</body>":
+                    type = TokenType.closeBody;
+                    return true;
+                case "<b>":
+                    type = TokenType.openBold;
+                    return true;
+                case "</b>":
+                    type = TokenType.closeBold;
+                    return true;
+                case "<i>":
+                    type = TokenType.openItalic;
+                    return true;
+                case "</i>":
+                    type = TokenType.closeItalic;
+                    return true;
+                case "<ul>":
+                    type = TokenType.openList;
+                    return true;
+                case "</ul>":
+                    type = TokenType.closeList;
+                    return true;
+                case "<lu>":
+                    type = TokenType.openItem;
+                    return true;
+                case "</lu>":
+                    type = TokenType.closeItem;
+                    return true;
+                default:
+                    type = TokenType.invalid;
+                    return false;
+            }
+        }
+        else if(Character.isAlphabetic(input.charAt(0)))
+        {
+            for (char character : input.toCharArray())
+            {
+                if (!Character.isAlphabetic(character) || !Character.isDigit(character))
+                {
+                    type = TokenType.invalid;
+                    return false;
+                }
+            }
+            type = TokenType.string;
+            return true;
+        }
+        else if(Character.isDigit(input.charAt(0)))
+        {
+            for (char character : input.toCharArray())
+            {
+                if (!Character.isDigit(character))
+                {
+                    type = TokenType.invalid;
+                    return false;
+                }
+            }
+            type = TokenType.digit;
+            return true;
+        }
+
+        else
+        {
+            type = TokenType.invalid;
+            return false;
+        }
+    }
+
 
 
 }
