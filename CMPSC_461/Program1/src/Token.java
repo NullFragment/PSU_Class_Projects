@@ -1,16 +1,16 @@
-public class Token
+class Token
 {
     public enum TokenType
     {
         openBody, closeBody, openBold, closeBold, openItalic, closeItalic, openList, closeList, openItem, closeItem,
-        string, digit, invalid
+        string, invalid, EOI
     }
 
-    public Token(String input)
+    Token(String input)
     {
         if(setType(input))
             value = input;
-        else value = "Invalid Type";
+        else value = "Invalid Token: " + input;
     }
 
     private TokenType type;
@@ -50,9 +50,10 @@ public class Token
                 return "<li>";
             case closeItem:
                 return "</li>";
-            case digit:
             case string:
                 return value;
+            case EOI:
+                return "";
             case invalid:
             default:
                 return "Invalid Token";
@@ -83,10 +84,10 @@ public class Token
                 return "openItem";
             case closeItem:
                 return "closeItem";
-            case digit:
-                return "digit";
             case string:
                 return "string";
+            case EOI:
+                return "EOI";
             case invalid:
             default:
                 return "Invalid Token";
@@ -136,9 +137,11 @@ public class Token
         }
         else if(Character.isAlphabetic(input.charAt(0)))
         {
+            String validText = "abcdefghijklmnopqrstuvmxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
             for (char character : input.toCharArray())
             {
-                if (!Character.isAlphabetic(character) || !Character.isDigit(character))
+                if (validText.indexOf(character) < 0)
                 {
                     type = TokenType.invalid;
                     return false;
@@ -147,17 +150,9 @@ public class Token
             type = TokenType.string;
             return true;
         }
-        else if(Character.isDigit(input.charAt(0)))
+        else if(input.charAt(0) == '$')
         {
-            for (char character : input.toCharArray())
-            {
-                if (!Character.isDigit(character))
-                {
-                    type = TokenType.invalid;
-                    return false;
-                }
-            }
-            type = TokenType.digit;
+            type = TokenType.EOI;
             return true;
         }
 
