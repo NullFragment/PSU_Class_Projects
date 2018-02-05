@@ -60,9 +60,9 @@ class Token
         }
     }
 
-    String getTypeString()
+    String getTypeString(TokenType givenTag)
     {
-        switch (type)
+        switch (givenTag)
         {
             case openBody:
                 return "openBody";
@@ -92,6 +92,11 @@ class Token
             default:
                 return "Invalid Token";
         }
+    }
+
+    String getTypeString()
+    {
+        return getTypeString(type);
     }
 
     private Boolean setType(String input)

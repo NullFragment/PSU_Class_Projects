@@ -4,19 +4,25 @@ public class Tester
 {
     public static void main (String args[])
     {
-        Lexer test1 = new Lexer("<body><b>blah</b></body>$");
-        ArrayList<Token> tokens1 = new ArrayList<>();
-        tokens1 = test1.GetTokens();
 
-        Lexer test2 = new Lexer("<body> <b> blah </b> </body>  $");
-        ArrayList<Token> tokens2 = new ArrayList<>();
-        tokens2 = test2.GetTokens();
+//        Parser parse_test1 = new Parser("<body><b>blah</b></body>");
+//        parse_test1.run();
 
-        Lexer test3 = new Lexer("<body> test# <b> blah </b> </body>  $");
-        ArrayList<Token> tokens3 = new ArrayList<>();
-        tokens3 = test3.GetTokens();
+//        Parser parse_test2 = new Parser("<body> <b> blah </b> </body>  ");
+//        parse_test2.run();
 
+//        Parser parse_test3 = new Parser("<body> test# <b> blah </b> </body>  ");
+//        parse_test3.run();
 
-        System.out.println("Stop Here Plz");
+//        Parser parse_test4 = new Parser("<body><b>blah</body></b>");
+//        parse_test4.run();
+
+//        Parser parse_test5 = new Parser("<b>blah</body></b>");
+//        parse_test5.run();
+
+        Parser parser =
+                new Parser ("<body> google <b><i><b> yahoo</b></i></b></body>");
+        parser.run();
+
     }
 }
