@@ -36,8 +36,7 @@
 (define (ncall n f x)
   (cond
     ((= n 0) x)
-    ((= n 1) (f x))
-    ((> n 1) (f (ncall (- n 1) f x)))
+    ((> n 0) (f (ncall (- n 1) f x)))
     )
   )
 
