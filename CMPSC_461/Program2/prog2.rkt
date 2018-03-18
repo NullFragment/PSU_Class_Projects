@@ -1,7 +1,4 @@
-(define testlist '(1 2 3 4 5))
-
 ; PROBLEM 1
-
 (define (remove-if fun list_in)
   (cond
     ((not (list? list_in)) 'ERR:NOT_A_LIST)
@@ -25,7 +22,8 @@
 
 (define (rev list_1 list_2) (append (reverseList list_1) list_2))
 
-; Problem 3
+
+; PROBLEM 4
 (define (small_nums x)
   (cond
     ((= 0 x) '(zero))
@@ -65,6 +63,7 @@
     ((> 20 x) (small_nums x))
     ((= (remainder x 10) 0) (large_nums (quotient x 10)))
     (else (append (large_nums (quotient x 10)) (small_nums (remainder x 10))))))
+
 
 ; PROBLEM 5
 ; PART A
@@ -107,6 +106,7 @@
   (polyAddList (polyMultHelper poly1 poly2 0)))
 
 
+;TEST CASES
 
 '------------Test\ 1------------
 '-------Expecting:\(1\ 2\)--------
