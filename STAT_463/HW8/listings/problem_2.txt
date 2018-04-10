@@ -1,0 +1,19 @@
+####################################################################
+#### Problem 2
+####################################################################
+fatal_diff = diff(fatals)
+travel_diff = diff(travel)
+
+lm_diffs = lm(fatal_diff ~ travel_diff)
+png("./figures/p2_lm_diff_acf", width = 1024, height = 576)
+acf2(residuals(lm_diffs))
+dev.off()
+
+lm_diffs_no_int = lm(fatal_diff ~ 0 + travel_diff)
+
+fatal_mean = mean(fatals)
+travel_mean = mean(travel)
+
+diff_slope = 1.936
+diff_slope_se = 1.402
+diff_int = travel_mean - diff_slope * fatal_mean
