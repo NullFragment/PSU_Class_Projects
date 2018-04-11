@@ -21,7 +21,7 @@ def k_init(X, k):
     init_centers: array (k, d)
         The initialize centers for kmeans++
     """
-    random.seed(3306)
+    # random.seed(3306)
     init_centers = []
     center_idxs = [random.randint(0, X.shape[0])]
     init_centers.append(X[center_idxs[0]])
@@ -164,7 +164,7 @@ def compute_objective(X, C):
             if center_map[point][center] == 1:
                 errors[point] = np.linalg.norm(X[point] - C[center])
     accuracy = sum(errors) / X.shape[0]
-    return (accuracy)
+    return accuracy
 
 
 def load_data():
@@ -199,7 +199,7 @@ def plot_accuracy_per_clusters():
         new_centers = k_means_pp(iris_proportions, k, 50)
         accuracies.append(compute_objective(iris_proportions, new_centers))
     plt.plot(np.arange(1, 6), accuracies)
-    plt.ylabel('Accuracy')
+    plt.ylabel('RSS')
     plt.xlabel('Number of Clusters')
     plt.show()
 
@@ -218,7 +218,7 @@ def plot_accuracy_and_clusters():
 
     # Plot accuracy vs iterations plot
     plt.plot(np.arange(1, 51), accuracies)
-    plt.ylabel('Accuracy')
+    plt.ylabel('RSS')
     plt.xlabel('Iterations')
     plt.show()
 
