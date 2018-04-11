@@ -37,20 +37,6 @@
       (let ((res (lookup n local_al)))
         (cond
           ((equal? res #f) (begin (set! local_al (bind n (f n) local_al))) (f n))
-          (else (begin (display "memoization hit: ")) (cadr res)))))))
-
-
-#|
-(define (fac_mem x)
-  (let ((res (lookup x al)))
-  (cond
-    ((equal? res #f) res)
-    (else (cadr res)))))
-(define (fac x)
-  (let ((res (fac_mem x)))
-  (cond
-    ((and (equal? res #f) (equal? x 1)) (bind 1 1 al) 1)
-    ((equal? res #f) (begin (bind x (* x (fac (- x 1))) al)) (fac_mem x))
-    (else (begin (display "memo hit: ")) res))))
-
-|#
+          (else (begin (display "memoization hit: ")) (cadr res))))
+      )
+    ))
