@@ -1,0 +1,6 @@
+Denom. DF: 18
+                         numDF   F-value p-value
+(Intercept)                  1 2399.0246  <.0001
+factor(trt)                  2    7.1393  0.0052
+factor(time)                 2  605.6207  <.0001
+factor(trt):factor(time)     4    9.6552  0.0002
