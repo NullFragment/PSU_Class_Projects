@@ -1,0 +1,15 @@
+Standardised Residuals Tests:
+                                Statistic p-Value
+ Jarque-Bera Test   R    Chi^2  1.822259  0.4020699
+ Shapiro-Wilk Test  R    W      0.9985522 0.5890539
+ Ljung-Box Test     R    Q(10)  10.24976  0.4188616
+ Ljung-Box Test     R    Q(15)  14.32952  0.5006984
+ Ljung-Box Test     R    Q(20)  17.56494  0.6160438
+ Ljung-Box Test     R^2  Q(10)  3.469898  0.9681106
+ Ljung-Box Test     R^2  Q(15)  10.28095  0.801705
+ Ljung-Box Test     R^2  Q(20)  11.20095  0.9408438
+ LM Arch Test       R    TR^2   5.638083  0.9332166
+
+Information Criterion Statistics:
+     AIC      BIC      SIC     HQIC
+2.673371 2.688095 2.673353 2.67896
