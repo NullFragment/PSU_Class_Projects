@@ -107,14 +107,14 @@ saveplot(sales_decomp_mul$trend, "Time", paste("Multiplicative Decomposition Tre
 ############################################################################################################################################
 #### Detrend Time Series
 ############################################################################################################################################
-# 1st Differencing
-sales_diff = diff(sales, 1)
-saveplot(sales_diff, "Time", "Sales", "sales_timeseries_1st_diff")
-
 # Seasonal Differencing
 sales_seasonally = diff(sales_diff, seasonal_trend_val)
-saveplot(sales_seasonally, "Time", "Sales", paste("sales_timeseries_1_and", seasonal_trend_val, "_diff", sep = "")) # Still noisy. Sinusoidal
- 
+saveplot(sales_seasonally, "Time", "Sales", paste("sales_timeseries", seasonal_trend_val, "diff", sep = "_"))
+
+# 1st Differencing
+sales_diff = diff(sales, 1)
+saveplot(sales_diff, "Time", "Sales", paste("sales_timeseries_1st_and", seasonal_trend_val, "diff", sep = "+"))
+
 # Fractional Smoothing Detrend
 sales_frac_smooth = sales - sales_trend
 
