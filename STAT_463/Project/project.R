@@ -153,6 +153,7 @@ dev.off()
 # ACF & PACF of Additive and Fractionally Smoothed Data
 saveacf(sales_add_detrend, paste("sales_additive_detrend", seasonal_trend_val, "months", "acf", sep = "_"))
 saveacf(sales_frac_smooth, paste("sales_fractional_detrend", seasonal_trend_val, "months", "acf", sep = "_"))
+saveacf(sales_seasonally, paste("sales_seasonal_detrend", seasonal_trend_val, "months", "acf", sep = "_"))
 
 ############################################################################################################################################
 #### Fit Time Series Models
@@ -161,13 +162,16 @@ fitModels = FALSE
 if(fitModels == TRUE)
 {
     # For 12 month trend
-    if (seasonal_trend_val == 12) {sarima(sales_add_detrend, 0, 0, 0, 4, 1, 2, 1)}
+    if (seasonal_trend_val == 12) {sarima(sales_seasonally, 1, 1, 1, 1, 1, 1, 12)}
     if (seasonal_trend_val == 12) {sarima(sales, 1, 1, 1, 2, 1, 4, 12)}
     sarima.for(sales, 12, 1, 1, 1, 2, 1, 4, 12)
     
     # For 6 month trend
-    if (seasonal_trend_val == 6) {sarima(sales_add_detrend, 0, 0, 0, 4, 1, 2, 1)}
+    if (seasonal_trend_val == 6){sarima(sales_add_detrend, 0, 0, 0, 4, 1, 2, 1)}
+    if (seasonal_trend_val == 6){sarima(sales, 1, 1, 1, 2, 1, 4, 12)}
+    if (seasonal_trend_val == 6){sarima(sales_seasonally, 1, 1, 1, 1, 1, 1, 6)}
     
     # For 3 month trend
-    if (seasonal_trend_val == 3) {sarima(sales_add_detrend, 0, 1, 2, 2, 1, 3, 1)}
+    if (seasonal_trend_val == 3){sarima(sales_add_detrend, 0, 1, 2, 2, 1, 3, 1)}
 }
+
