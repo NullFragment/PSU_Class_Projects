@@ -2,8 +2,10 @@
 ##  Start MISC Gitignore
 ################################################################################################################
 
-/CMPSC_431W/Final_Submission/*.bin
-/CMPSC_431W/Final_Submission/*.schema
+CMPSC_431W/Final_Submission/*.bin
+CMPSC_431W/Final_Submission/*.schema
+CMPSC_448/HW_1/\.pytest_cache/v/cache/lastfailed
+CMPSC_448/HW_1/\.pytest_cache/v/cache/
 *.csv
 ################################################################################################################
 ##  End MISC Gitignore
@@ -804,9 +806,6 @@ sympy-plots-for-*.tex/
 ##  End LaTeX Gitignore
 ################################################################################################################
 
-<<<<<<< HEAD
-
-
 ################################################################################################################
 ## Default Gitignore Below this Point
 ################################################################################################################
@@ -1060,7 +1059,3 @@ pip-log.txt
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
-
-CMPSC_448/HW_1/\.pytest_cache/v/cache/lastfailed
-
-CMPSC_448/HW_1/\.pytest_cache/v/cache/
