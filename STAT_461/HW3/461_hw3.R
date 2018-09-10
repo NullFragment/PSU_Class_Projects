@@ -14,60 +14,75 @@
 #               "nlme", "fGarch", "vars")
 # ipak(packages)
 
-# Set up variables for first few questions
-treatmentsSorted = c(rep("none",5), rep("low", 5), rep("medium", 5), rep("high", 5))
-units = 1:length(treatmentsSorted)
+
 
 ####################################################################
 #### Problem 1
 ####################################################################
-sample1 = sample(treatmentsSorted)
-experiment1 = data.frame(units, sample1)
-experiment1
+# Set up treatment distribution and experimental units
+n=30
+treatments = c(rep("1", 10), rep("2", 10), rep("3", 10))
+exp_units = 1:n
+
+# Randomize treatments
+p1_randomized = sample(treatments)
+
+# Set treatment parameters
+mu_1 = 4.7
+var_1 = 4
+tao_1 = -3
+tao_2 = 5
+tao_3 = -2
+
+# Generate treatment means
+means_1 = rep(NA, n)
+means_1[p1_randomized=="1"] = mu_1 + tao_1
+means_1[p1_randomized=="2"] = mu_1 + tao_2
+means_1[p1_randomized=="3"] = mu_1 + tao_3
+
+# Simulate ANOVA model
+p1_sim = means_1 + rnorm(n, mean = 0, sd = sqrt(var_1))
+
+# Plot Data
+p1_data = data.frame(exp_units, p1_randomized, p1_sim)
+
+png("./figures/p1.png", width = 1024, height = 576)
+  boxplot(p1_sim ~ p1_randomized, main="Boxplot of Simulated ANOVA Data")
+dev.off()
+
 
 ####################################################################
 #### Problem 2
 ####################################################################
-sample2 = sample(treatmentsSorted)
-experiment2 = data.frame(units, sample2)
-experiment2
+p2_randomized = sample(treatments)
+
+# Generate treatment means
+means_2 = rep(mu_1, n)
+
+# Simulate ANOVA model
+p2_sim = means_2 + rnorm(n, mean = 0, sd = sqrt(var_1))
+
+# Plot Data
+p2_data = data.frame(exp_units, p2_randomized, p2_sim)
+
+png("./figures/p2.png", width = 1024, height = 576)
+  boxplot(p2_sim ~ p2_randomized, main="Boxplot of Reduced ANOVA Data")
+dev.off()
 
 ####################################################################
 #### Problem 3
 ####################################################################
-q3treats = c(rep("r1", 3), rep("r2", 5), rep("r3", 5))
-q3units = 1:length(q3treats)
-q3sample = sample(q3treats)
-q3experiment = data.frame(q3units, q3sample)
-q3experiment
+p3_randomized = sample(treatments)
 
+# Set treatment parameters
+var_3 = 50
 
-####################################################################
-#### Problem 6
-####################################################################
-## Part A
-q6_X = rnorm(1000, mean = -2, sd = 3)
+# Simulate ANOVA model
+p3_sim = means_1 + rnorm(n, mean = 0, sd = sqrt(var_3))
 
-png("./figures/p6_a.png", width = 1024, height = 576)
-hist(q6_X)
+# Plot Data
+p3_data = data.frame(exp_units, p3_randomized, p3_sim)
+
+png("./figures/p3.png", width = 1024, height = 576)
+  boxplot(p3_sim ~ p3_randomized, main="Boxplot of Simulated ANOVA Data")
 dev.off()
-
-## Part B
-q6_Y = rnorm(1000, mean = 3, sd = 1)
-
-png("./figures/p6_b.png", width = 1024, height = 576)
-hist(q6_Y)
-dev.off()
-
-## Part C
-q6_Z = q6_X + q6_Y
-
-png("./figures/p6_c.png", width = 1024, height = 576)
-hist(q6_Z)
-dev.off()
-
-
-## Part E
-# Z ~ N(1, 4)
-mean(q6_Z)
-sd(q6_Z)
