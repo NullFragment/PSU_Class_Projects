@@ -1,0 +1,104 @@
+NOTE: Copyright (c) 2016 by SAS Institute Inc., Cary, NC, USA.
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M5)
+      Licensed to PENNSYLVANIA STATE UNIVERSITY - SFA T&R, Site 70080099.
+NOTE: This session is executing on the X64_10HOME  platform.
+
+
+
+NOTE: Updated analytical products:
+
+      SAS/STAT 14.3
+      SAS/ETS 14.3
+      SAS/IML 14.3
+      SAS/QC 14.3
+
+NOTE: Additional host information:
+
+ X64_10HOME WIN 10.0.17134  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.73 seconds
+      cpu time            0.64 seconds
+
+1    LIBNAME STAT480 'C:\STAT480\';
+NOTE: Libref STAT480 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\STAT480
+2
+3    DATA STAT480.hw3_p1;
+4        INPUT town_name $ town_number month year temp_low_F temp_high_F;
+5        DATALINES;
+
+NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another host, or the file
+      encoding does not match the session encoding. Cross Environment Data Access will be used, which
+      might require additional CPU resources and might reduce performance.
+NOTE: The data set STAT480.HW3_P1 has 6 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+12       ;
+13   RUN;
+14
+15   PROC PRINT data=STAT480.hw3_p1;
+NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another host, or the file
+      encoding does not match the session encoding. Cross Environment Data Access will be used, which
+      might require additional CPU resources and might reduce performance.
+16       title 'Output Dataset: STAT480 Homework 3 Problem 1';
+17   RUN;
+
+NOTE: There were 6 observations read from the data set STAT480.HW3_P1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+18
+19   PROC CONTENTS data=STAT480.hw3_p1;
+NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another host, or the file
+      encoding does not match the session encoding. Cross Environment Data Access will be used, which
+      might require additional CPU resources and might reduce performance.
+20       OPTIONS LS=80 CENTER;
+21   RUN;
+
+NOTE: PROCEDURE CONTENTS used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+
+
+22   DATA rats;
+23       INFILE 'C:\STAT480\rats.dat';
+24       INPUT
+25           @1 rat_number 1.
+26           +2 dob date9.
+27           @13 disease date9.
+28           @23 death mmddyy8.
+29           @32 group $1.
+30           ;
+31   RUN;
+
+NOTE: The infile 'C:\STAT480\rats.dat' is:
+      Filename=C:\STAT480\rats.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=270,
+      Last Modified=10Sep2018:16:46:45,
+      Create Time=10Sep2018:16:46:44
+
+NOTE: 8 records were read from the infile 'C:\STAT480\rats.dat'.
+      The minimum record length was 32.
+      The maximum record length was 32.
+NOTE: The data set WORK.RATS has 8 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+
+
+32   PROC PRINT data=rats;
+33       OPTIONS LS=78 PS=56 CENTER NODATE;
+34       title 'Output Dataset: STAT480 Homework 3 Problem 2';
+35   RUN;
+
+NOTE: There were 8 observations read from the data set WORK.RATS.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds

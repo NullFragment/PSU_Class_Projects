@@ -157,7 +157,7 @@
 \normalfont \normalsize 
 %\textsc{Rutgers University, Real Analysis I} \\ [25pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge STAT 461: Homework 3 \\ % The assignment title
+\huge STAT 480: Homework 3 \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 
@@ -174,77 +174,29 @@
 %----------------------------------------------------------------------------------------
 \newgeometry{top=.75in, bottom=.75in, left=1.25in,right=1.25in}
 \section*{\variableheghtrulefill[.25ex]\quad Problem 1 \quad\variableheghtrulefill[.25ex]}
-Below is a plot of the simulated ANOVA distribution:
+Below is the output from the print statement for the dataset:
 
-	\makebox[\textwidth][c]{\includegraphics[width=.9\paperwidth]{p1.png}}
+\lstinputlisting[style=smallstyle, caption="City Temperature Records"]{listings/hw3_q1_p1.txt}
+
+Next is the output for the descriptor of the dataset that was created:
+
+\lstinputlisting[caption="City Temperature Records Descriptor"]{listings/hw3_q1_p2.txt}
 
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
 
 \section*{\variableheghtrulefill[.25ex]\quad Problem 2 \quad\variableheghtrulefill[.25ex]}
-Below is a plot of the simulated reduced ANOVA distribution:
+The following is the output from printing the rats dataset:
 
-	\makebox[\textwidth][c]{\includegraphics[width=.9\paperwidth]{p2.png}}
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 3
-%----------------------------------------------------------------------------------------
-
-\section*{\variableheghtrulefill[.25ex]\quad Problem 3 \quad\variableheghtrulefill[.25ex]}
-Below is a plot of the simulated ANOVA distribution with an extremely large variance:
-
-	\makebox[\textwidth][c]{\includegraphics[width=.9\paperwidth]{p3.png}}
-
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 4
-%----------------------------------------------------------------------------------------
-
-\section*{\variableheghtrulefill[.25ex]\quad Problem 4 \quad\variableheghtrulefill[.25ex]}
-
-\begin{flalign*}
-& Y_{23} = Y_{2t} = \mu + \tau_1 + \epsilon_{it}; \quad \epsilon_{it} \stackrel{iid}{\sim} N(0, 4) &\\
-& Y_{2t} = 4.7 + 5 + N(0, 4) &\\
-& Y_{2t} \sim N(9.7, 4) & 
-\end{flalign*}
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 5
-%----------------------------------------------------------------------------------------
-
-\section*{\variableheghtrulefill[.25ex]\quad Problem 5 \quad\variableheghtrulefill[.25ex]}
-
-\begin{flalign*}
-&\hat{Y_{2\cdot}} = \frac{1}{r_2}\sum_{t=1}^{r_2} Y_{2t}; \quad r_2 = 10 &\\
-&\sum_{t=1}^{r_2} Y_{2t} \sim N(9.7, 4) + \stackrel{\text{8 x}}{...} + N(9.7, 4) &\\
-&\sum_{t=1}^{r_2} Y_{2t} \sim N(97, 40) &\\
-& \frac{1}{10} Y_{2t} \sim \frac{1}{10} N(97, 40) = N\left(\frac{1}{10} * 97, \left(\frac{1}{10}\right)^2 40\right) &\\
-& \frac{1}{10} Y_{2t} \sim N(9.7, 0.4) &
-\end{flalign*}
-
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 6
-%----------------------------------------------------------------------------------------
-
-\section*{\variableheghtrulefill[.25ex]\quad Problem 6 \quad\variableheghtrulefill[.25ex]}
-
-\begin{flalign*}
-& Y_{1t} \sim 4.7 - 3 + N(0, 4) &\\
-& Y_{1t} \sim N(1.7, 4) &\\
-& Y_{2t} \sim N(9.7, 4) &\\
-& Y_{1t} - Y_{2t} \sim N(1.7, 4) - N(9.7, 4) &\\
-& Y_{1t} - Y_{2t} \sim N(1.7, 4) + -1 * N(9.7, 4) &\\ 
-& Y_{1t} - Y_{2t} \sim N(1.7, 4) + N(-1 * 9.7, (-1)^2 * 4) &\\ 
-& Y_{1t} - Y_{2t} \sim N(1.7, 4) + N(-9.7, 4) &\\
-& Y_{1t} - Y_{2t} \sim N(1.7 - 9.7, 4 + 4)&\\
-& Y_{1t} - Y_{2t} \sim N(-8, 8)& 
-\end{flalign*}
-
+\lstinputlisting[caption="Rats Data"]{listings/hw3_q2.txt}
 
 \newpage
-\section*{Code Appendix}
-\lstinputlisting[language=R]{461_hw3.R}
+\section*{SAS Code}
+\lstinputlisting[language=SAS]{hw3.sas}
+
+\section*{SAS Log File}
+\lstinputlisting[language=SAS]{listings/logfile.txt}
+
 
 \end{document}

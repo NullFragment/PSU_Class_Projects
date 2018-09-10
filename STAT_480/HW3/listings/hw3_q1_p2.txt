@@ -1,0 +1,44 @@
+                  Output Dataset: STAT480 Homework 3 Problem 1                 2
+                                                17:36 Monday, September 10, 2018
+
+                             The CONTENTS Procedure
+
+    Data Set Name        STAT480.HW3_P1            Observations          6
+    Member Type          DATA                      Variables             6
+    Engine               V9                        Indexes               0
+    Created              09/10/2018 17:36:59       Observation Length    48
+    Last Modified        09/10/2018 17:36:59       Deleted Observations  0
+    Protection                                     Compressed            NO
+    Data Set Type                                  Sorted                NO
+    Label
+    Data Representation  WINDOWS_64
+    Encoding             utf-8  Unicode (UTF-8)
+
+
+                       Engine/Host Dependent Information
+
+             Data Set Page Size          65536
+             Number of Data Set Pages    1
+             First Data Page             1
+             Max Obs per Page            1361
+             Obs in First Data Page      6
+             Number of Data Set Repairs  0
+             ExtendObsCounter            YES
+             Filename                    C:\STAT480\hw3_p1.sas7bdat
+             Release Created             9.0401M5
+             Host Created                X64_10HOME
+             Owner Name                  DESKTOP-0I3H148\ksali
+             File Size                   128KB
+             File Size (bytes)           131072
+
+
+                  Alphabetic List of Variables and Attributes
+
+                        #    Variable       Type    Len
+
+                        3    month          Num       8
+                        6    temp_high_F    Num       8
+                        5    temp_low_F     Num       8
+                        1    town_name      Char      8
+                        2    town_number    Num       8
+                        4    year           Num       8

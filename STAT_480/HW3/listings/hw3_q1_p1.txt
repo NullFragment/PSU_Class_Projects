@@ -1,0 +1,12 @@
+                             Output Dataset: STAT480 Homework 3 Problem 1                            1
+                                                                      17:36 Monday, September 10, 2018
+
+                            town_      town_                     temp_     temp_
+                     Obs     name     number    month    year    low_F    high_F
+
+                      1     Kane        20        12     2005      12       25
+                      2     Ambler      22        12     2005       8       20
+                      3     Kane        20         1     2006      13       32
+                      4     Oakey       32        12     2005      30       50
+                      5     Oakey       32         1     2006      25       45
+                      6     Ambler      22         1     2006      15       28
