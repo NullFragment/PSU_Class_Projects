@@ -1,12 +1,5 @@
-> #Part D
-> reg_mean = mean(loss[type=='reg'])
-> deo_mean = mean(loss[type=='deo'])
-> moi_mean = mean(loss[type=='moi'])
-> 
-> #Part B Re-calculation:
-> deo_mean
-[1] 2.7
-> 
-> #Part C Re-calculation:
-> reg_mean -(deo_mean + moi_mean)/2
-[1] -2.38125
+> # Part B Re-calculation:
+> contrast(lsmeans_losses, list("deodorant only"=c(0,1,0), "t1 - 1/2(t2+t3)"=c(1,-0.5,-0.5)))
+ contrast        estimate        SE df t.ratio p.value
+ deodorant only   1.99250 0.1389019  9  14.345  <.0001
+ t1 - 1/2(t2+t3)  1.72125 0.1701194  9  10.118  <.0001

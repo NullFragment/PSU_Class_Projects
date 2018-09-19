@@ -1,12 +1,7 @@
-> mean_0 = mean(time[presses == '0'])
-> mean_1 = mean(time[presses == '1'])
-> mean_2 = mean(time[presses == '2'])
-> mean_3 = mean(time[presses == '3'])
-> mean_0
-[1] 38.20714
-> mean_1
-[1] 38.171
-> mean_2
-[1] 38.194
-> mean_3
-[1] 38.212
+> lsmeans_lights = lsmeans(aov_lights, "presses")
+> lsmeans_lights
+ presses   lsmean         SE df lower.CL upper.CL
+ 0       38.20714 0.03950929 28 38.12621 38.28807
+ 1       38.17100 0.03305584 28 38.10329 38.23871
+ 2       38.19400 0.03305584 28 38.12629 38.26171
+ 3       38.21200 0.04674802 28 38.11624 38.30776

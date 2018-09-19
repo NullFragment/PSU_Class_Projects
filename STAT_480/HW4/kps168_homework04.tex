@@ -157,7 +157,7 @@
 \normalfont \normalsize 
 %\textsc{Rutgers University, Real Analysis I} \\ [25pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge STAT 461: Homework 4 \\ % The assignment title
+\huge STAT 480: Homework 3 \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 
@@ -174,127 +174,29 @@
 %----------------------------------------------------------------------------------------
 \newgeometry{top=.75in, bottom=.75in, left=1.25in,right=1.25in}
 \section*{\variableheghtrulefill[.25ex]\quad Problem 1 \quad\variableheghtrulefill[.25ex]}
-\subsection*{a)}
-This model is estimable where: $b_1 = b_2 = 1; b_3 = -2$
-\begin{flalign*}
-\sum_{n=1}^{3} b_i (\mu + \tau_i) & = 1(\mu + \tau_1) + 1(\mu + \tau_2) - 2(\mu + \tau_3)& \\
-& = 2\mu - 2\mu + \tau_1 + \tau_2 - 2\tau_3& \\
-& =  \tau_1 + \tau_2 - 2\tau_3 &\\
-\sum_{n=1}^{3} b_i \overline{Y}_i & = \overline{Y}_1 + \overline{Y}_2 - 2 \overline{Y}_3 &
-\end{flalign*}
+Below is the output from the print statement for the dataset:
 
-\subsection*{b)}
-This model is estimable where: $b_1 = b_2 = 0; b_3 = 1$
-\begin{flalign*}
-\sum_{n=1}^{3} b_i (\mu + \tau_i) & = 0(\mu + \tau_1) + 0(\mu + \tau_2) + 1(\mu + \tau_3)& \\
-& = \mu + \tau_3 &\\
-\sum_{n=1}^{3} b_i \overline{Y}_i & = 0\overline{Y}_1 + 0\overline{Y}_2 + 1\overline{Y}_3 & \\
-& = \overline{Y}_3 &
-\end{flalign*}
+\lstinputlisting[style=smallstyle, caption="City Temperature Records"]{listings/hw3_q1_p1.txt}
 
-\subsection*{c)}
-This model is not estimable for any real values of $b_i$
+Next is the output for the descriptor of the dataset that was created:
 
-\subsection*{d)}
-This model is estimable where: $b_1 = b_2 = b_3 = \frac{1}{3}$
-\begin{flalign*}
-\sum_{n=1}^{3} b_i (\mu + \tau_i) & = \frac{1}{3}(\mu + \tau_1) + \frac{1}{3}(\mu + \tau_2) + \frac{1}{3}(\mu + \tau_3)& \\
-& = 3 * \frac{1}{3}\mu + \frac{1}{3}\tau_1 + \frac{1}{3}\tau_2 + \frac{1}{3}\tau_3 &\\
-& = \mu + \frac{1}{3}(\tau_1 + \tau_2 + \tau_3) &\\
-\sum_{n=1}^{3} b_i \overline{Y}_i & = \frac{1}{3}\overline{Y}_1 + \frac{1}{3}\overline{Y}_2 + \frac{1}{3}\overline{Y}_3 & 
-\end{flalign*}
+\lstinputlisting[caption="City Temperature Records Descriptor"]{listings/hw3_q1_p2.txt}
 
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
+
 \section*{\variableheghtrulefill[.25ex]\quad Problem 2 \quad\variableheghtrulefill[.25ex]}
-\subsection*{a)}
-\begin{flalign*}
-Y_{it} & = \mu + \tau_i + \epsilon_{it}; \quad i = 1,2,3; \quad t = 1,2,3,4 &\\
-\epsilon_{it} &\overset{iid}{\sim} N\left(0,\sigma^2\right) &
-\end{flalign*}
-1 = Regular
-2 = Deodorant
-3 = Moisturizing
+The following is the output from printing the rats dataset:
 
-\subsection*{b)}
-For future calculations:
-\begin{flalign*}
-\overline{Y_i} & = \overline{Y} + \hat{\tau}_i & \\
-\hat{\tau}_i & = \overline{Y_i} - \overline{Y} & \\
-\overline{Y} & = \frac{1}{12} (-.3-.1-.14+.40+2.63+2.61+2.41+3.15+1.86+2.03+2.26+1.82) = 1.5525\bar{3}& \\
-\overline{Y_1} & = \frac{1}{4}(-.3-.1-.14+.40) = -0.035 & \\
-\overline{Y_2} & = \frac{1}{4}(2.63+2.61+2.41+3.15) = 2.7 & \\
-\overline{Y_3} & = \frac{1}{4}(1.86+2.03+2.26+1.82) = 1.9925 & \\
-\hat{\tau}_1 & = \overline{Y_1} - \overline{Y} = -0.035 - 1.5525\bar{3} \approx -1.5875 & \\
-\hat{\tau}_2 & = \overline{Y_2} - \overline{Y} = 2.7 - 1.5525\bar{3} \approx 1.475 & \\
-\hat{\tau}_3 & = \overline{Y_3} - \overline{Y} = 1.9925 - 1.5525\bar{3} \approx 0.44 & \\
-\sum_{n=1}^{3} b_i \overline{Y}_i & = b_1\overline{Y}_1 + b_2\overline{Y}_2 + b_3 \overline{Y}_3 & \\
-\sum_{n=1}^{3} b_i \overline{Y}_i & =  -0.035 b_1 + 2.7 b_2 + 1.9925 b_3 &
-\end{flalign*}
-
-The LSE for a bar of Deodorant Soap is where: $b_1 = b_3 = 0; \quad b_2 = 1$
-\begin{flalign*}
-\sum_{n=1}^{3} b_i \overline{Y}_i & =  -0.035 * 0 + 2.7 *1 + 1.9925 * 0& \\
-&= 2.7&
-\end{flalign*}
-
-
-\subsection*{c)}
-This model is estimable where: $b_1 = 1; b_2 = b_3 = - \frac{1}{2}$
-\begin{flalign*}
-\sum_{n=1}^{3} b_i (\mu + \tau_i) & = 1(\mu + \tau_1) - \frac{1}{2}(\mu + \tau_2) - \frac{1}{2}(\mu + \tau_3)& \\
-& = \mu - 2\left(\frac{1}{2}\mu\right) + \tau_1 - \frac{1}{2}\tau_2 - \frac{1}{2}\tau_3& \\
-& =  \tau_1 -\frac{1}{2}(\tau_2 + \tau_3) &\\
-\sum_{n=1}^{3} b_i \overline{Y}_i & = \overline{Y}_1 -\frac{1}{2}\overline{Y}_2 - \frac{1}{2}\overline{Y}_3 & \\
-& = -0.035 - \frac{1}{2}(2.7 + 1.9925) = -2.38125 &
-\end{flalign*}
-
-
-\subsection*{d)}
-\lstinputlisting[language=R]{listings/q2-d.txt}
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 3
-%----------------------------------------------------------------------------------------
-\section*{\variableheghtrulefill[.25ex]\quad Problem 3 \quad\variableheghtrulefill[.25ex]}
-\subsection*{a)}
-	\makebox[\textwidth][c]{\includegraphics[width=.9\paperwidth]{p3.png}}
-
-\subsection*{b)}
-\begin{flalign*}
-Y_{it} & = \mu + \tau_i + \epsilon_{it}; \quad i = 0,1,2,3; \quad t = 1,\dots ,r_i &\\
-r_1 & = 7, r_1 = r_2 = 10, r_3 = 5 &\\
-\epsilon_{it} &\overset{iid}{\sim} N\left(0,\sigma^2\right) &
-\end{flalign*}
-
-\subsection*{c)}
-\lstinputlisting[language=R]{listings/q3-c.txt}
-
-\subsection*{d)}
-This model is estimable where: $b_0 = -1; b_1 = 1; b_2=b_3=0$
-\begin{flalign*}
-\sum_{n=0}^{3} b_i (\mu + \tau_i) & = b_0(\mu + \tau_0) + b_1(\mu + \tau_1) + b_2(\mu + \tau_2) + b_3(\mu + \tau_3)& \\
-& \approx \sum_{n=0}^{3} b_i \overline{Y}_i & \\
-\sum_{n=0}^{3} b_i \overline{Y}_i & = - \overline{Y}_0 + \overline{Y}_1 + 0\overline{Y}_2 + 0\overline{Y}_3 & \\
-& = 38.171 - 38.20714 = -0.03614286
-\end{flalign*}
-
-R output is below
-
-\subsection*{e)}
-This model is estimable where: $b_0 = -1; b_1 = b_2= b_3 = \frac{1}{3}$
-\begin{flalign*}
-\sum_{n=0}^{3} b_i (\mu + \tau_i) & = b_0(\mu + \tau_0) + b_1(\mu + \tau_1) + b_2(\mu + \tau_2) + b_3(\mu + \tau_3)& \\
-& \approx \sum_{n=0}^{3} b_i \overline{Y}_i & \\
-\sum_{n=0}^{3} b_i \overline{Y}_i & = - \overline{Y}_0 + \frac{1}{3}\overline{Y}_1 + \frac{1}{3}\overline{Y}_2 + \frac{1}{3}\overline{Y}_3 & \\
-& = \frac{1}{3}(38.171 + 38.194 + 38.212) - 38.20714 = -0.01480952
-\end{flalign*}
-
-\lstinputlisting[language=R]{listings/q3-de.txt}
+\lstinputlisting[caption="Rats Data"]{listings/hw3_q2.txt}
 
 \newpage
-\section*{Code Appendix}
-\lstinputlisting[language=R]{461_hw4.R}
+\section*{SAS Code}
+\lstinputlisting[language=SAS]{hw3.sas}
+
+\section*{SAS Log File}
+\lstinputlisting[language=SAS]{listings/logfile.txt}
+
 
 \end{document}

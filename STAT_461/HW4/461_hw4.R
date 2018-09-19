@@ -22,19 +22,12 @@ type = c(rep('reg',4), rep('deo',4), rep('moi',4))
 losses = data.frame(loss, type)
 
 # Part D
-mean_reg = mean(loss[type=='reg'])
-mean_deo = mean(loss[type=='deo'])
-mean_moi = mean(loss[type=='moi'])
-ybar = mean(loss)
-tau1 = mean_reg - ybar
-tau2 = mean_deo - ybar
-tau3 = mean_moi - ybar
+aov_losses = aov(loss~type)
+lsmeans_losses = lsmeans(aov_losses, "type")
+lsmeans_losses
 
-# Part B Re-calculation:
-mean_deo
-
-# Part C Re-calculation:
-mean_reg -(mean_deo + mean_moi)/2
+# Part B & C Re-calculation:
+contrast(lsmeans_losses, list("deodorant only"=c(0,1,0), "t1 - 1/2(t2+t3)"=c(1,-0.5,-0.5)))
 
 ####################################################################
 #### Problem 3
@@ -52,15 +45,12 @@ png("./figures/p3.png", width = 1024, height = 576)
 dev.off()
 
 # Part C
-mean_0 = mean(time[presses == '0'])
-mean_1 = mean(time[presses == '1'])
-mean_2 = mean(time[presses == '2'])
-mean_3 = mean(time[presses == '3'])
+aov_lights = aov(time ~ presses)
+lsmeans_lights = lsmeans(aov_lights, "presses")
+lsmeans_lights
 
-# Part D
-mean_1 - mean_0
+# Part D & E
+contrast(lsmeans_lights, list("Part D"=c(-1, 1, 0, 0), "Part E"=c(-1, 1/3, 1/3, 1/3)))
 
-# Part E
-(1/3)*(mean_1 + mean_2 + mean_3) - mean_0
 
 
