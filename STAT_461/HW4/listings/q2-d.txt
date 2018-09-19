@@ -1,0 +1,12 @@
+> #Part D
+> reg_mean = mean(loss[type=='reg'])
+> deo_mean = mean(loss[type=='deo'])
+> moi_mean = mean(loss[type=='moi'])
+> 
+> #Part B Re-calculation:
+> deo_mean
+[1] 2.7
+> 
+> #Part C Re-calculation:
+> reg_mean -(deo_mean + moi_mean)/2
+[1] -2.38125

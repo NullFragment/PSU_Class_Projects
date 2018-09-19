@@ -1,6 +1,17 @@
+/********************************************************
+Kyle Salitrik
+kps168
+PSU ID: 997543474
+Sept 14, 2018
+
+This program covers Homework 3 for STAT 480.
+********************************************************/
+
 LIBNAME STAT480 'C:\STAT480\';
 
+/*** PROBLEM 1 ***/
 DATA STAT480.hw3_p1;
+	* Read in using list input;
 	INPUT town_name $ town_number month year temp_low_F temp_high_F;
 	DATALINES;
 	Kane   20  12  2005  12  25
@@ -17,9 +28,14 @@ PROC PRINT data=STAT480.hw3_p1;
 RUN;
 
 PROC CONTENTS data=STAT480.hw3_p1;
+	/* Format output to hav a max width of 80 chars and
+	   be centered */
 	OPTIONS LS=80 CENTER;
 RUN;
+
+/*** PROBLEM 2 ***/
 DATA rats;
+	* Read data using formatted input from raw data file;
 	INFILE 'C:\STAT480\rats.dat';
 	INPUT 
 		@1 rat_number 1.
@@ -30,6 +46,8 @@ DATA rats;
 		;
 RUN;
 PROC PRINT data=rats;
+	/* Limit output width to 78, page size to 56 lines,
+	   centers the output and suppresses date from printing*/
 	OPTIONS LS=78 PS=56 CENTER NODATE;
 	title 'Output Dataset: STAT480 Homework 3 Problem 2';
 RUN;

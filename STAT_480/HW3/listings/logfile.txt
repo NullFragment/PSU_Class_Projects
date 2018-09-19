@@ -17,17 +17,28 @@ NOTE: Additional host information:
  X64_10HOME WIN 10.0.17134  Workstation
 
 NOTE: SAS initialization used:
-      real time           0.73 seconds
-      cpu time            0.64 seconds
+      real time           0.69 seconds
+      cpu time            0.59 seconds
 
-1    LIBNAME STAT480 'C:\STAT480\';
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    Sept 14, 2018
+6
+7    This program covers Homework 3 for STAT 480.
+8    ********************************************************/
+9
+10   LIBNAME STAT480 'C:\STAT480\';
 NOTE: Libref STAT480 was successfully assigned as follows:
       Engine:        V9
       Physical Name: C:\STAT480
-2
-3    DATA STAT480.hw3_p1;
-4        INPUT town_name $ town_number month year temp_low_F temp_high_F;
-5        DATALINES;
+11
+12   /*** PROBLEM 1 ***/
+13   DATA STAT480.hw3_p1;
+14       * Read in using list input;
+15       INPUT town_name $ town_number month year temp_low_F temp_high_F;
+16       DATALINES;
 
 NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another host, or the file
       encoding does not match the session encoding. Cross Environment Data Access will be used, which
@@ -35,48 +46,53 @@ NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another hos
 NOTE: The data set STAT480.HW3_P1 has 6 observations and 6 variables.
 NOTE: DATA statement used (Total process time):
       real time           0.02 seconds
-      cpu time            0.01 seconds
+      cpu time            0.03 seconds
 
 
-12       ;
-13   RUN;
-14
-15   PROC PRINT data=STAT480.hw3_p1;
+23       ;
+24   RUN;
+25
+26   PROC PRINT data=STAT480.hw3_p1;
 NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another host, or the file
       encoding does not match the session encoding. Cross Environment Data Access will be used, which
       might require additional CPU resources and might reduce performance.
-16       title 'Output Dataset: STAT480 Homework 3 Problem 1';
-17   RUN;
+27       title 'Output Dataset: STAT480 Homework 3 Problem 1';
+28   RUN;
 
 NOTE: There were 6 observations read from the data set STAT480.HW3_P1.
 NOTE: PROCEDURE PRINT used (Total process time):
       real time           0.02 seconds
-      cpu time            0.03 seconds
+      cpu time            0.01 seconds
 
 
-18
-19   PROC CONTENTS data=STAT480.hw3_p1;
+29
+30   PROC CONTENTS data=STAT480.hw3_p1;
 NOTE: Data file STAT480.HW3_P1.DATA is in a format that is native to another host, or the file
       encoding does not match the session encoding. Cross Environment Data Access will be used, which
       might require additional CPU resources and might reduce performance.
-20       OPTIONS LS=80 CENTER;
-21   RUN;
+31       /* Format output to hav a max width of 80 chars and
+32          be centered */
+33       OPTIONS LS=80 CENTER;
+34   RUN;
 
 NOTE: PROCEDURE CONTENTS used (Total process time):
       real time           0.02 seconds
       cpu time            0.00 seconds
 
 
-22   DATA rats;
-23       INFILE 'C:\STAT480\rats.dat';
-24       INPUT
-25           @1 rat_number 1.
-26           +2 dob date9.
-27           @13 disease date9.
-28           @23 death mmddyy8.
-29           @32 group $1.
-30           ;
-31   RUN;
+35
+36   /*** PROBLEM 2 ***/
+37   DATA rats;
+38       * Read data using formatted input from raw data file;
+39       INFILE 'C:\STAT480\rats.dat';
+40       INPUT
+41           @1 rat_number 1.
+42           +2 dob date9.
+43           @13 disease date9.
+44           @23 death mmddyy8.
+45           @32 group $1.
+46           ;
+47   RUN;
 
 NOTE: The infile 'C:\STAT480\rats.dat' is:
       Filename=C:\STAT480\rats.dat,
@@ -90,13 +106,15 @@ NOTE: 8 records were read from the infile 'C:\STAT480\rats.dat'.
 NOTE: The data set WORK.RATS has 8 observations and 5 variables.
 NOTE: DATA statement used (Total process time):
       real time           0.02 seconds
-      cpu time            0.00 seconds
+      cpu time            0.01 seconds
 
 
-32   PROC PRINT data=rats;
-33       OPTIONS LS=78 PS=56 CENTER NODATE;
-34       title 'Output Dataset: STAT480 Homework 3 Problem 2';
-35   RUN;
+48   PROC PRINT data=rats;
+49       /* Limit output width to 78, page size to 56 lines,
+50          centers the output and suppresses date from printing*/
+51       OPTIONS LS=78 PS=56 CENTER NODATE;
+52       title 'Output Dataset: STAT480 Homework 3 Problem 2';
+53   RUN;
 
 NOTE: There were 8 observations read from the data set WORK.RATS.
 NOTE: PROCEDURE PRINT used (Total process time):

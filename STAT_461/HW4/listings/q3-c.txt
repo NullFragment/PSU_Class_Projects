@@ -1,0 +1,12 @@
+> mean_0 = mean(time[presses == '0'])
+> mean_1 = mean(time[presses == '1'])
+> mean_2 = mean(time[presses == '2'])
+> mean_3 = mean(time[presses == '3'])
+> mean_0
+[1] 38.20714
+> mean_1
+[1] 38.171
+> mean_2
+[1] 38.194
+> mean_3
+[1] 38.212
