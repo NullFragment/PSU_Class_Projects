@@ -1,0 +1,4 @@
+ contrast         estimate       SE df t.ratio p.value
+ A - B       -1.100000e+01 5.773503  3  -1.905  0.2817
+ A - Control -1.100000e+01 5.773503  3  -1.905  0.2817
+ B - Control -1.776357e-15 5.773503  3   0.000  1.0000

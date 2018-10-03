@@ -1,0 +1,5 @@
+Analysis of Variance Table
+
+Response: delta
+          Df Sum Sq Mean Sq F value Pr(>F)
+meds       2 161.33  80.667    2.42 0.2367

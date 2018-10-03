@@ -1,0 +1,15 @@
+Analysis of Variance Table
+
+Response: loss
+          Df  Sum Sq Mean Sq F value    Pr(>F)    
+type       2 16.1220  8.0610  104.45 5.914e-07 ***
+Residuals  9  0.6946  0.0772                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+------------------------------------------------------------------
+
+ contrast  estimate       SE df t.ratio p.value
+ deo - moi   0.7075 0.196437  9   3.602  0.0143
+ deo - reg   2.7350 0.196437  9  13.923  <.0001
+ moi - reg   2.0275 0.196437  9  10.321  <.0001
