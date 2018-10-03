@@ -1,0 +1,197 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    Sept 14, 2018
+6
+7    This program covers Homework 5 for STAT 480.
+8    ********************************************************/
+9
+10   LIBNAME STAT480 'C:\STAT480\';
+NOTE: Libref STAT480 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\STAT480
+11
+12   /*** PART A ***/
+13   DATA bonescore1;
+14       * Read data using list input from raw data file;
+15       INFILE 'C:\STAT480\Bonescor2.dat';
+16       INPUT singh ccratio csi calcar bone dpa;
+17
+18       * Calclulate flag 1;
+19            IF (singh LE 4)        THEN flag1=1;
+20       ELSE IF (4 LT singh LE 5)   THEN flag1=2;
+21       ELSE IF (singh GT 5)        THEN flag1=3;
+22
+23       * Calclulate flag 2;
+24            IF (ccratio GT 0.67)           THEN flag2=1;
+25       ELSE IF (0.52 LT ccratio LE 0.67)   THEN flag2=2;
+26       ELSE IF (ccratio LE 0.52)           THEN flag2=3;
+27
+28       * Calclulate flag 3;
+29            IF (csi LE 0.55)           THEN flag3=1;
+30       ELSE IF (0.55 LT csi LE 0.65)   THEN flag3=2;
+31       ELSE IF (csi GT 0.65)           THEN flag3=3;
+32
+33       * Calclulate flag 4;
+34            IF (calcar LE 6)           THEN flag4=1;
+35       ELSE IF (6 LT calcar LE 7)      THEN flag4=2;
+36       ELSE IF (calcar GT 7)           THEN flag4=3;
+37
+38       * Calclulate ourscore;
+39       ourscore = flag1 + flag2 + flag3;
+40   RUN;
+
+NOTE: The infile 'C:\STAT480\Bonescor2.dat' is:
+      Filename=C:\STAT480\Bonescor2.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=690,
+      Last Modified=30Sep2018:20:38:28,
+      Create Time=30Sep2018:20:25:01
+
+NOTE: 30 records were read from the infile 'C:\STAT480\Bonescor2.dat'.
+      The minimum record length was 21.
+      The maximum record length was 21.
+NOTE: The data set WORK.BONESCORE1 has 30 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+
+
+41   PROC PRINT data=bonescore1;
+42       /* Limit output width to 80 and center output */
+43       OPTIONS LS=80 CENTER;
+44       title 'Output Dataset: STAT480 Homework 3 Bonescore1 Data';
+45   RUN;
+
+NOTE: There were 30 observations read from the data set WORK.BONESCORE1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+46   /*** PART B ***/
+47   DATA bonescore2;
+48       * Read data using list input from raw data file;
+49       INFILE 'C:\STAT480\Bonescor2.dat';
+50       INPUT singh ccratio csi calcar bone dpa;
+51
+52       * Calclulate flag 1;
+53            IF (singh LE 4)        THEN flag1=1;
+54       ELSE IF (4 LT singh LE 5)   THEN flag1=2;
+55       ELSE IF (singh GT 5)        THEN flag1=3;
+56       ELSE IF (singh EQ .)        THEN flag1=.;
+57
+58       * Calclulate flag 2;
+59            IF (ccratio GT 0.67)           THEN flag2=1;
+60       ELSE IF (0.52 LT ccratio LE 0.67)   THEN flag2=2;
+61       ELSE IF (ccratio LE 0.52)           THEN flag2=3;
+62       ELSE IF (ccratio EQ .)              THEN flag2=.;
+63
+64       * Calclulate flag 3;
+65            IF (csi LE 0.55)           THEN flag3=1;
+66       ELSE IF (0.55 LT csi LE 0.65)   THEN flag3=2;
+67       ELSE IF (csi GT 0.65)           THEN flag3=3;
+68       ELSE IF (csi EQ .)              THEN flag3=.;
+69
+70       * Calclulate flag 4;
+71            IF (calcar LE 6)           THEN flag4=1;
+72       ELSE IF (6 LT calcar LE 7)      THEN flag4=2;
+73       ELSE IF (calcar GT 7)           THEN flag4=3;
+74       ELSE IF (calcar EQ .)           THEN flag4=.;
+75
+76       * Calclulate ourscore;
+77       ourscore = flag1 + flag2 + flag3;
+78   RUN;
+
+NOTE: The infile 'C:\STAT480\Bonescor2.dat' is:
+      Filename=C:\STAT480\Bonescor2.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=690,
+      Last Modified=30Sep2018:20:38:28,
+      Create Time=30Sep2018:20:25:01
+
+NOTE: 30 records were read from the infile 'C:\STAT480\Bonescor2.dat'.
+      The minimum record length was 21.
+      The maximum record length was 21.
+NOTE: The data set WORK.BONESCORE2 has 30 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+79   PROC PRINT data=bonescore2;
+80       /* Limit output width to 80 and center output */
+81       OPTIONS LS=80 CENTER;
+82       title 'Output Dataset: STAT480 Homework 3 Bonescore2 Data';
+83   RUN;
+
+NOTE: There were 30 observations read from the data set WORK.BONESCORE2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+84   /*** PART C ***/
+85   DATA bonescore3;
+86       * Read data using list input from raw data file;
+87       INFILE 'C:\STAT480\Bonescor2.dat';
+88       INPUT singh ccratio csi calcar bone dpa;
+89
+90       * Calclulate flag 1;
+91            IF (singh EQ .)        THEN flag1=.;
+92       ELSE IF (singh LE 4)        THEN flag1=1;
+93       ELSE IF (4 LT singh LE 5)   THEN flag1=2;
+94       ELSE IF (singh GT 5)        THEN flag1=3;
+95
+96       * Calclulate flag 2;
+97            IF (ccratio EQ .)              THEN flag2=.;
+98       ELSE IF (ccratio GT 0.67)           THEN flag2=1;
+99       ELSE IF (0.52 LT ccratio LE 0.67)   THEN flag2=2;
+100      ELSE IF (ccratio LE 0.52)           THEN flag2=3;
+101
+102      * Calclulate flag 3;
+103           IF (csi EQ .)              THEN flag3=.;
+104      ELSE IF (csi LE 0.55)           THEN flag3=1;
+105      ELSE IF (0.55 LT csi LE 0.65)   THEN flag3=2;
+106      ELSE IF (csi GT 0.65)           THEN flag3=3;
+107
+108      * Calclulate flag 4;
+109           IF (calcar EQ .)           THEN flag4=.;
+110      ELSE IF (calcar LE 6)           THEN flag4=1;
+111      ELSE IF (6 LT calcar LE 7)      THEN flag4=2;
+112      ELSE IF (calcar GT 7)           THEN flag4=3;
+113
+114      * Calclulate ourscore;
+115      ourscore = flag1 + flag2 + flag3;
+116  RUN;
+
+NOTE: The infile 'C:\STAT480\Bonescor2.dat' is:
+      Filename=C:\STAT480\Bonescor2.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=690,
+      Last Modified=30Sep2018:20:38:28,
+      Create Time=30Sep2018:20:25:01
+
+NOTE: 30 records were read from the infile 'C:\STAT480\Bonescor2.dat'.
+      The minimum record length was 21.
+      The maximum record length was 21.
+NOTE: Missing values were generated as a result of performing an operation on
+      missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      1 at 115:22   1 at 115:30
+NOTE: The data set WORK.BONESCORE3 has 30 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+117  PROC PRINT data=bonescore3;
+118      /* Limit output width to 80 and center output */
+119      OPTIONS LS=80 CENTER;
+120      title 'Output Dataset: STAT480 Homework 3 Bonescore3 Data';
+121  RUN;
+
+NOTE: There were 30 observations read from the data set WORK.BONESCORE3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+

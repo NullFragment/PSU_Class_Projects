@@ -1,0 +1,82 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    Sept 23, 2018
+6
+7    This program covers Homework 4 for STAT 480.
+8    ********************************************************/
+9
+10   /*** PROBLEM 1 ***/
+11   DATA dietdata;
+12       * Read data using column input from raw data file;
+13       INFILE 'C:\STAT480\dietdata.dat';
+14       INPUT subj $ 1-3 height $ 4-5 wt_init 6-8 wt_final 9-11;
+15       height_m = input(height, 2.)*0.0254; * Casts height to numeric value and converts to meters;
+16       bmi_init = (wt_init/2.2)/(height_m**2); * Calculates initial BMI;
+17       bmi_final = (wt_final/2.2)/(height_m**2); * Calculates final BMI;
+18       bmi_diff = bmi_final - bmi_init; * Calculate difference of final minus initial BMI;
+19   RUN;
+
+NOTE: The infile 'C:\STAT480\dietdata.dat' is:
+      Filename=C:\STAT480\dietdata.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=76,
+      Last Modified=21Sep2018:15:18:45,
+      Create Time=21Sep2018:15:18:45
+
+NOTE: 6 records were read from the infile 'C:\STAT480\dietdata.dat'.
+      The minimum record length was 11.
+      The maximum record length was 11.
+NOTE: The data set WORK.DIETDATA has 6 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+20
+21   PROC PRINT data=dietdata;
+22       * Set line size to 80 and page size to 58 and print data;
+23       OPTIONS LS=80 PS=58;
+24       title 'Output Dataset: STAT480 Homework 4 Diet Data';
+25   RUN;
+
+NOTE: There were 6 observations read from the data set WORK.DIETDATA.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+26
+27   /*** PROBLEM 2 ***/
+28   DATA temp;
+29       * Input temp data and run arithmetic calculations;
+30       * Three was ambiguous saying "difference between" so I performed both
+30 ! calculations ;
+31       INPUT abc def ghi jkl;
+32       one = abc + def - ghi + jkl; /* 10+5-2+4 = 17*/
+33       two = (abc + def) - (ghi + jkl); /*(10+5)-(2+4) = 15-6 = 9 */
+34       three = abc + jkl + (def - ghi); /* 10+4+(5-2) = 14+3 = 17 */
+35       three_2 = abc + jkl + (ghi - def); /* 10+4+(2-5) = 14-3 = 11 */
+36       four = abc + jkl + def / ghi; /* 10+4+5/2 = 14+2.5 = 16.5 */
+37       five = (abc + def)/(ghi + jkl); /*(10+5)/(2+4) = 15/6 = 2.5*/
+38       DATALINES;
+
+NOTE: The data set WORK.TEMP has 1 observations and 10 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+40       ;
+41   RUN;
+42
+43   PROC PRINT data=temp;
+44       * Set line size to 80 and page size to 58 and print data;
+45       OPTIONS LS=80 PS=58;
+46       title 'Output Dataset: STAT480 Homework 4 Arithmetic Data';
+47   RUN;
+
+NOTE: There were 1 observations read from the data set WORK.TEMP.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds

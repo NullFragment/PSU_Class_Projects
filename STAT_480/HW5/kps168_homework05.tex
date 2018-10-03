@@ -157,7 +157,7 @@
 \normalfont \normalsize 
 %\textsc{Rutgers University, Real Analysis I} \\ [25pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge STAT 480: Homework 4 \\ % The assignment title
+\huge STAT 480: Homework 5 \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 
@@ -174,26 +174,34 @@
 %----------------------------------------------------------------------------------------
 \newgeometry{top=.75in, bottom=.75in, left=1.25in,right=1.25in}
 \section*{\variableheghtrulefill[.25ex]\quad Problem 1 \quad\variableheghtrulefill[.25ex]}
-The following is the output from printing the dietdata dataset:
 
-\lstinputlisting[caption="BMI Calculation Results"]{listings/hw4_q1.txt}
+\subsection*{Part A)}
+The incorrect values for flag 1 and flag 3 on observations 4 and 15, respectively, are due to the fact that SAS regards a missing value as the smallest possible value (even smaller than zero) and therefore does not violate any logical comparisons that we have written.
 
+The error in ourscore is that we should have missing values for observations 4 and 15, but because we did not account for missing values in our IF-THEN-ELSE statements, the flag values themselves are not missing.
 
-%----------------------------------------------------------------------------------------
-%	PROBLEM 2
-%----------------------------------------------------------------------------------------
+The following is the output from printing the Bonescore1 dataset:
 
-\section*{\variableheghtrulefill[.25ex]\quad Problem 2 \quad\variableheghtrulefill[.25ex]}
-The following is the output from printing the temp dataset:
+\lstinputlisting[caption="Bonescore1 Dataset"]{listings/hw5_q1_a.txt}
 
-\lstinputlisting[caption="Arithmetic Calculations"]{listings/hw4_q2.txt}
+\subsection*{Part B)}
+Our Bonescore2 dataset will contain all of the same errors as our Bonescore1 dataset. This is because by putting the check for missing values last in our chain of IF-THEN-ELSE statements, the missing values will satisfy a condition prior to the missing value check. As soon as one of the conditions is satisfied, the rest are ignored and SAS continues on evaluating the rest of the dataset.
+
+The following is the output from printing the Bonescore2 dataset:
+
+\lstinputlisting[caption="Bonescore2 Dataset"]{listings/hw5_q1_b.txt}
+
+\subsection*{Part C)}
+The following is the output from printing the Bonescore3 dataset:
+
+\lstinputlisting[caption="Bonescore3 Dataset"]{listings/hw5_q1_c.txt}
 
 \newpage
 \section*{SAS Code}
-\lstinputlisting[language=SAS]{hw4.sas}
+\lstinputlisting[language=SAS]{hw5.sas}
 
 \section*{SAS Log File}
-\lstinputlisting[language=]{listings/logfile.txt}
+\lstinputlisting[language=]{listings/hw5_logfile.txt}
 
 
 \end{document}

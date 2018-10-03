@@ -1,0 +1,11 @@
+               Output Dataset: STAT480 Homework 4 Arithmetic Data              2
+                                              00:43 Saturday, September 22, 2018
+
+    Obs   abc   def   ghi   jkl   one   two   three   three_2   four   five
+
+     1     10    5     2     4     17    9      17       11     16.5    2.5
+
+
+
+
+
