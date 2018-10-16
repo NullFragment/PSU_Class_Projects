@@ -1,0 +1,98 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    Sept 14, 2018
+6
+7    This program covers Homework 6 for STAT 480.
+8    ********************************************************/
+9
+10   LIBNAME STAT480 'C:\STAT480\';
+NOTE: Libref STAT480 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\STAT480
+11
+12   /*** PART A ***/
+13   DATA books;
+14       * Read data using formatted input from raw data file;
+15       INFILE 'C:\STAT480\kidsbooks.txt';
+16       INPUT
+17           @1  Title       $20.
+18           @22 Author      $19.
+19           @43 Publisher   $16.
+20           @61 Pubdate     mmddyy10.
+21           @72 Price       5.2
+22           @79 Pages       2.
+23       ;
+24
+25       /* Calculate price per page for each book */
+26       PricePerPage=Price/Pages;
+27   RUN;
+
+NOTE: The infile 'C:\STAT480\kidsbooks.txt' is:
+      Filename=C:\STAT480\kidsbooks.txt,
+      RECFM=V,LRECL=32767,File Size (bytes)=993,
+      Last Modified=06Oct2018:14:17:42,
+      Create Time=06Oct2018:14:12:58
+
+NOTE: 23 records were read from the infile 'C:\STAT480\kidsbooks.txt'.
+      The minimum record length was 0.
+      The maximum record length was 80.
+NOTE: SAS went to a new line when INPUT statement reached past the end of a line.
+NOTE: The data set WORK.BOOKS has 12 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+28
+29   PROC SORT data=books out=sortedBooks;
+30       by descending price;
+31   RUN;
+
+NOTE: There were 12 observations read from the data set WORK.BOOKS.
+NOTE: The data set WORK.SORTEDBOOKS has 12 observations and 7 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+32
+33   PROC PRINT data=sortedBooks SPLIT='/' DOUBLE;
+34       /* Limit output width to 80 and center output */
+35       OPTIONS LS=80 PS=38 NODATE NONUMBER;
+36
+37       /* Set title for observations */
+38       id Title;
+39
+40       /* Select values to print out */
+41       var Author Price Pages PricePerPage Publisher Pubdate;
+42       where pricePerPage > 0.30;
+43       sum Price;
+44
+45       /* Set Labels and output formats */
+46       label
+47           Title = 'Title'
+48           Author = 'Author'
+49           Price = 'Price'
+50           Pages = 'No. of/Pages'
+51           PricePerPage = 'Price/Per Page'
+52           Publisher = 'Publisher'
+53           Pubdate = 'Publication/Date';
+54       format
+55           Pubdate DATE9.
+56           Price DOLLAR6.2
+57           PricePerPage DOLLAR5.2;
+58
+59       /* Set title and footnote */
+60       title 'Popular Books for Children';
+61       footnote 'Price obtained from Amazon.com';
+62   RUN;
+
+NOTE: There were 5 observations read from the data set WORK.SORTEDBOOKS.
+      WHERE pricePerPage>0.3;
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.06 seconds
+
+

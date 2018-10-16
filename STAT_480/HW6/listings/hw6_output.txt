@@ -1,0 +1,38 @@
+                           Popular Books for Children
+
+                                                          No. of     Price
+    Title                Author                  Price     Pages    Per Page
+
+    An Egg is Quiet      Aston, Dianna Hutts    $11.55      36       $0.32
+
+    Corduroy             Freeman, Don           $11.55      28       $0.41
+
+    Snowflake Bentley    Martin, Jacqueline     $10.88      32       $0.34
+
+    Bear Snores On       Wilson, Karma          $10.72      32       $0.34
+
+    The Kissing Hand     Penn, Audrey            $9.95      32       $0.31
+
+                                                ======
+
+                                                $54.65
+
+
+                                             Publication
+    Title                   Publisher           Date
+
+    An Egg is Quiet      Chronicle Books      02MAR2006
+
+    Corduroy             Viking Juvenile      11MAR1968
+
+    Snowflake Bentley    Houghton Mifflin     28SEP1998
+
+    Bear Snores On       Simon & Schuster     07APR2003
+
+    The Kissing Hand     Tanglewood Press     25JUN2006
+
+
+
+
+
+                         Price obtained from Amazon.com
