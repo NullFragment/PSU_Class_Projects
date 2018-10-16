@@ -1,0 +1,16 @@
+                                  Question #2
+
+                ID                           Start      End
+       Obs    Number    Name        Team    Weight    Weight    Category
+
+        1      1023     Shaw         R        189       165         3
+
+        2      1049     Serrano      Y        145       124         2
+
+        3      1219     Nance        R        210       192         4
+
+        4      1246     Sinha        Y        194       177         3
+
+        5      1078     McKnight     R        127       118         1
+
+        6      1221     Brown        Y        220         .         1

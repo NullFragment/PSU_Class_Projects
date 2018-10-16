@@ -1,0 +1,16 @@
+                                  Question #1
+
+                                        No. of                Greens
+           Golf Course           Par     holes    Yardage       Fees
+
+           Kapalua Plantation     73      18       7,263     $125.00
+
+           Pukalani               72      18       6,945      $55.00
+
+           Sandlewood             72      18       6,469      $35.00
+
+           Silversword            71      18           .      $57.00
+
+           Waiehu Municipal       72      18       6,330      $25.00
+
+           Grand Waikapa          72      18       6,122     $200.00

@@ -1,0 +1,204 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    Sept 14, 2018
+6
+7    This program covers the Midterm for STAT 480.
+8    ********************************************************/
+9
+10   LIBNAME STAT480 'C:\STAT480\';
+NOTE: Libref STAT480 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\STAT480
+11
+12   /*** QUESTION 1 ***/
+13   DATA question01;
+14       * Read data using formatted input from raw data file;
+15       INFILE 'C:\STAT480\question01.dat';
+16       INPUT
+17           @1  name        $18.
+18           @20 holes       2.
+19           @23 par         2.
+20           @26 yardage     comma5.
+21           @32 fees        5.2
+22       ;
+23   RUN;
+
+NOTE: The infile 'C:\STAT480\question01.dat' is:
+      Filename=C:\STAT480\question01.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=232,
+      Last Modified=14Oct2018:13:38:28,
+      Create Time=14Oct2018:13:38:28
+
+NOTE: 6 records were read from the infile 'C:\STAT480\question01.dat'.
+      The minimum record length was 37.
+      The maximum record length was 37.
+NOTE: The data set WORK.QUESTION01 has 6 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+
+
+24
+25   PROC PRINT data=question01 SPLIT='\' DOUBLE;
+26       /*
+27           Limit output width to 80
+28           Limit output lines to 58
+29           Suppress printing date
+30           Suppress printing output number
+31           Center output
+32       */
+33       OPTIONS LS=80 PS=58 NODATE NONUMBER CENTER;
+34
+35       /* Set output variable order */
+36       var par holes yardage fees;
+37
+38       /* Set title for observations */
+39       id name;
+40
+41       /* Set title */
+42       title 'Question #1';
+43
+44       /* Set Labels and output formats */
+45       label
+46           name    =   'Golf Course'
+47           holes   =   'No. of\holes'
+48           par     =   'Par'
+49           yardage =   'Yardage'
+50           fees    =   'Greens\Fees'
+51           ;
+52
+53       format
+54           yardage comma5.
+55           fees DOLLAR7.2
+56           ;
+57   RUN;
+
+NOTE: There were 6 observations read from the data set WORK.QUESTION01.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.06 seconds
+
+
+58
+59   DATA stat480.question02;
+60       * Read data using formatted input from raw data file;
+61       INFILE 'C:\STAT480\question02.dat';
+62       INPUT idno name $ team $ strtwght endwght;
+63
+64       /* Determine weight categories */
+65            IF (endwght LT 120)        THEN category = 1;
+66       ELSE IF (120 LE endwght LT 150) THEN category = 2;
+67       ELSE IF (150 LE endwght LT 180) THEN category = 3;
+68       ELSE IF (endwght GE 180)        THEN category = 4;
+69   RUN;
+
+NOTE: The infile 'C:\STAT480\question02.dat' is:
+      Filename=C:\STAT480\question02.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=147,
+      Last Modified=14Oct2018:13:38:29,
+      Create Time=14Oct2018:13:38:29
+
+NOTE: 6 records were read from the infile 'C:\STAT480\question02.dat'.
+      The minimum record length was 22.
+      The maximum record length was 23.
+NOTE: The data set STAT480.QUESTION02 has 6 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+70
+71   PROC PRINT data=stat480.question02 SPLIT='\' DOUBLE;
+72       /*
+73           Limit output width to 80
+74           Limit output lines to 58
+75           Suppress printing date
+76           Suppress printing output number
+77           Center output
+78       */
+79       OPTIONS LS=80 PS=58 NODATE NONUMBER CENTER;
+80
+81       /* Set title */
+82       title 'Question #2';
+83
+84       /* Set variable output labels */
+85       label
+86           idno        =   'ID\Number'
+87           name        =   'Name'
+88           team        =   'Team'
+89           strtwght    =   'Start\Weight'
+90           endwght     =   'End\Weight'
+91           category    =   'Category'
+92           ;
+93   RUN;
+
+NOTE: There were 6 observations read from the data set STAT480.QUESTION02.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+94
+95   DATA question03;
+96       SET 'C:\STAT480\question03.sas7bdat';
+97
+98       /* Calculate exam averages */
+99       average1 = (grade1+grade2)/2;
+100      average2 = (grade2+grade3)/2;
+101
+102      /* Determine student status values */
+103           IF (average1 EQ .) OR (average2 EQ .)  THEN status = "incomplete";
+104      ELSE IF (average1 EQ average2)              THEN status = "no change";
+105      ELSE IF (average1 LT average2)              THEN status = "improved";
+106      ELSE IF (average1 GT average2)              THEN status = "regressed";
+107  RUN;
+
+NOTE: Missing values were generated as a result of performing an operation on
+      missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      1 at 99:23
+NOTE: There were 5 observations read from the data set
+      C:\STAT480\question03.sas7bdat.
+NOTE: The data set WORK.QUESTION03 has 5 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+108
+109  PROC PRINT data=question03 SPLIT = '\' DOUBLE;
+110      /*
+111          Limit output width to 80
+112          Limit output lines to 58
+113          Suppress printing date
+114          Suppress printing output number
+115          Center output
+116      */
+117      OPTIONS LS=80 PS=58 NODATE NONUMBER CENTER;
+118
+119      /* Set title */
+120      title 'Question #3';
+121
+122      /* Set variable output order */
+123      var student grade1 grade2 grade3 average1 average2 status;
+124
+125      /* Set variable output labels */
+126      label
+127          student     = 'Student\Name'
+128          grade1      = 'Exam 1\Grade'
+129          grade2      = 'Exam 2\Grade'
+130          grade3      = 'Exam 3\Grade'
+131          average1    = 'Exam 1 & 2\Average'
+132          average2    = 'Exam 2 & 3\Average'
+133          status      = 'Student\Status'
+134          ;
+135  RUN;
+
+NOTE: There were 5 observations read from the data set WORK.QUESTION03.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+

@@ -1,0 +1,14 @@
+                                  Question #3
+
+      Student   Exam 1   Exam 2   Exam 3   Exam 1 & 2   Exam 2 & 3    Student
+Obs    Name      Grade    Grade    Grade     Average      Average      Status
+
+ 1     Simon       36       46       56         41          51.0     improved
+
+ 2     Smith       75       83       92         79          87.5     improved
+
+ 3     Jones       92       80       71         86          75.5     regressed
+
+ 4     Brown      100      100      100        100         100.0     no change
+
+ 5     Black        .       45       50          .          47.5     incomplete
