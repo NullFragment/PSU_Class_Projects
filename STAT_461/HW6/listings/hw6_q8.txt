@@ -1,0 +1,5 @@
+> contrast(hotdogLSM, method='pairwise')
+ contrast         estimate       SE df t.ratio p.value
+ Beef - Chicken  38.085294 7.738831 51   4.921  <.0001
+ Beef - Pork     -1.855882 7.738831 51  -0.240  0.9688
+ Chicken - Pork -39.941176 8.046454 51  -4.964  <.0001

@@ -1,0 +1,8 @@
+> contrast(sqrtLifeLSM, method='pairwise')
+ contrast          estimate        SE df t.ratio p.value
+ AlkGen - AlkName 4.0374808 0.4427383 12   9.119  <.0001
+ AlkGen - HDGen   9.3166850 0.4427383 12  21.043  <.0001
+ AlkGen - HDName  9.6541649 0.4427383 12  21.806  <.0001
+ AlkName - HDGen  5.2792042 0.4427383 12  11.924  <.0001
+ AlkName - HDName 5.6166841 0.4427383 12  12.686  <.0001
+ HDGen - HDName   0.3374799 0.4427383 12   0.762  0.8697
