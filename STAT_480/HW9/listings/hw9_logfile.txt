@@ -1,0 +1,129 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    November 4, 2018
+6
+7    This program covers Homework 9 for STAT 480.
+8    ********************************************************/
+9
+10   LIBNAME STAT480 'C:\STAT480\';
+NOTE: Libref STAT480 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\STAT480
+11   DATA states;
+12       set STAT480.state_cd (rename = (code = start name = label));
+13       fmtname = 'state2fmt';
+14   RUN;
+
+NOTE: There were 50 observations read from the data set STAT480.STATE_CD.
+NOTE: The data set WORK.STATES has 50 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+15
+16   * Create formats for data;
+17   PROC FORMAT cntlin=states;
+NOTE: Format STATE2FMT has been output.
+18       * Create picture for Subject;
+19       PICTURE subjPic LOW-HIGH = '00-00000' (PREFIX='#');
+NOTE: Format SUBJPIC has been output.
+20
+21       * Create a picture for r_id;
+22       PICTURE ridPic LOW-HIGH = '9999';
+NOTE: Format RIDPIC has been output.
+23
+24       * Create value format for country;
+25       VALUE countryFmt 1 = 'United States'
+26                        2 = 'Canada'
+27                        3 = 'Mexico'
+28                        OTHER = 'Other';
+NOTE: Format COUNTRYFMT has been output.
+29
+30       * Create value format for race;
+31       VALUE raceFmt    3 = 'White'
+32                        4 = 'Black'
+33                        OTHER = 'Other';
+NOTE: Format RACEFMT has been output.
+34
+35       * Create a value format for marital status;
+36       VALUE marStFmt   1 = 'Married'
+37                        2 = 'Living with a partner'
+38                        3 = 'Separated'
+39                        4 = 'Divorced'
+40                        5 = 'Widowed'
+41                        6 = 'Never married';
+NOTE: Format MARSTFMT has been output.
+42   RUN;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.03 seconds
+
+NOTE: There were 50 observations read from the data set WORK.STATES.
+
+43
+44   DATA backTemp;
+45       * Load in dataset;
+46       SET STAT480.back;
+47       KEEP subj r_id country race state mar_st;
+48   RUN;
+
+NOTE: There were 638 observations read from the data set STAT480.BACK.
+NOTE: The data set WORK.BACKTEMP has 638 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+49
+50   PROC PRINT DATA=backTemp(OBS=10);
+51       OPTIONS LS=80 NODATE NONUMBER;
+52       title 'Demonstration of Subject Picture';
+53       VAR subj;
+54       FORMAT  subj subjPic.;
+55   RUN;
+
+NOTE: There were 10 observations read from the data set WORK.BACKTEMP.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+56
+57   PROC FREQ data=backTemp;
+58       title 'Frequency Count of All other Variables';
+59       format
+60           r_id    ridPic.
+61           country countryFmt.
+62           race    raceFmt.
+63           state   state2fmt.
+64           mar_st  marStFmt.;
+65       table r_id country race state mar_st;
+66   RUN;
+
+NOTE: There were 638 observations read from the data set WORK.BACKTEMP.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+
+
+67
+68    PROC FORMAT FMTLIB;
+69       title 'Format Library';
+70    RUN;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+
+NOTE: Non-portable document will be produced. The current settings of FORMCHAR
+      use nonstandard line-drawing characters and the resulting output file
+      will not render correctly unless all readers of the document have the SAS
+      Monospace font installed. To make your document portable, issue the
+      following command:
+      OPTIONS FORMCHAR="|----|+|---+=|-/\<>*";
+
+
