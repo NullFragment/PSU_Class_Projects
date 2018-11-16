@@ -1,0 +1,12 @@
+> contrast(fertModelLogLM, method="pairwise")
+ contrast        estimate         SE df t.ratio p.value
+ control - f1 -0.29674566 0.02642023 40 -11.232  <.0001
+ control - f2 -0.22001603 0.02642023 40  -8.328  <.0001
+ control - f3 -0.38849410 0.02642023 40 -14.704  <.0001
+ f1 - f2       0.07672963 0.02642023 40   2.904  0.0292
+ f1 - f3      -0.09174844 0.02642023 40  -3.473  0.0066
+ f2 - f3      -0.16847806 0.02642023 40  -6.377  <.0001
+
+Results are averaged over the levels of: species 
+Results are given on the log (not the response) scale. 
+P value adjustment: tukey method for comparing a family of 4 estimates 

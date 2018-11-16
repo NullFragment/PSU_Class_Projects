@@ -1,0 +1,8 @@
+> summary(fertModelLog) # Interactions insignificant -> Pairwise
+             Df Sum Sq Mean Sq F value   Pr(>F)    
+fert          3 0.9902  0.3301  78.813  < 2e-16 ***
+species       1 0.2792  0.2792  66.664 4.73e-10 ***
+fert:species  3 0.0332  0.0111   2.642   0.0624 .  
+Residuals    40 0.1675  0.0042                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
