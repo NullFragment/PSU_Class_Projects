@@ -1,0 +1,19 @@
+> widgetsLsmInteract = lsmeans(widgetNested, ~ Supplier:Batch)
+> cld(widgetsLsmInteract, alpha=0.05)
+ Batch Supplier  lsmean        SE df lower.CL upper.CL .group
+ 2     AcmeInd    89.50 0.7465197 36 87.98599 91.01401  1    
+ 3     WHSupply   91.50 0.7465197 36 89.98599 93.01401  12   
+ 2     GenWidget  91.75 0.7465197 36 90.23599 93.26401  12   
+ 1     WHSupply   91.75 0.7465197 36 90.23599 93.26401  12   
+ 1     AcmeInd    92.50 0.7465197 36 90.98599 94.01401  12   
+ 3     AcmeInd    92.75 0.7465197 36 91.23599 94.26401  12   
+ 3     GenWidget  92.75 0.7465197 36 91.23599 94.26401  12   
+ 4     GenWidget  93.50 0.7465197 36 91.98599 95.01401   2   
+ 1     GenWidget  93.75 0.7465197 36 92.23599 95.26401   2   
+ 4     AcmeInd    94.25 0.7465197 36 92.73599 95.76401   2   
+ 4     WHSupply   94.50 0.7465197 36 92.98599 96.01401   2   
+ 2     WHSupply   94.75 0.7465197 36 93.23599 96.26401   2   
+
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 12 estimates 
+significance level used: alpha = 0.05 

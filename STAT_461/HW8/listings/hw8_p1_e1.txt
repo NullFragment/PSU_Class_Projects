@@ -1,0 +1,12 @@
+> widgetsLsmSupplier = lsmeans(widgetNested, ~ Supplier)
+NOTE: Results may be misleading due to involvement in interactions
+> cld(widgetsLsmSupplier, alpha=0.05)
+ Supplier   lsmean        SE df lower.CL upper.CL .group
+ AcmeInd   92.2500 0.3732599 36 91.49299 93.00701  1    
+ GenWidget 92.9375 0.3732599 36 92.18049 93.69451  1    
+ WHSupply  93.1250 0.3732599 36 92.36799 93.88201  1    
+
+Results are averaged over the levels of: Batch 
+Confidence level used: 0.95 
+P value adjustment: tukey method for comparing a family of 3 estimates 
+significance level used: alpha = 0.05
