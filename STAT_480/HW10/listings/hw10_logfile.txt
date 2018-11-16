@@ -1,0 +1,120 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    November 11, 2018
+6
+7    This program covers Homework 10 for STAT 480.
+8    ********************************************************/
+9
+10   LIBNAME STAT480 'C:\STAT480\';
+NOTE: Libref STAT480 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\STAT480
+11
+12   * Create formats for data;
+13   PROC FORMAT;
+14       * Create value format for country;
+15       VALUE sexFmt 1 = 'Male'
+16                    2 = 'Female';
+NOTE: Format SEXFMT has been output.
+17       VALUE incomeFmt 1 = 'LT $30,000'
+18                       2 = 'GT $30,000';
+NOTE: Format INCOMEFMT has been output.
+19   RUN;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+20
+21   DATA painTemp;
+22       * Load in dataset for problem 1;
+23       SET STAT480.analysis;
+24       KEEP subj sex income purg_1;
+25   RUN;
+
+NOTE: There were 638 observations read from the data set STAT480.ANALYSIS.
+NOTE: The data set WORK.PAINTEMP has 638 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+26
+27   PROC REPORT DATA=painTemp NOWINDOWS HEADLINE;
+28       * Suppress date and output number;
+29       OPTIONS NODATE NONUMBER;
+30
+31       * Create report for problem 1;
+32       title 'ICDB Study Pain Score';
+33
+34       * Select columns to print out;
+35       column sex income purg_1;
+36
+37       * Define sex output and group by gender;
+38       define sex / group 'Gender' format=sexFmt.;
+39
+40       * Define income formatting and output;
+41       define income / across 'Household Income' format=incomeFmt.;
+42
+43       * Calculate average and define output format for pain scores;
+44       define purg_1 / mean format = 5.4 'Pain/Score';
+45   RUN;
+
+NOTE: There were 638 observations read from the data set WORK.PAINTEMP.
+NOTE: At least one W.D format was too small for the number to be printed. The decimal may be shifted
+      by the "BEST" format.
+NOTE: PROCEDURE REPORT used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.06 seconds
+
+
+46
+47   DATA parkTemp;
+48       * Load in dataset for problem 2;
+49       INFILE 'C:\STAT480\natparks.dat';
+50       INPUT parkName $ 1-21 type $ region $ museums camping;
+51
+52   RUN;
+
+NOTE: The infile 'C:\STAT480\natparks.dat' is:
+      Filename=C:\STAT480\natparks.dat,
+      RECFM=V,LRECL=32767,File Size (bytes)=394,
+      Last Modified=11Nov2018:18:28:29,
+      Create Time=11Nov2018:18:28:29
+
+NOTE: 11 records were read from the infile 'C:\STAT480\natparks.dat'.
+      The minimum record length was 34.
+      The maximum record length was 34.
+NOTE: The data set WORK.PARKTEMP has 11 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+53
+54   PROC REPORT DATA=parkTemp NOWINDOWS HEADSKIP;
+55       * Print report for problem 2;
+56       title 'National Parks';
+57
+58       * Set wanted columns;
+59       column region museums camping facilities;
+60       define Region / group 'Region';
+61
+62       * Set format for museums and camping to center properly;
+63       define Museums / 'Museums' format = 2.0 center width = 7;
+64       define Camping / 'Camping' format = 2.0 center width = 7;
+65
+66       * Define facilities computation and format;
+67       define facilities / computed 'Facilities' format = 2.0 center width = 10;
+68       compute facilities;
+69           facilities = museums.sum + camping.sum;
+70       endcomp;
+71   RUN;
+
+NOTE: There were 11 observations read from the data set WORK.PARKTEMP.
+NOTE: PROCEDURE REPORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
