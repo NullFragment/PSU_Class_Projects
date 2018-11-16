@@ -1,0 +1,69 @@
+1    /********************************************************
+2    Kyle Salitrik
+3    kps168
+4    PSU ID: 997543474
+5    Oct 28, 2018
+6
+7    This program covers Homework 8 for STAT 480.
+8    ********************************************************/
+9
+10   DATA sales (DROP = Mon Tues Wed Thur Fri);
+11       INPUT
+12           @1 weekof ddmmyy8.
+13           @10 Store 3.
+14           @14 Mon 3.
+15           @18 Tues 3.
+16           @22 Wed 3.
+17           @26 Thur 3.
+18           @30 Fri 3.;
+19
+20       * Calculate average sales;
+21       AvgSales = (Mon + Tues + Wed + Thur + Fri)/5;
+22
+23       * Set length of new group variable;
+24       length Group $7;
+25
+26       * Determine whether sales are low, avg, high, or missing.;
+27       if AvgSales = '.' then Group = 'N/A';
+28       else if AvgSales LE 605 then Group = 'Low';
+29       else if 605 LT AvgSales LE 750 then Group = 'Average';
+30       else if AvgSales GT 750 then Group = 'High';
+31
+32       * Set region based on store number;
+33       if (110 LE Store LE 111) then region = 'South';
+34       else if 112 LE Store LE 114 then region = 'North';
+35
+36       DATALINES;
+
+NOTE: Character values have been converted to numeric values at the places given by: (Line):(Column).
+      27:19
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      1 at 21:41
+NOTE: The data set WORK.SALES has 20 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+
+
+57       ;
+58   RUN;
+59
+60   PROC PRINT data = sales label;
+61       * Set page size to 50, line size to 80, and suppress date and number output;
+62       OPTIONS PS = 58 LS = 80 NODATE NONUMBER;
+63
+64       * Set output title;
+65       title "Sales Data";
+66
+67       *Set label and format of week output.;
+68       label weekof = 'Date';
+69       format weekof ddmmyy8.;
+70   RUN;
+
+NOTE: There were 20 observations read from the data set WORK.SALES.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+

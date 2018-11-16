@@ -1,0 +1,25 @@
+                                   Sales Data
+
+                                          Avg
+             Obs        Date    Store    Sales    Group      region
+
+               1    10/12/07     110     617.6    Average    South
+               2    10/12/07     111     670.8    Average    South
+               3    10/12/07     112     614.8    Average    North
+               4    10/12/07     113     655.8    Average    North
+               5    10/12/07     114     628.6    Average    North
+               6    17/12/07     110     748.8    Average    South
+               7    17/12/07     111     708.6    Average    South
+               8    17/12/07     112     792.6    High       North
+               9    17/12/07     113     745.2    Average    North
+              10    17/12/07     114        .     N/A        North
+              11    24/12/07     110     377.0    Low        South
+              12    24/12/07     111     775.2    High       South
+              13    24/12/07     112     598.8    Low        North
+              14    24/12/07     113     878.8    High       North
+              15    24/12/07     114     750.2    High       North
+              16    31/12/07     110     368.0    Low        South
+              17    31/12/07     111     562.6    Low        South
+              18    31/12/07     112     544.4    Low        North
+              19    31/12/07     113     639.8    Average    North
+              20    31/12/07     114     763.4    High       North
