@@ -1,0 +1,4 @@
+> tray1
+[1] "CN" "CN" "MR" "CN" "MR" "CR" "CR" "MR" "MN" "MN" "CR" "MN"
+> tray2
+[1] "CN" "CN" "CR" "CR" "MR" "MN" "CN" "MN" "MR" "MR" "MN" "CR"
