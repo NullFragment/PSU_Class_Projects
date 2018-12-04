@@ -1,0 +1,15 @@
+> cookieFullModel = aov(size ~ tray + chilled + butter + tray:chilled + tray:butter + chilled:butter, data=cookies)
+> anova(cookieFullModel)
+Analysis of Variance Table
+
+Response: size
+               Df  Sum Sq Mean Sq F value  Pr(>F)  
+tray            1  25.133  25.133  1.4696 0.24198  
+chilled         1  18.131  18.131  1.0602 0.31760  
+butter          1  48.621  48.621  2.8431 0.11003  
+tray:chilled    1   0.680   0.680  0.0398 0.84430  
+tray:butter     1 106.597 106.597  6.2332 0.02311 *
+chilled:butter  1  55.085  55.085  3.2211 0.09050 .
+Residuals      17 290.726  17.102                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

@@ -68,7 +68,7 @@ dev.off()
 ######################
 ## Full Plot
 ######################
-png("./figures/boxplot_full.png", width = 2*plotWidth, height = 2*plotHeight)
+png("./figures/boxplot-full.png", width = 2*plotWidth, height = 2*plotHeight)
   boxplot(size ~ tray + chilled + butter, data=cookies)
 dev.off()
 
@@ -81,14 +81,46 @@ singleBoxGrid = lapply(singleBoxplots, grid::rasterGrob)
 doubleBoxPlots = lapply(sprintf("./figures/boxplots/boxplot-2-%s.png", c("butter-chilled","butter-tray","chilled-tray")), png::readPNG)
 doubleBoxGrid = lapply(doubleBoxPlots, grid::rasterGrob)
 
-png("./figures/boxplot_individuals.png", width = 3*plotWidth, height = plotHeight)
+png("./figures/boxplot-individuals.png", width = 3*plotWidth, height = plotHeight)
   gridExtra::grid.arrange(ncol=3, grobs=singleBoxGrid)
 dev.off()
 
-png("./figures/boxplot_pairs.png", width = 3*plotWidth, height = plotHeight)
+png("./figures/boxplot-pairs.png", width = 3*plotWidth, height = plotHeight)
   gridExtra::grid.arrange(ncol=3, grobs=doubleBoxGrid)
 dev.off()
 
 ###############################################################################
 ## Create Model
 ###############################################################################
+cookieFullModel = aov(size ~ tray + chilled + butter + tray:chilled + tray:butter + chilled:butter, data=cookies)
+anova(cookieFullModel)
+
+cookieMainModel = aov(size ~ tray + chilled + butter, data=cookies)
+anova(cookieMainModel)
+
+#######################
+# Check Normality 
+#######################
+png("./figures/normality-residuals.png", width = 3*plotWidth, height = plotHeight)
+  plot(cookieFullModel,1)
+dev.off()
+
+png("./figures/normality-qq.png", width = 3*plotWidth, height = plotHeight)
+  plot(cookieFullModel,2)
+dev.off()
+
+#######################
+# Examine Interactions 
+#######################
+png("./figures/interaction-tray-butter.png", width = 3*plotWidth, height = plotHeight)
+  interaction.plot(x.factor = cookies$tray, trace.factor = cookies$butter,
+                   response = cookies$size, type ="b",col = 2:3,
+                   xlab ="Tray", ylab ="Size", trace.label ="Butter")
+dev.off()
+
+png("./figures/interaction-chilled-butter.png", width = 3*plotWidth, height = plotHeight)
+  interaction.plot(x.factor = cookies$chilled, trace.factor = cookies$butter,
+                   response = cookies$size, type ="b",col = 2:3,
+                   xlab ="Chilled", ylab ="Size", trace.label ="Butter")
+dev.off()
+  
