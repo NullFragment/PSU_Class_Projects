@@ -10,9 +10,16 @@
 \usepackage{sectsty} % Allows customizing section commands
 \usepackage{fancyhdr} % Custom headers and footers
 \usepackage{xcolor} % Allows 0-255 RGB values
-\usepackage{tabularx, outlines, framed, varwidth, enumitem, graphicx, listings, color, qtree, float, subcaption, newfloat, pdfpages}
+\usepackage{tabularx, outlines, framed, varwidth, enumitem, graphicx, listings, color, qtree, float, subcaption, newfloat, pdfpages, hyperref}
 \usepackage[left=0.5in, right=0.5in, top=3in, bottom=.25in]{geometry}
 \geometry{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
 
 %----------------------------------------------------------------------------------------
 %	SET CUSTOMIZATIONS AND FUNCTIONS
@@ -173,20 +180,88 @@
 %	Data Gathering
 %----------------------------------------------------------------------------------------
 \newgeometry{top=.75in, bottom=.75in, left=1.25in,right=1.25in}
-\section*{\variableheghtrulefill[.25ex]\quad Gathering Data \quad\variableheghtrulefill[.25ex]}
+\section*{\variableheghtrulefill[.25ex]\quad Defining Experiment \& Gathering Data \quad\variableheghtrulefill[.25ex]}
+The experiment consisted of baking cookies and measuring the diameter of the finished product. The factors that were chosen were to use melted butter or creamed butter and to chill half of the dough before baking. The recipe was measured out into to separate mixing bowls to make the dough instead of mixing all of the dry ingredients and separating afterwards to ensure that the same amount of each ingredient went into the two dough mixtures. This recipe was used: 
+
+\url{https://joyfoodsunshine.com/the-most-amazing-chocolate-chip-cookies/}
+
 The following table outlines the factors that were considered, their levels, and how they are associated. Originally tray position was not considered as a factor, however, when putting the trays into the oven, only one tray would fit on the top rack so the difference in top and bottom racks was added after the fact.
 
+The purpose of the experiment was to see if the melted butter, which creates a more liquidus mixture, would cause the cookies to become larger in diameter. Similarly, one would expect that the chilled dough may affect the cookie size and shape.
+
 \begin{tabularx}{\textwidth}{| l | X | l | l |}
-\hline
-\textbf{Factor} & \textbf{Levels} & \textbf{Fixed?} & \textbf{Nested/Crossed} \\ \hline
-Butter (b) & Melted (M), Creamed (C) & Fixed & Crossed with Dough \& Tray \\ \hline
-Dough Temp (d) & Refrigerated (R), \newline  NOT Refrigerated (N) & Fixed & Crossed with Butter \& Tray \\ \hline
-Tray Position (t) & Top (T), Bottom (B) & Fixed & Crossed with Butter \& Dough \\ \hline
+	\hline
+	\textbf{Factor}   & \textbf{Levels}                                  & \textbf{Fixed?} & \textbf{Nested/Crossed}      \\ \hline
+	Butter (b)        & Melted (M), Creamed (C)                          & Fixed           & Crossed with Dough \& Tray   \\ \hline
+	Dough Temp (d)    & Refrigerated (R), \newline  NOT Refrigerated (N) & Fixed           & Crossed with Butter \& Tray  \\ \hline
+	Tray Position (t) & Top (T), Bottom (B)                              & Fixed           & Crossed with Butter \& Dough \\ \hline
 \end{tabularx}
+
+Below are images of the butter, sugar, and brown sugar created by creaming the butter and sugars together vs simply mixing in melted butter.
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{butter_creamed}
+		\caption*{Creamed Butter Mixture}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{butter_melted}
+		\caption*{Melted Butter Mixture}
+	\end{subfigure}
+\end{figure}
+
+After the dough was made, each was weighed separately to ensure they were the same weight (753 grams). Afterwards, each type of dough was split in half by weight (377 grams) and placed into 2 separate bowls, covered with plastic wrap, and marked. One bowl from each type of dough was placed in the refrigerator for 2 hours.
+
+\begin{figure}[H]
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{weight_full}
+		\caption*{Full Weight of Dough}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{weight_split}
+		\caption*{Weight of Dough After Separating}
+	\end{subfigure}
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{dough_roomTemp}
+		\caption*{Marked Bowls at Room Temp}
+	\end{subfigure}
+\end{figure}
+
+
 
 Using the possible combinations of butter and dough temperature, R was used draw 2 samples for position assignment for each tray. The following is the output from this procedure.
 
+\newpage
 \lstinputlisting[language=, caption=Randomized Tray Locations]{listings/project-TrayLocations.txt}
+
+The cookie dough was placed on 2 baking sheets using the above samples as a guide and marked 1-12 on each sheet. To ensure a mostly consistent cookie size, a dough scoop was used and leveled off for each cookie.
+
+\begin{figure}[H]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{cookies_tray2}
+		\caption*{Tray 1}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth]{cookies_tray2}
+		\caption*{Tray 2}
+	\end{subfigure}
+\end{figure}
+
+The cookies were baked for 9 minutes, removed from the oven and the largest diameter was measured using a pair of calipers.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.8\linewidth]{cookies_finished}
+	\caption*{Creamed Butter Mixture}
+\end{figure}
+
 
 %----------------------------------------------------------------------------------------
 %	Data Plotting
@@ -255,40 +330,49 @@ Finally, because the only significant terms are interaction terms, an interactio
 	\caption*{Figure 7: (Dough Temperature:Butter Type) Interaction Plot}
 \end{figure}
 
+%----------------------------------------------------------------------------------------
+%	Conclusions
+%----------------------------------------------------------------------------------------
+\section*{\variableheghtrulefill[.25ex]\quad Conclusions \quad\variableheghtrulefill[.25ex]}
+Based on the R analysis, we can see that no individual factor significantly influenced the size of the cookies, however the interaction between type of butter used and position of the tray on the top or bottom rack did significantly impact the cookies. For the melted butter, putting the cookies on the top rack allowed them to spread wider than the creamed butter cookies while the opposite was true for placing the tray on the bottom rack. The dough temperature had a similar pair of interactions between the two types of cookies.
+
+One reason that using the bottom rack, in general, gave smaller cookies is that the bases of the cookies cooked a lot faster which caused them to grow taller (or stay taller) as the base solidified faster. As for improvements to the experiment, knowing that both trays would not fit on the top rack ahead of time and randomly assigning that using R would have been a better idea than just picking one to move. Another improvement would be to measure the cookies by weight instead of using a dough scoop. A final change would be to measure out the individual cookies first and then simply transfer them to the trays after chilling instead of having to form each cookie as it would allow less time for the dough to reach room temperature before putting them into the oven.
+
+
 
 \newpage
 \section*{Data Appendix}
 \begin{table}[H]
-\centering
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Size (mm)} & \textbf{Butter} & \textbf{Dough Temperature} & \textbf{Tray Position} \\ \hline
-85.61         & C               & N                & B             \\ \hline
-87.56         & C               & N                & B             \\ \hline
-83.03         & M               & R                & B             \\ \hline
-87.78         & C               & N                & B             \\ \hline
-81.78         & M               & R                & B             \\ \hline
-83.70         & C               & R                & B             \\ \hline
-84.32         & C               & R                & B             \\ \hline
-87.83         & M               & R                & B             \\ \hline
-82.28         & M               & N                & B             \\ \hline
-81.06         & M               & N                & B             \\ \hline
-79.60         & C               & R                & B             \\ \hline
-84.38         & M               & N                & B             \\ \hline
-91.32         & C               & N                & T             \\ \hline
-77.38         & C               & N                & T             \\ \hline
-73.49         & C               & R                & T             \\ \hline
-78.23         & C               & R                & T             \\ \hline
-86.69         & M               & R                & T             \\ \hline
-87.93         & M               & N                & T             \\ \hline
-86.72         & C               & N                & T             \\ \hline
-87.45         & M               & N                & T             \\ \hline
-91.57         & M               & R                & T             \\ \hline
-92.12         & M               & R                & T             \\ \hline
-92.17         & M               & N                & T             \\ \hline
-88.42         & C               & R                & T             \\ \hline
-\end{tabular}
-\caption*{Table of Collected Data}
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Size (mm)} & \textbf{Butter} & \textbf{Dough Temperature} & \textbf{Tray Position} \\ \hline
+		85.61              & C               & N                          & B                      \\ \hline
+		87.56              & C               & N                          & B                      \\ \hline
+		83.03              & M               & R                          & B                      \\ \hline
+		87.78              & C               & N                          & B                      \\ \hline
+		81.78              & M               & R                          & B                      \\ \hline
+		83.70              & C               & R                          & B                      \\ \hline
+		84.32              & C               & R                          & B                      \\ \hline
+		87.83              & M               & R                          & B                      \\ \hline
+		82.28              & M               & N                          & B                      \\ \hline
+		81.06              & M               & N                          & B                      \\ \hline
+		79.60              & C               & R                          & B                      \\ \hline
+		84.38              & M               & N                          & B                      \\ \hline
+		91.32              & C               & N                          & T                      \\ \hline
+		77.38              & C               & N                          & T                      \\ \hline
+		73.49              & C               & R                          & T                      \\ \hline
+		78.23              & C               & R                          & T                      \\ \hline
+		86.69              & M               & R                          & T                      \\ \hline
+		87.93              & M               & N                          & T                      \\ \hline
+		86.72              & C               & N                          & T                      \\ \hline
+		87.45              & M               & N                          & T                      \\ \hline
+		91.57              & M               & R                          & T                      \\ \hline
+		92.12              & M               & R                          & T                      \\ \hline
+		92.17              & M               & N                          & T                      \\ \hline
+		88.42              & C               & R                          & T                      \\ \hline
+	\end{tabular}
+	\caption*{Table of Collected Data}
 \end{table}
 
 \newpage
